@@ -1,0 +1,19 @@
+<html>
+<head>
+    <title>View Stores</title>
+</head>
+<body>
+	<h2>
+	View Stores</h2>
+	<form action="{% url 'updated_store'%}" method="get">
+	<select name="address" size="6">
+	{% for s in stores %}
+    <option value={{s.address}}>{{s.address}}</option>
+    {% endfor %}
+	</select><br>
+	New Address Line1:<input type="text" name="addr1"><br>
+	New Address Line2:<input type="text" name="addr2"><br>	
+    <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
