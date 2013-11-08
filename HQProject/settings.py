@@ -9,10 +9,10 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'mysql'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+DATABASE_ENGINE = 'django.db.backends.mysql'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
 DATABASE_NAME = 'HQ'             # Or path to database file if using sqlite3.
-DATABASE_USER = 'dipika'             # Not used with sqlite3.
-DATABASE_PASSWORD = 'dipika23'         # Not used with sqlite3.
+DATABASE_USER = 'root'             # Not used with sqlite3.
+DATABASE_PASSWORD = 'poornima92'         # Not used with sqlite3.
 DATABASE_HOST = 'localhost'
 #DATABASE_HOST = 'ec2-54-254-157-48.ap-southeast-1.compute.amazonaws.com'             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = '3306'             # Set to empty string for default. Not used with sqlite3.
