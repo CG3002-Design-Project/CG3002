@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+<html>
+<head>
+    <title>{% block title %}templates/home.html{% endblock %}</title>
+</head>
+<body>
+
+<div class="container" id="content">
+    {% block content %}
+        {% if user.is_authenticated %}
+        <p class="text-center">Welcome to CEG 21 HyperMarket, {{ user.username }}. Thanks for logging in.</p>
+    {% else %}
+        <p>Welcome, new user. Please log in.</p>
+    {% endif %}
+    {% endblock %}
+
+</div>
+
+</body>
+</html>
