@@ -1,0 +1,31 @@
+<html>
+<head>
+    <title>Update Store</title>
+</head>
+<body>
+	<h2>
+	Updating Store</h2>
+	<form action="{% url 'view_stores'%}" method="get">
+	<select name="region" size="6">
+	<optgroup label="Region">
+	<option value="apac">Asia-Pacific</option>
+	<option value="americas">Americas</option>
+	<option value="emea">Europe , Middle East , Africa</option>
+	</optgroup>
+	</select><br>
+	
+	<select name="country" size="6">
+	<optgroup label="Country">
+	<option value="Singapore">Singapore</option>
+	<option value="India">India</option>
+	<option value="USA">USA</option>
+	<option value="UK">UK</option>
+	<option value="Germany">Germany</option>
+	<option value="Finland">Finland</option>
+	</optgroup>
+	</select><br>
+	City: <input type="text" name="city"><br>	
+    <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

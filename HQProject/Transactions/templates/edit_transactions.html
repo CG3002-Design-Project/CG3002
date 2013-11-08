@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css" />
+    <title>Transaction added</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/Transactions/bootstrap.css" rel="stylesheet">
+    <link href="/static/Transactions/bootstrap-responsive.css" rel="stylesheet">
+</head>
+
+<body>
+
+        <!-- NAVBAR================================================== -->
+        <div class="container">
+                    <div class="row-fluid">
+            <div class="span12">
+                <div class="span6">
+                    <h1 class="muted">CEG 21 HyperMarket</h1>
+                </div>
+
+                <div class="span4 offset2" style="margin-top:15px;">
+                    <button class="btn pull-right" type="button">
+                        {% if user.is_authenticated %}
+                            <p style="text-align:right"> <a href="/accounts/logout">Logout</a></p>
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
+        </div>
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner">
+                    <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+                    <div class="nav-collapse ">
+                        <ul class="nav pull-left">
+                            <li><a href="#"> <i class="icon-home icon-white"></i>Home</a></li>
+                            <li><a href="../../Product"><i class="icon-star icon-white"></i>Products</a></li>
+                            <li><a href="#"><i class="icon-book icon-white"></i>Stores</a></li>
+                            <li><a href="#"><i class="icon-camera icon-white"></i>Employees</a></li>
+                            <li class="active"><a href="#"><i class="icon-comment icon-white"></i>Transactions</a></li>
+                            <form class="navbar-search">
+                            <input type="text" class="search-query" placeholder="Search"> 
+                            </form>
+                                
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                    {% if user.is_authenticated %}
+                                    <p class="navbar-text pull-right"> Signed in as <a href="#" class="navbar-link">{{ user.first_name }}</a></p>
+                    {% else %}
+                                    <p class="navbar-text pull-right"> Welcome. <a href="/accounts/login" class="navbar-link">Please log in.</a></p>
+                    {% endif %}
+                </div><!-- /.navbar-inner -->
+            </div><!-- /.navbar -->
+        </div> <!-- /.container -->
+
+<form action = "{%url 'transactions_edited'  transactions_list.transaction_id transactions_list.barcode%}" method="get">
+<div class="container">
+<div class="input-group input-group-sm">
+  <span class="input-group-addon">Quantity</span>
+  <input type="text" class="form-control" placeholder="Quantity" name="qty" value="{{transactions_list.qty}}">
+</div>
+<div class="input-group input-group-sm">
+  <span class="input-group-addon">Cash Register ID</span>
+  <input type="text" class="form-control" placeholder="Cash Register ID" name="cashreg_id" value="{{transactions_list.cashreg_id}}" >
+</div>
+<div class="input-group input-group-sm">
+  <span class="input-group-addon">Selling Price</span>
+  <input type="text" class="form-control" placeholder="Selling Price" name="sp" value="{{transactions_list.sp}}">
+</div>
+<div class="input-group input-group-sm">
+  <span class="input-group-addon">Purchase Date</span>
+  <input type="text" class="form-control" placeholder="Purchase Date" name="purchase_date" value="{{transactions_list.purchase_date}}">
+</div>
+<a href="#myModal" role="button" class="btn" data-toggle="modal">Submit</a>
+</div>
+
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Submit</h3>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to submit?</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+    <input type="submit" value="Submit" class="btn">
+  </div>
+</div>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="/static/Store/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+from django.conf.urls.defaults import *
+
+from homepage import views
+
+urlpatterns = patterns('',
+    #url(r'^$', views.index, name='index')
+
+    #url(r'^accounts/login/$','homepage.views.login'),
+    #url(r'^accounts/auth/$','homepage.views.login'),
+    #url(r'^accounts/logout/$','homepage.views.login'),
+    #url(r'^accounts/loggedin/$','homepage.views.login'),
+    #url(r'^accounts/invalid/$', 'homepage.views.login'),
+)
