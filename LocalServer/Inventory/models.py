@@ -16,7 +16,7 @@ class Inventory(models.Model):
 	display_id = models.DecimalField(max_digits=6,decimal_places=2, null = True)
 	
 class Product(models.Model):
-	product_id = models.PositiveIntegerField(validators=[MaxValueValidator(43046721)])
+	product_id = models.PositiveIntegerField(validators=[MaxValueValidator(43046721)],primary_key=True )
 	name = models.CharField(max_length=256)
 	manufacturer = models.CharField(max_length=256)
 	category = models.CharField(max_length=256)

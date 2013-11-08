@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import Context, loader, RequestContext
 from Inventory.models import Inventory
-from Transaction.models import Transaction
+from Inventory.models import Product
 from django.views.decorators.csrf import csrf_exempt
 import requests
 import json
@@ -20,25 +20,33 @@ def calculate_transaction(request):
 def sync_function(request):
 	return render(request,'sync_function.html');
 
-	
 @csrf_exempt
 def return_price(request):
 	print "reached this method"
 	d =  json.loads(request.body)
 	print d['barcode']
-	inventory = Inventory.objects.get(product_id = d['barcode'])
+	print d['batchid']
+	print d['qty']
 	payload = {}
-	if (inventory.cost_price is not None):
-		 payload = {
-			'price' : str(inventory.cost_price),
-			'barcode' : str(inventory.product_id),
-			'name' : str(inventory.name),
-			'qty' : str(d['qty'])
-		 }
-	else:
+	inventory = Inventory.objects.get(product_id_id = d['barcode'], batch_id=d['batchid'])
+	print inventory.qty
+	if(inventory is None):
 		payload = {
-			'price' : -1
-		 }
+			'error': -1
+		}	
+	elif(inventory.qty < d['qty']):
+		payload = {
+			'error': -2
+		}
+	else:
+		 product = Product.objects.get(product_id = d['barcode']);
+		 payload = {
+			'price' : str(inventory.selling_price),
+			'barcode' : str(d['barcode']),
+			'batchid': str(d['batchid']),
+			'name': str(product.name),
+			'qty' : str(d['qty'])
+		 }	 
 	data = json.dumps(payload)
 	print data;
 	return HttpResponse(data,mimetype='application/json')
