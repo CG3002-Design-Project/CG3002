@@ -95,6 +95,18 @@ def save_transaction(request):
 		t = Transaction(transaction_id= transaction_id, transaction_date = time.strftime("%Y-%m-%d"), product_id = i['barcode'], quantity_sold = i['qty'], batch_id = i['batchid'], cachier_id = "01");
 		t.save();
 	return HttpResponse("Poornima");
+
+@csrf_exempt
+def add_qty_back(request):
+	print "reached here";
+	d =  json.loads(request.body);
+	for i in d:
+		print i
+		inventory = Inventory.objects.filter(product_id_id = i['barcode'], batch_id=i['batchid'])
+		print type(inventory[0].qty);
+		inventory[0].qty += int(i['qty']);
+		inventory[0].save();
+	return HttpResponse("qty added back");
 			
 def sync_with_hq(request):
 	print "entered sync with hq"
