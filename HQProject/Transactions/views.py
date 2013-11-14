@@ -31,10 +31,6 @@ def transactions_added(request):
         transaction_id = request.GET['transaction_id']
     else:
         transaction_id = ' '
-    if 'shop_id' in request.GET and request.GET['shop_id']:
-        shop_id = request.GET['shop_id']
-    else:
-        shop_id = ' '
     if 'cashreg_id' in request.GET and request.GET['cashreg_id']:
         cashreg_id = request.GET['cashreg_id']
     else:
@@ -56,7 +52,7 @@ def transactions_added(request):
     else:
         purchase_date = ' '
             
-    new_transaction = Transactions(transaction_id=transaction_id,shop_id=shop_id,cashreg_id=cashreg_id,barcode=barcode,qty=qty,sp=sp,purchase_date=purchase_date)
+    new_transaction = Transactions(transaction_id=transaction_id,cashreg_id=cashreg_id,barcode=barcode,qty=qty,sp=sp,purchase_date=purchase_date)
     new_transaction.save()
     return render_to_response('transactions_added.html',{},
         context_instance=RequestContext(request))

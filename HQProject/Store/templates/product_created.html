@@ -41,7 +41,7 @@
 		<h4>Welcome to CEG21 HyperMarket at {{store.address}}, {{store.city}}, {{store.state}}, {{store.country}}</h4>
 		</br>
 		<h4>You have successfully created the product {{p.name}}</h4>	
-		<form action = "{% url 'inventory_control' store.store_id%}" method="get">
+		<form action = "{% url 'inventory_control' store.id%}" method="get">
 		<input type="submit" value="Inventory Control">
 		</form>	
 		</div>

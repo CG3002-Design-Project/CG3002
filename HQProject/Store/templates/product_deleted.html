@@ -42,7 +42,7 @@
 		<h4>Welcome to CEG21 HyperMarket at {{s.address}}, {{s.city}}, {{s.state}}, {{s.country}}</h4>
 		</br>
 		<h4>You have successfully deleted the product {{p.name}} from this store</h4>	
-		<form action = "{% url 'inventory_control' s.store_id%}" method="get">
+		<form action = "{% url 'inventory_control' s.id%}" method="get">
 		<input type="submit" value="Inventory Control">
 		</form>	
 		

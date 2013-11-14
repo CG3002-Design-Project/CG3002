@@ -4,13 +4,13 @@ from django.shortcuts import render
 from django.template import Context, loader, RequestContext
 from Inventory.models import Inventory, RequestDetails
 from Inventory.models import Product
-
+from Inventory.models import Transaction
 from datetime import date
-
 from django.views.decorators.csrf import csrf_exempt
 import requests
 import json
 import os
+import time
 
 shopid = 0001
 cashid = 0001
@@ -31,25 +31,29 @@ def return_price(request):
 	print d['batchid']
 	print d['qty']
 	payload = {}
-	inventory = Inventory.objects.get(product_id_id = d['barcode'], batch_id=d['batchid'])
-	print inventory.qty
-	if(inventory is None):
+	inventory = Inventory.objects.filter(product_id_id = d['barcode'], batch_id=d['batchid'])
+	if not inventory:
 		payload = {
 			'error': -1
 		}	
-	elif(inventory.qty < d['qty']):
+	elif(inventory[0].qty < int(d['qty'])):
 		payload = {
-			'error': -2
+			'error': -2,
+			'qty': inventory[0].qty
 		}
 	else:
 		 product = Product.objects.get(product_id = d['barcode']);
 		 payload = {
-			'price' : str(inventory.selling_price),
+			'price' : str(inventory[0].selling_price),
 			'barcode' : str(d['barcode']),
 			'batchid': str(d['batchid']),
 			'name': str(product.name),
-			'qty' : str(d['qty'])
-		 }	 
+			'qty' : str(d['qty']),
+			'error' : 1
+		 }
+		 inventory[0].qty = inventory[0].qty - int(d['qty']);
+		 inventory[0].save();
+		 
 	data = json.dumps(payload)
 	print data;
 	return HttpResponse(data,mimetype='application/json')
@@ -68,8 +72,6 @@ def transaction_sync(request):
 						 'sp': str(10), 
 						 'purchasedate':str(i.transaction_date), 
 						 'shopid': str(shopid)})
-		
-		
 		payload = {
 				'shopid': shopid,	
 				'transaction':list
@@ -78,6 +80,21 @@ def transaction_sync(request):
 		headers = {'content-type': 'application/json'}
 		res = requests.post(hq_host_transaction,data,headers = headers)
 		return render(request,'sync_function.html');
+
+@csrf_exempt
+def save_transaction(request):
+	d =  json.loads(request.body)
+	t = Transaction.objects.all().order_by('-transaction_id');
+	if not t:
+		transaction_id = 1;
+	else:
+		transaction_id = t[0].transaction_id+1;
+
+	for i in d:
+		print i;
+		t = Transaction(transaction_id= transaction_id, transaction_date = time.strftime("%Y-%m-%d"), product_id = i['barcode'], quantity_sold = i['qty'], batch_id = i['batchid'], cachier_id = "01");
+		t.save();
+	return HttpResponse("Poornima");
 			
 def sync_with_hq(request):
 	print "entered sync with hq"

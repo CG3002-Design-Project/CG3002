@@ -54,7 +54,7 @@
         <tbody>  
 		 {% for p in products %}
           <tr>  
-            <td><a href="{% url 'view_storewise' p.product_id %}">{{p.name}}</a></td>     
+            <td><a href="{% url 'view_storewise' p.id %}">{{p.name}}</a></td>     
             <td>{{p.manufacturer}}</td>  
             <td>{{p.category}}</td>  
           </tr> 

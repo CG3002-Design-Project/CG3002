@@ -397,13 +397,13 @@ City: <input type="text" name="city">
         <tbody>  
 		 {% for s in stores %}
           <tr>  
-            <td><a href="{% url 'view_specific' s.store_id %}">{{s.address}}</a></td>     
+            <td><a href="{% url 'view_specific' s.id %}">{{s.address}}</a></td>     
             <td>{{s.city}}</td>  
             <td>{{s.state}}</td>  
             <td>{{s.country}}</td>  
             <td>{{s.region}}</td> 
-			<td><a href = "{% url 'edit_store' s.store_id %}" input type="submit" class="btn">Edit</a></td>
-			<form action = "{%url 'store_deleted' s.store_id%}">
+			<td><a href = "{% url 'edit_store' s.id %}" input type="submit" class="btn">Edit</a></td>
+			<form action = "{%url 'store_deleted' s.id%}">
 			<td><a href="#mymodal" role="button" class="btn" data-toggle="modal">Delete</a></td>			
 			</br> 
           </tr> 
