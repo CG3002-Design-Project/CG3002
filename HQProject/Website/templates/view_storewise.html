@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<title>View Stores</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="/static/Website/bootstrap.css" rel="stylesheet">
+<link href="/static/Website/bootstrap-responsive.css" rel="stylesheet">
+<link href="/static/Website/bootstrap-rowlink.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner">
+                    <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand">CEG 21 Hypermarket</a>
+                    <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+                    <div class="nav-collapse ">
+                        <ul class="nav pull-right">
+                            <li class="active"><a href="#"> <i class="icon-home icon-white"></i> Home</a></li>
+                            <li><a href="{%url 'filter_products'%}"><i class="icon-star icon-white"></i> Products</a></li>
+                            <li><a href="{%url 'filter_stores'%}"><i class="icon-book icon-white"></i> Stores</a></li>
+                            <li><a href="#"><i class="icon-camera icon-white"></i> Employees</a></li>
+                            <li><a href="#"><i class="icon-comment icon-white"></i> Transactions</a></li>
+                            <form class="navbar-search pull-left">
+                                <input type="text" class="search-query" placeholder="Search">
+                            </form>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div><!-- /.navbar-inner -->
+            </div><!-- /.navbar -->
+        </div> <!-- /.container -->
+
+
+<div class="container">
+<h5>Store-wise inventory for {{product.name}}</h5>
+<table class="table table-striped">  
+        <thead>  
+          <tr>  
+            <th>Address</th>  
+            <th>Country</th>  
+            <th>Region</th>  
+            <th>Stock</th>  
+			<th>Selling Price</th> 
+			<th>Expiry Date</th> 
+			<th>Minimum quantity</th> 
+          </tr>  
+        </thead>  
+        <tbody>  
+		 {% for s in sb %}
+          <tr>  
+            <td>{{s.address}}</td>     
+            <td>{{s.country}}</td>  
+            <td>{{s.region}}</td>  
+            <td>{{s.qty}}</td>  
+            <td>{{s.selling_price}}</td> 
+			<td>{{s.expiry_date}}</td> 
+			<td>{{s.minimum_qty}}</td> 
+			</br> 
+          </tr> 
+         {% endfor %}		  
+        </tbody>  
+      </table>	
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="/static/Website/bootstrap.min.js"></script>
+</body>
+</html>

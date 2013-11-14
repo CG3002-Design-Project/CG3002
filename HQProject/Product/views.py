@@ -32,10 +32,10 @@ def view_product(request):
 		
 def view_storewise(request,id):
     batches = Batch.objects.filter(product_id_id=id)
-    product = Product.objects.get(product_id=id)
+    product = Product.objects.get(id=id)
     stores = []
     for b in batches:
-        s = Store.objects.get(store_id=b.store_id_id)
+        s = Store.objects.get(id=b.store_id_id)
         if s not in stores:
             stores.append(s)
     class s_b:
@@ -51,7 +51,7 @@ def view_storewise(request,id):
             self.store_id = None
     sb = []
     for (s,b) in zip(stores,batches):  
-        if s.store_id == b.store_id_id:
+        if s.id == b.store_id_id:
             x = s_b()
             x.address = s.address + ' ' + s.city + ' ' + s.state
             x.country = s.country

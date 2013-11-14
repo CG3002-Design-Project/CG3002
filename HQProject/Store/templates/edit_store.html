@@ -358,7 +358,7 @@ function print_city_state(oCountrySel, oCity_StateSel)
 
 
 </br>
-<form action = "{%url 'store_edited' store.store_id%}" method="get">
+<form action = "{%url 'store_edited' store.id%}" method="get">
 <div class="container">
 </br>
 Address: <input type="text" class="input-xlarge" id="inputName" size="1000" name="address" value="{{store.address}}"></br>

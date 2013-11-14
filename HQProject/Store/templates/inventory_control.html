@@ -29,7 +29,7 @@
                             <li><a href="{%url 'filter_products'%}"><i class="icon-star icon-white"></i> Products</a></li>
                             <li><a href="{%url 'filter_stores'%}"><i class="icon-book icon-white"></i> Stores</a></li>
                             <li><a href="#"><i class="icon-camera icon-white"></i> Employees</a></li>
-                            <li><a href="../../Transactions"><i class="icon-comment icon-white"></i> Transactions</a></li>
+                            <li><a href="#"><i class="icon-comment icon-white"></i> Transactions</a></li>
                             <form class="navbar-search pull-left">
                                 <input type="text" class="search-query" placeholder="Search">
                             </form>
@@ -44,9 +44,10 @@
 </div></br>
 
 <div class="container">
-<a href="{%url 'create_product' store.store_id%}" type="button" class="btn">Add a new product
+<a href="{%url 'create_product' store.id%}" type="button" class="btn btn-default btn-lg">
+  <span class="glyphicon glyphicon-plus-sign"></span>  Add a new product
 </a>
-</div>
+</div></br>
 
 <div class="container">
 <table class="table table-striped" data-provides="rowlink">  
@@ -70,6 +71,7 @@
 			<td><a href = "{% url 'edit_product' p.store_id p.batch_id p.product_id%}" input type="submit" class="btn">EDIT</a></td>
 			<form action = "{%url 'product_deleted' p.store_id p.batch_id p.product_id%}">
 			<td><a href="#mymodal" role="button" class="btn" data-toggle="modal">Delete</a></td>
+			</br> 
           </tr> 
          {% endfor %}		  
         </tbody>  

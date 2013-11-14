@@ -44,3 +44,26 @@ def processT(request):
     	new_transaction = Transactions(transaction_id=transaction_id,shop_id=shopid,cashreg_id=cashreg_id,barcode=barcode,qty=qty,sp=sp,purchase_date=purchase_date)
     	new_transaction.save()	
     return HttpResponse('Yo Transaction')
+
+def local_transaction_sync(request):
+    print "hello"
+    transaction = Transaction.objects.all()
+    
+    if(transaction is not None):
+        list = []
+        for i in transaction:
+             list.append({'transaction_id': str(i.transaction_id),
+                         'cashier_id' : str(cashid), 
+                         'product_id':str(i.product_id),
+                         'quantity_sold': str(i.quantity_sold), 
+                         'batch_id': str(10), 
+                         'transaction_date':str(i.transaction_date), 
+                         'shop_id': str(shopid)})
+        payload = {
+                'shopid': shopid,   
+                'transaction':list
+        }
+        data = json.dumps(payload)
+        headers = {'content-type': 'application/json'}
+        res = requests.post(hq_host_transaction,data,headers = headers)
+        return render(request,'sync_function.html');
