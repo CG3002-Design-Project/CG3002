@@ -29,14 +29,14 @@ def return_price(request):
 	print d['qty']
 	payload = {}
 	inventory = Inventory.objects.get(product_id_id = d['barcode'], batch_id=d['batchid'])
-	print inventory.qty
 	if(inventory is None):
 		payload = {
 			'error': -1
 		}	
-	elif(inventory.qty < d['qty']):
+	elif(inventory.qty < int(d['qty'])):
 		payload = {
-			'error': -2
+			'error': -2,
+			'qty':inventory.qty
 		}
 	else:
 		 product = Product.objects.get(product_id = d['barcode']);
@@ -45,8 +45,12 @@ def return_price(request):
 			'barcode' : str(d['barcode']),
 			'batchid': str(d['batchid']),
 			'name': str(product.name),
-			'qty' : str(d['qty'])
-		 }	 
+			'qty' : str(d['qty']),
+			'error' : 1
+		 }
+	inventory.qty = inventory.qty - int(d['qty']);
+	inventory.save();
+		 
 	data = json.dumps(payload)
 	print data;
 	return HttpResponse(data,mimetype='application/json')

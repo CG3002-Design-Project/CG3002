@@ -21,7 +21,14 @@ function TransactionCtrl($scope, $http) {
 		$http({method:'POST', 
 			  url: 'http://127.0.0.1:8000/Inventory/returnPrice', 
 			  data: {'barcode' : barcode,'batchid': batchid, 'qty': quantity}}).success(function(data){	
-			  GLOBALS.inventory[GLOBALS.inventory.length] = data;	  
+			  console.log(data.error);
+			  if(data.error == -1) {
+				alert("No such product exists");
+			  } else if (data.error == -2) {
+				alert("only" + data.qty + "products are available");
+			  } else {
+					GLOBALS.inventory[GLOBALS.inventory.length] = data;	  
+			  }
 		})
 		.error(function( data, status, header,config ) {
 			var err = status + ", " + data;
