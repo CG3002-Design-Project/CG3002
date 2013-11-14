@@ -2,9 +2,10 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import Context, loader, RequestContext
-from Inventory.models import Inventory
+from Inventory.models import Inventory, RequestDetails
 from Inventory.models import Product
 from Inventory.models import Transaction
+from datetime import date
 from django.views.decorators.csrf import csrf_exempt
 import requests
 import json
@@ -134,5 +135,28 @@ def pull_from_hq(request):
 		inventory.save()
 		return render(request,'sync_function.html');
 	
+def restock_qty(request):
+	inventory = Inventory.objects.all()
+	requests = RequestDetails.objects.all()
 	
+	for i in inventory:
+		batches = Inventory.objects.filter(product_id_id=i.product_id_id)
+		tot = 0 
+		for b in batches:
+			tot += b.qty
+		if tot<=i.min_restock:		
+			pr_requests = RequestDetails.objects.filter(product_id=i.product_id_id)
+			if not pr_requests:
+				if not requests:
+					id = 1
+				else:
+					r = RequestDetails.objects.all().order_by('-request_id')
+					id = r[0].request_id + 1
+				qtyVal = 100*(i.min_restock-i.qty)
+				newRequest = RequestDetails(request_id=id,product_id=i.product_id_id,qty=qtyVal,status='False',request_date=date.today())
+				newRequest.save()						
+				print newRequest.qty
+	return HttpResponse('yo')		
+			
+					
 	

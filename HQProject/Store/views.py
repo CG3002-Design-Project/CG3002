@@ -49,7 +49,7 @@ def view_stores(request):
 	return render(request, 'view_stores.html',context)
 
 def view_specific(request,id):
-	store = Store.objects.get(store_id=id)
+	store = Store.objects.get(id=id)
 	context = {'store':store}
 	return render(request, 'view_specific.html',context)
 	
@@ -66,16 +66,16 @@ def inventory_control(request,id):
             self.product_id = None
             self.batch_id = None
             self.store_id = None   
-    store = Store.objects.get(store_id=id)
+    store = Store.objects.get(id=id)
 
-    batches = Batch.objects.filter(store_id_id=store.store_id)
+    batches = Batch.objects.filter(store_id_id=store.id)
     products = []
     p_b = []
     for b in batches:	
-        products.append(Product.objects.get(product_id=b.product_id_id))	
+        products.append(Product.objects.get(id=b.product_id_id))	
 			
     for (p,b) in zip(products,batches):
-        if b.product_id_id == p.product_id:
+        if b.product_id_id == p.id:
             x = product_batch()
             x.name = p.name
             x.manufacturer = p.manufacturer
@@ -104,9 +104,9 @@ def edit_product(request,s_id,b_id,p_id):
             self.product_id = None
             self.batch_id = None
             self.store_id = None
-    product = Product.objects.get(product_id=p_id)
+    product = Product.objects.get(id=p_id)
     batch = Batch.objects.get(batch_id=b_id,product_id_id=p_id,store_id_id=s_id)
-    store = Store.objects.get(store_id=s_id)
+    store = Store.objects.get(id=s_id)
     p_b = product_batch()	
     p_b.name = product.name
     p_b.manufacturer = product.manufacturer
@@ -138,31 +138,31 @@ def product_updated(request,s_id,b_id,p_id):
     if ed != 'None':
         p_b.expiry_date = ed
     p_b.save()
-    p = Product.objects.get(product_id=p_id)
+    p = Product.objects.get(id=p_id)
     p.name = name
     p.manufacturer = manufacturer
     p.category = category
     p.save()	
-    store = Store.objects.get(store_id=s_id)
+    store = Store.objects.get(id=s_id)
     context = {'store':store,'p':p}
     return render(request,'product_updated.html',context)
 	
 def product_deleted(request,s_id,b_id,p_id): 		
     batch = Batch.objects.get(store_id_id=s_id,product_id_id=p_id,batch_id=b_id)
     batch.delete()
-    store = Store.objects.filter(store_id=s_id)
-    p = Product.objects.get(product_id=p_id)
+    store = Store.objects.filter(id=s_id)
+    p = Product.objects.get(id=p_id)
     context = {'store':store,'p':p}
     return render(request,'product_deleted.html',context)	
 
 def create_product(request,s_id):
-    store = Store.objects.get(store_id=s_id)
+    store = Store.objects.get(id=s_id)
     context = {'store':store}
     return render(request,'create_product.html',context)	
 	
 	
 def product_created(request,s_id):
-    store = Store.objects.get(store_id=s_id)
+    store = Store.objects.get(id=s_id)
     if 'name' in request.GET and request.GET['name']:
         name = request.GET['name']
     else:
@@ -195,27 +195,20 @@ def product_created(request,s_id):
         ed = ' '    
     		
     product = Product.objects.filter(name=name,manufacturer=manufacturer,category=category)
-    pall = Product.objects.all()
     if not product:
-        if not pall:
-            id = 1
-        else:
-            po = Product.objects.order_by('-product_id')
-            id = po[0].product_id + 1       
-        pr = Product(name=name,manufacturer=manufacturer,category=category,product_id=id)
+        pr = Product(name=name,manufacturer=manufacturer,category=category)
         pr.save()
-        pid = pr.product_id
+        pid = pr.id
     else:
-        pid = product[0].product_id    
-    #e_d = ed.replace('-','')		
-   # p_id = str(pid)
-   # x = p_id + e_d	
-   # b_id = Decimal(x) 
-    b_id = 00000000
+        pid = product[0].id    
+    e_d = ed.replace('-','')		
+    p_id = str(pid)
+    x = p_id + e_d	
+    b_id = Decimal(x) 
     batch = Batch(store_id_id=s_id,product_id_id=pid,minimum_qty=minqty,qty=qty,selling_price=sp,expiry_date=ed,batch_id=b_id)
     batch.save()
-    store = Store.objects.get(store_id=s_id)
-    p = Product.objects.get(product_id=pr.product_id)
+    store = Store.objects.get(id=s_id)
+    p = Product.objects.get(id=pr.id)
     context = {'store':store,'p':p}
     return render(request,'product_created.html',context)		
 	
@@ -229,21 +222,15 @@ def store_created(request):
         country = request.GET['country']
         city_state = request.GET['city_state']
         region = request.GET['region']
-        s = Store.objects.all()
-        if not s:
-            id = 1
-        else:
-            sl = Store.objects.order_by('-store_id')
-            id = sl[0].store_id + 1
-        store = Store(address=address,city=city,country=country,state=city_state,region=region,store_id=id)
+        store = Store(address=address,city=city,country=country,state=city_state,region=region)
         store.save()
         context = {'store':store}
         return render(request,'view_specific.html',context)
     
 def store_deleted(request,id):
-    store = Store.objects.get(store_id=id)
+    store = Store.objects.get(id=id)
     store.delete()
-    batches = Batch.objects.filter(store_id=id)
+    batches = Batch.objects.filter(id=id)
     batches.delete()
     message = 'Store has been successfully deleted'
     stores = Store.objects.all()
@@ -251,12 +238,12 @@ def store_deleted(request,id):
     return render(request,'view_stores.html',context)
 	
 def edit_store(request,id):
-    store = Store.objects.get(store_id=id)
+    store = Store.objects.get(id=id)
     context = {'store':store}
     return render(request,'edit_store.html',context)   
 
 def store_edited(request,id):
-    store = Store.objects.get(store_id=id)
+    store = Store.objects.get(id=id)
     if 'address' in request.GET and request.GET['address'] and 'city' in request.GET and request.GET['city'] and 'city_state' in request.GET and request.GET['city_state'] and 'country' in request.GET and request.GET['country'] and 'region' in request.GET and request.GET['region']:
         address = request.GET['address']
         city = request.GET['city']

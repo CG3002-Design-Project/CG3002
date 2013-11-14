@@ -39,9 +39,9 @@
                     <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
-                            <li><a href="../../home"> <i class="icon-home icon-white"></i>Home</a></li>
+                            <li><a href="#"> <i class="icon-home icon-white"></i>Home</a></li>
                             <li><a href="../../Product"><i class="icon-star icon-white"></i>Products</a></li>
-                            <li><a href="../../Store/filter-stores"><i class="icon-book icon-white"></i>Stores</a></li>
+                            <li><a href="#"><i class="icon-book icon-white"></i>Stores</a></li>
                             <li><a href="#"><i class="icon-camera icon-white"></i>Employees</a></li>
                             <li class="active"><a href="#"><i class="icon-comment icon-white"></i>Transactions</a></li>
                             <form class="navbar-search">
@@ -89,8 +89,7 @@
     <table class="table table-striped" data-provides="rowlink">  
         <thead>  
           <tr>  
-            <th>Transaction ID</th>
-            <th>Shop ID</th>  
+            <th>Transaction ID</th>  
             <th>Cash Reg ID</th>  
             <th>Barcode</th> 
             <th>Quantity</th>
@@ -101,8 +100,7 @@
         <tbody>  
          {% for t in transactions_list %}
           <tr>  
-            <td>{{t.transaction_id}}</td>
-            <td>{{t.shop_id}}</td>     
+            <td>{{t.transaction_id}}</td>     
             <td>{{t.cashreg_id}}</td>  
             <td>{{t.barcode}}</td>
             <td>{{t.qty}}</td>
@@ -111,7 +109,8 @@
             <td><a href = "{% url 'edit_transactions' t.transaction_id t.barcode%}" input type="submit" class="btn">Edit</a></td> 
             <form action = "{% url 'transactions_deleted' t.transaction_id t.barcode%}">
             <td><a href="#mymodal" role="button" class="btn" data-toggle="modal">Delete</a></td>
-           </tr> </br>
+                </br>
+           </tr> 
          {% endfor %}         
         </tbody>  
     </table>

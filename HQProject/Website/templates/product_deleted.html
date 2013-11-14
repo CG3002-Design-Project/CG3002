@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Store</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/static/Website/bootstrap.css" rel="stylesheet">
+        <link href="/static/Website/bootstrap-responsive.css" rel="stylesheet">
+    </head>
+    <body>
+
+        <!-- NAVBAR================================================== -->
+        <div class="container">
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner">
+                    <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand">CEG 21 Hypermarket</a>
+                    <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+                    <div class="nav-collapse ">
+                        <ul class="nav pull-right">
+                            <li class="active"><a href="#"> <i class="icon-home icon-white"></i> Home</a></li>
+                            <li><a href="#"><i class="icon-star icon-white"></i> Products</a></li>
+                            <li><a href="#"><i class="icon-book icon-white"></i> Stores</a></li>
+                            <li><a href="#"><i class="icon-camera icon-white"></i> Employees</a></li>
+                            <li><a href="#"><i class="icon-comment icon-white"></i> Transactions</a></li>
+                            <form class="navbar-search pull-left">
+                                <input type="text" class="search-query" placeholder="Search">
+                            </form>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div><!-- /.navbar-inner -->
+            </div><!-- /.navbar -->
+        </div> <!-- /.container -->
+
+		<div class ="container">
+		{% for s in store %}
+		<h4>Welcome to CEG21 HyperMarket at {{s.address}}, {{s.city}}, {{s.state}}, {{s.country}}</h4>
+		</br>
+		<h4>You have successfully deleted the product {{p.name}} from this store</h4>	
+		<form action = "{% url 'inventory_control' s.id%}" method="get">
+		<input type="submit" value="Inventory Control">
+		</form>	
+		
+		{% endfor %}
+		</div>
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script src="/static/Website/bootstrap.min.js"></script>
+		
+		</body>
+		</html>
