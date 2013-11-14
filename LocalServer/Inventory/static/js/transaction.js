@@ -18,16 +18,22 @@ function TransactionCtrl($scope, $http) {
 		} 
 		else{
 		
-		$http({method:'POST', 
+			  $http({method:'POST', 
 			  url: 'http://127.0.0.1:8000/Inventory/returnPrice', 
 			  data: {'barcode' : barcode,'batchid': batchid, 'qty': quantity}}).success(function(data){	
 			  console.log(data.error);
 			  if(data.error == -1) {
 				alert("No such product exists");
 			  } else if (data.error == -2) {
-				alert("only" + data.qty + "products are available");
+				alert("only " + data.qty + " products are available");
 			  } else {
-					GLOBALS.inventory[GLOBALS.inventory.length] = data;	  
+					GLOBALS.inventory[GLOBALS.inventory.length] = data;	 
+					console.log("calling transaction post");
+					$http({method:'POST', 
+					url: 'http://127.0.0.1:8000/Inventory/saveTransaction', 
+					data: GLOBALS.inventory}).success(function(data){
+						console.log("hello");
+					});						
 			  }
 		})
 		.error(function( data, status, header,config ) {
