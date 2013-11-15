@@ -6,11 +6,13 @@ from Inventory.models import Inventory, RequestDetails
 from Inventory.models import Product
 from Inventory.models import Transaction
 from datetime import date
+from decimal import *
 from django.views.decorators.csrf import csrf_exempt
 import requests
 import json
 import os
 import time
+import serial
 
 shopid = 0001
 cashid = 0001
@@ -19,6 +21,9 @@ hq_host_transaction = "http://ec2-user@ec2-54-254-157-48.ap-southeast-1.compute.
 
 def calculate_transaction(request):
 	return render(request,'calculate_transaction.html');
+	
+def price_display(request):
+	return render(request,'price_display.html');	
 
 def sync_function(request):
 	return render(request,'sync_function.html');
@@ -58,6 +63,66 @@ def return_price(request):
 	print data;
 	return HttpResponse(data,mimetype='application/json')
 
+def createConnection():
+	if os.name == 'posix':
+        PORT = "/dev/ttyUSB0"
+    elif os.name == "nt":
+        PORT = "COM1"
+    return serial.Serial(PORT,9600,timeout = 0.5)	
+	
+	
+@csrf_exempt	
+def setDisplayID(request):
+	print "reached setDisplayID method"
+ 	d =  json.loads(request.body)
+	print d['barcode']
+	print d['batchid']
+	print d['display_id']
+	inventory = Inventory.objects.get(product_id_id = d['barcode'], batch_id=d['batchid'])
+	product = Product.objects.get(product_id = d['barcode']);
+	payload = {
+		'price' : str(inventory.selling_price),
+		'name': str(product.name),
+		'error' : 1
+	}
+
+	inventory.display_id = Decimal(d['display_id']);
+	inventory.save();
+	payload = {
+			'error' : 1
+		 }	
+	data = json.dumps(payload);
+	return HttpResponse(data,mimetype='application/json')	
+	
+	
+@csrf_exempt
+def display(request):
+	print "reached display method"
+	d =  json.loads(request.body)
+	print d['barcode']
+	print d['batchid']
+	print d['display_id']
+	payload = {}
+	
+	inventory = Inventory.objects.filter(product_id_id = d['barcode'], batch_id=d['batchid'])
+	if not inventory:
+		#product doesn't exist
+		payload = {
+			'error': -1
+		}	
+	elif (inventory[0].display_id):
+		product = Product.objects.get(product_id = d['barcode']);
+		payload = {
+			'error': -2,
+		}
+	else:
+		 payload = {
+			'error' : 1
+		 }		 
+	data = json.dumps(payload)
+	print data;
+	return HttpResponse(data,mimetype='application/json')	
+	
 def transaction_sync(request):
 	print "hello"
 	transaction = Transaction.objects.all()

@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-# Create your models here.
+#Create your models here.
 class Inventory(models.Model):
 	#pricing strategy to be added
 	product_id = models.ForeignKey('Product')
@@ -13,7 +13,7 @@ class Inventory(models.Model):
 	expiry_date = models.DateField(auto_now=False,auto_now_add=False, null=True)
 	min_restock = models.PositiveIntegerField(validators=[MaxValueValidator(531441)])
 	strategy_percentage = models.DecimalField(max_digits=6,decimal_places=2)
-	display_id = models.DecimalField(max_digits=6,decimal_places=2, null = True)
+	display_id = models.DecimalField(max_digits=6,decimal_places=2, null = True, blank = True)
 	
 class Product(models.Model):
 	product_id = models.PositiveIntegerField(validators=[MaxValueValidator(43046721)],primary_key=True )
