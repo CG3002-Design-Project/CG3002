@@ -11,6 +11,7 @@ class Transaction(models.Model):
         quantity_sold = models.PositiveIntegerField(validators=[MaxValueValidator(531441)])
         batch_id = models.PositiveIntegerField(validators=[MaxValueValidator(59049)])
         cashier_id = models.PositiveIntegerField(validators=[MaxValueValidator(59049)])
+        cost_price = models.DecimalField(max_digits=6,decimal_places=2)
         selling_price = models.DecimalField(max_digits=6,decimal_places=2)
 
 class Employee(models.Model):

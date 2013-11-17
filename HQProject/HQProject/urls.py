@@ -22,4 +22,5 @@ urlpatterns = patterns('',
     #(r'^search/$','products.views.search')
 	#url(r'^Store/', include('Store.urls')),
 	url(r'^Website/', include('Website.urls')),
+    url(r'^Sync/', include('Sync.urls')),
 )

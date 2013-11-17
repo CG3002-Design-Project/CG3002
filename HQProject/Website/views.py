@@ -344,6 +344,10 @@ def transaction_added(request):
         quantity_sold = request.GET['quantity_sold']
     else:
         quantity_sold = ' '
+    if 'cost_price' in request.GET and request.GET['cost_price']:
+        cost_price = request.GET['cost_price']
+    else:
+        cost_price = ' '
     if 'selling_price' in request.GET and request.GET['selling_price']:
         selling_price = request.GET['selling_price']
     else:
@@ -357,7 +361,7 @@ def transaction_added(request):
     else:
         batch_id = ' '
          
-    new_transaction = Transaction(transaction_id=transaction_id, store_id=store_id, transaction_date=transaction_date, product_id=product_id, quantity_sold=quantity_sold, batch_id=batch_id, cashier_id=cashier_id, selling_price=selling_price)
+    new_transaction = Transaction(transaction_id=transaction_id, store_id=store_id, transaction_date=transaction_date, product_id=product_id, quantity_sold=quantity_sold, batch_id=batch_id, cashier_id=cashier_id,cost_price=cost_price, selling_price=selling_price)
     new_transaction.save()
     return render_to_response('transaction_added.html',{},
         context_instance=RequestContext(request))
@@ -380,6 +384,8 @@ def transaction_edited(request,transaction_id,product_id):
         store_id = request.GET['store_id']
     if 'quantity_sold' in request.GET and request.GET['quantity_sold']:
         quantity_sold = request.GET['quantity_sold']
+    if 'cost_price' in request.GET and request.GET['cost_price']:
+        cost_price = request.GET['cost_price']
     if 'selling_price' in request.GET and request.GET['selling_price']:
         selling_price = request.GET['selling_price']
     if 'transaction_date' in request.GET and request.GET['transaction_date']:
