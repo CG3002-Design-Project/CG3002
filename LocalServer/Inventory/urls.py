@@ -4,8 +4,13 @@ from Inventory import views
 
 urlpatterns = patterns('',
     url(r'^calculate_transaction$', views.calculate_transaction, name='calculate_transaction'),
+	url(r'^price_display$', views.price_display, name='price_display'),
 	url(r'^returnPrice$', views.return_price, name='return_price'),
-	url(r'^restock$',views.restock_qty,name='restock_qty')	
+	url(r'^saveTransaction$', views.save_transaction, name='save_transaction'),
+	url(r'^restock$',views.restock_qty,name='restock_qty'),	
+	url(r'^addQuantity$', views.add_qty_back, name='add_qty_back'),	
+	url(r'^display$', views.display, name='display'),	
+	url(r'^setDisplayID$', views.setDisplayID, name='setDisplayID'),
 	#url(r'^sync_function$', views.sync_function, name='sync_function'),
 	#url(r'^transaction_sync$', views.transaction_sync, name='transaction_sync'),
 	#url(r'^sync_function/hq_sync$', views.sync_with_hq, name='sync_with_hq'),
