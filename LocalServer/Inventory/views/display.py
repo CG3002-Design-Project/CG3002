@@ -14,6 +14,9 @@ import time
 import serial
 
 
+def price_display(request):
+	return render(request,'display.html');
+	
 def createConnection():
 	if os.name == 'posix':
 		PORT = "/dev/ttyUSB0"

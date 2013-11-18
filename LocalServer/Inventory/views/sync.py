@@ -25,7 +25,7 @@ hq_host_product_pull = "http://ec2-user@ec2-54-254-157-48.ap-southeast-1.compute
 hq_host_inventory_pull = "http://ec2-user@ec2-54-254-157-48.ap-southeast-1.compute.amazonaws.com:8000/Sync/receiveInventory"
 
 def sync_function(request):
-	return render(request,'sync_function.html');
+	return render(request,'sync.html');
 
 	
 def request_details_sync(request):

@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html >
+    <head>
+        <title>View Products</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.js"></script>
+		<link href="/static/css/bootstrap.css" rel="stylesheet">
+        <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+		<script src="/static/js/transaction.js"></script>
+
+	
+	<div class="container">
+            <div class="row-fluid">
+            <div class="span12">
+                <div class="span8">
+                    <h5 class="muted">CEG 21 HyperMarket</h5>
+                </div>
+            </div>
+			</div>
+			
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner">
+                    <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+                    <div class="nav-collapse ">
+                        <ul class="nav pull-left">
+                            <li id="product-link"><a href="{% url 'product'%}"></i>Products</a></li>
+                            <li id="stock-link"><a href="{% url 'stock'%}"></i>Stock</a></li>
+							<li id="display-link"><a href="{% url 'display'%}"></i>Price Display</a></li>
+                            <li id="sync-link"><a href="{% url 'sync'%}"></i>Sync</a></li>
+                            <li id="transaction-link"><a href="{% url 'transaction'%}"></i>Transactions</a></li>     
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div><!-- /.navbar-inner -->
+            </div><!-- /.navbar -->
+    </div> <!-- /.container -->
+	</head>
+    <body ng-app="myApp" ng-controller = "TransactionCtrl" >
+        <div class="outer">	
+			<div class="first" style="white-space:nowrap; float:left; margin-left:50px; margin-top:50px";>
+				<label for="barcode" style="white-space:nowrap; float:left";"width:300px";> Barcode </label>
+				<input ng-model = "barcode" type="text" id="barcode" placeholder="Enter Product Barcode"/>
+			</div>
+			<div class="first" style="white-space:nowrap; float:left; margin-left:50px; margin-top:50px";>
+				<label for="batchid" style="white-space:nowrap; float:left";"width:200px";> Batch ID </label>
+				<input ng-model = "batchid" type="text" id="batchid" placeholder="Enter Batch ID"/>
+			</div>
+			<div class="second" style="white-space:nowrap; float:left; margin-left:50px; margin-top:50px";>
+				<label for="quantity" style="white-space:nowrap; float:left"; "width:200px";>Quantity </label>
+				<input ng-model = "quantity" type="text" id="quantity" placeholder="Enter Product Quantity"/>
+			</div>
+			<div class="third" style="float:left; margin-left:50px; margin-top:50px";>
+				<a ng-href='#here' ng-click="loadTransaction(barcode,batchid,quantity)" role="button" class="btn" data-toggle="modal">Add Product</a>
+			</div>
+			<div class="fourth" style="float:left; margin-left:50px; margin-top:50px";>
+				<a ng-href='#cancel' ng-click="cancelTransaction()" role="button" class="btn" data-toggle="modal">Cancel Transaction</a>
+			</div>
+			<div class="fifth" style="float:left; margin-left:50px; margin-top:50px";>
+				<a ng-href='#checkOut' ng-click="checkOut()" role="button" class="btn" data-toggle="modal">Check Out</a>
+			</div>
+	    <div>
+		<table>  
+          <tr>  
+            <th>Barcode</th>  
+            <th>Name</th>  
+			<th>Quantity</th>  
+			<th>Price</th> 
+          </tr>  
+		</table>
+		<table>
+		
+          <tr ng-repeat="i in inventory" ng-controller = "TransactionCtrl">  
+		  		{% verbatim %}
+            <td>{{i.barcode}}</td>     
+            <td>{{i.name}}</td>  
+            <td>{{i.qty}}</td>  
+			<td>{{i.price}}</td> 
+				{% endverbatim %}
+          </tr> 	  
+      </table>	
+	  </div>
+	  </div>
+	  <style>
+		  table {
+		  border: 1px solid #666;   
+		  width: 100%;
+		}
+		th {
+		  background: #f8f8f8; 
+		  font-weight: bold;    
+		  padding: 2px;
+		}
+	  </style>
+        <!-- JavaScript placed at the end of the document so the pages load faster -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  </body>
+</html>

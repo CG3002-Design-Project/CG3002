@@ -10,7 +10,7 @@ class Inventory(models.Model):
 	minimum_qty = models.PositiveIntegerField(validators=[MaxValueValidator(531441), MinValueValidator(0)])
 	batch_id = models.PositiveIntegerField(validators=[MaxValueValidator(59049)])
 	cost_price = models.DecimalField(max_digits=6,decimal_places=2)
-	expiry_date = models.DateField(auto_now=False,auto_now_add=False, null=True,blank = True)
+	expiry_date = models.DateField(auto_now=False,auto_now_add=False, null=True, blank = True)
 	strategy_percentage = models.DecimalField(max_digits=6,decimal_places=2,blank=True,null=True)
 	display_id = models.DecimalField(max_digits=6,decimal_places=2, null = True, blank = True)
 	
