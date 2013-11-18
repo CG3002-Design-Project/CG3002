@@ -1,0 +1,26 @@
+
+        {% extends "base_product.html" %}		
+		{% block view_products%}
+		<div class="container">
+		<h4>Displaying {{c}}</h4>
+		<h5>Click on product name to view store-wise inventory of product</h5>
+		<table class="table table-striped" data-provides="rowlink">  
+        <thead>  
+          <tr>  
+            <th>Name</th>  
+            <th>Manufacturer</th>  
+            <th>Category</th>  
+          </tr>  
+        </thead>  
+        <tbody>  
+		 {% for p in products %}
+          <tr>  
+            <td><a href="{% url 'view_storewise' p.id %}">{{p.name}}</a></td>     
+            <td>{{p.manufacturer}}</td>  
+            <td>{{p.category}}</td>  
+          </tr> 
+         {% endfor %}		  
+        </tbody>  
+      </table>	
+	  </div>
+	  {%endblock%}

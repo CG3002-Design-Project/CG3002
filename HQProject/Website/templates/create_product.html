@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>View Stores</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="/static/Website/bootstrap.css" rel="stylesheet">
+<link href="/static/Website/bootstrap-responsive.css" rel="stylesheet">
+<link href="/static/Website/bootstrap-rowlink.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner">
+                    <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand">CEG 21 Hypermarket</a>
+                    <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+                    <div class="nav-collapse ">
+                        <ul class="nav pull-right">
+                            <li class="active"><a href="#"> <i class="icon-home icon-white"></i> Home</a></li>
+                            <li><a href="#"><i class="icon-star icon-white"></i> Products</a></li>
+                            <li><a href="#"><i class="icon-book icon-white"></i> Stores</a></li>
+                            <li><a href="#"><i class="icon-camera icon-white"></i> Employees</a></li>
+                            <li><a href="#"><i class="icon-comment icon-white"></i> Transactions</a></li>
+                            <form class="navbar-search pull-left">
+                                <input type="text" class="search-query" placeholder="Search">
+                            </form>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div><!-- /.navbar-inner -->
+            </div><!-- /.navbar -->
+        </div> <!-- /.container -->
+
+		
+<div class="container">
+		<h4>Welcome to CEG21 HyperMarket at {{store.address}}, {{store.city}}, {{store.state}}, {{store.country}}</h4>
+</div>
+
+</br>
+
+<form action = "{%url 'product_created' store.id%}" method="get">
+<div class="container">
+Name: <input type="text" class="input-xlarge" id="inputName" size="1000" name="name"></br>
+Manufacturer: <input type="text" class="input-xlarge" id="inputName" size="1000" name="manufacturer"></br>
+Category: <input type="text" class="input-xlarge" id="inputName" size="1000" name="category"></br>
+Minimum Quantity: <input type="text" class="input-xlarge" id="inputName" size="1000" name="minqty"></br>
+Selling Price: <input type="text" class="input-xlarge" id="inputName" size="1000" name="sp"></br>
+Stock: <input type="text" class="input-xlarge" id="inputName" size="1000" name="stock"></br>
+Expiry Date: (in YYYY-MM-DD format) <input type="text" class="input-xlarge" id="inputName" size="1000" name="ed"></br>
+<a href="#myModal" role="button" class="btn" data-toggle="modal">Submit</a>
+</div>
+
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Submit</h3>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to submit?</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+	<input type="submit" value="Submit" class="btn">
+  </div>
+</div>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="/static/Website/bootstrap.min.js"></script>
+</body>
+</html>

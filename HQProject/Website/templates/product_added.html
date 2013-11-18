@@ -1,0 +1,43 @@
+ 
+{% extends "base_product.html" %}		
+{% block product_added%}
+
+
+
+<div class="container">
+<h4>{{product.name}} has been successfully added!</h4>
+
+
+
+<form action = "{%url 'product_added'%}" method="get">
+<div class="container">
+</br>
+Name: <input type="text" id="name" class="input-xlarge" size="1000" name="name" required></br></br>
+Manufacturer: <input type="text" id="manufacturer" class="input-xlarge" size="1000" name="manufacturer" required></br></br>
+Category: <select id="cate" class="selectpicker" name="cate">
+				{% for c in categories %}
+				<option>{{c}}</option>
+				{% endfor %}
+				<option>Other</option>
+</select></br></br>			   
+If Other, enter product category here: <input type="text" class="input-xlarge" id="category" size="1000" name="category"></br></br>
+
+<a href="#myModal" role="button" class="btn" data-toggle="modal">Submit</a>
+</br><br>
+
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Submit</h3>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to add the product?</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+	<input type="submit" value="Yes" class="btn">
+  </div>
+</div>
+</form>
+
+{%endblock%}
