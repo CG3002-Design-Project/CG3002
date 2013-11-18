@@ -21,5 +21,7 @@ urlpatterns = patterns('',
 	#(r'^search-form/$','products.views.search_form'),
     #(r'^search/$','products.views.search')
 	#url(r'^Store/', include('Store.urls')),
+	#url(r'^Product/', include('Product.urls')),
 	url(r'^Website/', include('Website.urls')),
+    url(r'^Sync/',include('Sync.urls'))
 )

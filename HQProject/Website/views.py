@@ -102,7 +102,7 @@ def view_stores(request):
 	return render(request, 'view_stores.html',context)
 
 def view_specific(request,id):
-	store = Store.objects.get(store_id=id)
+	store = Store.objects.get(id=id)
 	context = {'store':store}
 	return render(request, 'view_specific.html',context)
 	
@@ -119,13 +119,12 @@ def inventory_control(request,id):
             self.product_id = None
             self.batch_id = None
             self.store_id = None   
-    store = Store.objects.get(store_id=id)
-
+    store = Store.objects.get(id=id)
     batches = Inventory.objects.filter(store_id_id=store.id)
     products = []
     p_b = []
     for b in batches:	
-        products.append(Product.objects.get(product_id=b.product_id_id))	
+        products.append(Product.objects.get(id=b.product_id_id))	
 			
     for (p,b) in zip(products,batches):
         if b.product_id_id == p.id:
@@ -209,13 +208,13 @@ def product_deleted(request,s_id,b_id,p_id):
     return render(request,'product_deleted.html',context)	
 
 def create_product(request,s_id):
-    store = Store.objects.get(store_id=s_id)
+    store = Store.objects.get(id=s_id)
     context = {'store':store}
     return render(request,'create_product.html',context)	
 	
 	
 def product_created(request,s_id):
-    store = Store.objects.get(store_id=s_id)
+    store = Store.objects.get(id=s_id)
     if 'name' in request.GET and request.GET['name']:
         name = request.GET['name']
     else:
@@ -281,7 +280,7 @@ def store_created(request):
         return render(request,'view_specific.html',context)
     
 def store_deleted(request,id):
-    store = Store.objects.get(store_id=id)
+    store = Store.objects.get(id=id)
     store.delete()
     batches = Inventory.objects.filter(batch_id=id)
     batches.delete()
@@ -296,7 +295,7 @@ def edit_store(request,id):
     return render(request,'edit_store.html',context)   
 
 def store_edited(request,id):
-    store = Store.objects.get(store_id=id)
+    store = Store.objects.get(id=id)
     if 'address' in request.GET and request.GET['address'] and 'city' in request.GET and request.GET['city'] and 'city_state' in request.GET and request.GET['city_state'] and 'country' in request.GET and request.GET['country'] and 'region' in request.GET and request.GET['region']:
         address = request.GET['address']
         city = request.GET['city']
@@ -397,6 +396,4 @@ def transaction_edited(request,transaction_id,product_id):
     transaction_list.save()
     context = {'transaction_list':transaction_list}
     return render(request,'transaction_edited.html',context)
-
-
 
