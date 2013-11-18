@@ -1,0 +1,35 @@
+To add login and transactions apps, make the following changes:
+
+1. In HQProject/settings.py, add the following under INSTALLED_APPS:
+
+.............
+'django.contrib.admin',
+'Transactions',
+ 
+'login'
+.............
+
+2. In HQProject/settings.py, add this at end of file
+..
+LOGIN_REDIRECT_URL='/home/'
+..
+
+3. In HQProject/urls.py, uncomment admin import at top of file
+
+...
+# Uncomment the next two lines to enable the admin:
+from django.contrib import admin
+admin.autodiscover()
+..
+
+3. And add following urls
+
+url(r'^Transactions/', include('Transactions.urls')),
+ 
+url(r'^statinfo/$', 'login.views.stat_info'),
+    
+url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    
+url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page' : '/accounts/login'}),
+    
+url(r'^home/$', 'login.views.home')

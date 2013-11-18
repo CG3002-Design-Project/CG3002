@@ -1,10 +1,9 @@
 # Create your views here.
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.template import Context, loader, RequestContext
-from Website.models import Store,Product,Inventory
+from Website.models import Store,Product,Inventory,Transaction
 from decimal import *
-
 
 def filter_products(request):
     products = Product.objects.all()
@@ -28,37 +27,6 @@ def view_product(request):
         context = {'products':products,'c':c}
         return render(request, 'view_product.html',context)
 
-		
-def add_product(request):
-    products = Product.objects.all()
-    categories = []
-    for p in products:
-        if p.category not in categories:
-            categories.append(p.category)
-    stores = Store.objects.all()	
-    context = {'categories':categories,'stores':stores}		
-    return render(request,'add_product.html',context)		
-		
-
-def product_added(request):
-    if 'name' in request.GET and request.GET['name'] and 'manufacturer' in request.GET and request.GET['manufacturer'] and 'cate' in request.GET and request.GET['cate']:
-        name = request.GET['name']
-        manufacturer = request.GET['manufacturer']
-        cate = request.GET['cate']
-        if cate == 'Other':
-           category = request.GET['category']
-        else:
-           category = cate
-        products = Product.objects.all().order_by('-product_id')
-        if not products:
-            pid = 1
-        else:
-            pid = p[0] + 1
-        p = Product(product_id=pid, name = name, manufacturer = manufacturer, category = category)
-        p.save()
-        context = {'product':product}
-        return render(request,'product_added.html',product)
-		
 		
 def view_storewise(request,id):
     inventory = Inventory.objects.filter(product_id_id=id)
@@ -134,7 +102,7 @@ def view_stores(request):
 	return render(request, 'view_stores.html',context)
 
 def view_specific(request,id):
-	store = Store.objects.get(store_id=id)
+	store = Store.objects.get(id=id)
 	context = {'store':store}
 	return render(request, 'view_specific.html',context)
 	
@@ -151,13 +119,12 @@ def inventory_control(request,id):
             self.product_id = None
             self.batch_id = None
             self.store_id = None   
-    store = Store.objects.get(store_id=id)
-
+    store = Store.objects.get(id=id)
     batches = Inventory.objects.filter(store_id_id=store.id)
     products = []
     p_b = []
     for b in batches:	
-        products.append(Product.objects.get(product_id=b.product_id_id))	
+        products.append(Product.objects.get(id=b.product_id_id))	
 			
     for (p,b) in zip(products,batches):
         if b.product_id_id == p.id:
@@ -241,13 +208,13 @@ def product_deleted(request,s_id,b_id,p_id):
     return render(request,'product_deleted.html',context)	
 
 def create_product(request,s_id):
-    store = Store.objects.get(store_id=s_id)
+    store = Store.objects.get(id=s_id)
     context = {'store':store}
     return render(request,'create_product.html',context)	
 	
 	
 def product_created(request,s_id):
-    store = Store.objects.get(store_id=s_id)
+    store = Store.objects.get(id=s_id)
     if 'name' in request.GET and request.GET['name']:
         name = request.GET['name']
     else:
@@ -313,7 +280,7 @@ def store_created(request):
         return render(request,'view_specific.html',context)
     
 def store_deleted(request,id):
-    store = Store.objects.get(store_id=id)
+    store = Store.objects.get(id=id)
     store.delete()
     batches = Inventory.objects.filter(batch_id=id)
     batches.delete()
@@ -328,7 +295,7 @@ def edit_store(request,id):
     return render(request,'edit_store.html',context)   
 
 def store_edited(request,id):
-    store = Store.objects.get(store_id=id)
+    store = Store.objects.get(id=id)
     if 'address' in request.GET and request.GET['address'] and 'city' in request.GET and request.GET['city'] and 'city_state' in request.GET and request.GET['city_state'] and 'country' in request.GET and request.GET['country'] and 'region' in request.GET and request.GET['region']:
         address = request.GET['address']
         city = request.GET['city']
@@ -345,3 +312,88 @@ def store_edited(request,id):
     edit_message = 'Store has been successfully edited'
     context = {'stores':stores,'edit_message':edit_message}
     return render(request,'view_stores.html',context)	
+
+def transaction_home(request):
+    transaction_list = Transaction.objects.all()
+    context = {'transaction_list':transaction_list}
+    return render(request, 'transaction_home.html',context)
+
+def add_transaction(request):
+    return render_to_response('add_transaction.html',{},
+        context_instance=RequestContext(request))
+
+def transaction_added(request):
+    if 'transaction_id' in request.GET and request.GET['transaction_id']:
+        transaction_id = request.GET['transaction_id']
+    else:
+        transaction_id = ' '
+    if 'cashier_id' in request.GET and request.GET['cashier_id']:
+        cashier_id = request.GET['cashier_id']
+    else:
+        cashier_id = ' '
+    if 'store_id' in request.GET and request.GET['store_id']:
+        store_id = request.GET['store_id']
+    else:
+        store_id = ' '
+    if 'product_id' in request.GET and request.GET['product_id']:
+        product_id = request.GET['product_id']
+    else:
+        product_id = ' '
+    if 'quantity_sold' in request.GET and request.GET['quantity_sold']:
+        quantity_sold = request.GET['quantity_sold']
+    else:
+        quantity_sold = ' '
+    if 'selling_price' in request.GET and request.GET['selling_price']:
+        selling_price = request.GET['selling_price']
+    else:
+        selling_price = ' '
+    if 'transaction_date' in request.GET and request.GET['transaction_date']:
+        transaction_date = request.GET['transaction_date']
+    else:
+        transaction_date = ' '
+    if 'batch_id' in request.GET and request.GET['batch_id']:
+        batch_id = request.GET['batch_id']
+    else:
+        batch_id = ' '
+         
+    new_transaction = Transaction(transaction_id=transaction_id, store_id=store_id, transaction_date=transaction_date, product_id=product_id, quantity_sold=quantity_sold, batch_id=batch_id, cashier_id=cashier_id, selling_price=selling_price)
+    new_transaction.save()
+    return render_to_response('transaction_added.html',{},
+        context_instance=RequestContext(request))
+
+def transaction_deleted(request,transaction_id_del,product_id_del):        
+    del_transaction = Transaction.objects.get(transaction_id=transaction_id_del,product_id=product_id_del)
+    del_transaction.delete()
+    context = {'del_transaction':del_transaction}
+    return render(request,'transaction_deleted.html',context)  
+ 
+def edit_transaction(request,transaction_id,product_id):
+    transaction_list = Transaction.objects.get(transaction_id=transaction_id,product_id=product_id)
+    context = {'transaction_list':transaction_list} 
+    return render(request,'edit_transaction.html',context)
+       
+def transaction_edited(request,transaction_id,product_id):
+    if 'cashier_id' in request.GET and request.GET['cashier_id']:
+        cashier_id = request.GET['cashier_id']
+    if 'store_id' in request.GET and request.GET['store_id']:
+        store_id = request.GET['store_id']
+    if 'quantity_sold' in request.GET and request.GET['quantity_sold']:
+        quantity_sold = request.GET['quantity_sold']
+    if 'selling_price' in request.GET and request.GET['selling_price']:
+        selling_price = request.GET['selling_price']
+    if 'transaction_date' in request.GET and request.GET['transaction_date']:
+        transaction_date = request.GET['transaction_date']
+    if 'batch_id' in request.GET and request.GET['batch_id']:
+        batch_id = request.GET['batch_id']
+     
+    transaction_list = Transaction.objects.get(transaction_id=transaction_id,product_id=product_id)
+    transaction_list.cashier_id = cashier_id
+    transaction_list.selling_price = selling_price
+    transaction_list.quantity_sold = quantity_sold
+    transaction_list.transaction_date = transaction_date
+    transaction_list.batch_id = batch_id
+    transaction_list.store_id = store_id
+    transaction_list.save()
+    context = {'transaction_list':transaction_list}
+    return render(request,'transaction_edited.html',context)
+

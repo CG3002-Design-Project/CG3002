@@ -71,6 +71,7 @@ def localPushTransaction(request):
     	new_transaction.save()	
     return HttpResponse('Yo Transaction')
 
+<<<<<<< HEAD
 @csrf_exempt
 def localPushRequests(request):
     data= json.loads(request.raw_post_data)
@@ -169,3 +170,26 @@ def localPullProduct(request):
            # headers = {'content-type': 'application/json'}
            # res = requests.post(shop_transaction + store_sync_id,data,headers = headers)
            # return render(request,'sync_function.html');
+
+#def local_transaction_sync(request,store_sync_id):
+ #   store_list = Store.objects.all();
+  #  for store_sync_id in store_list:
+   #     transaction_list = Transaction.objects.get(store_id=store_sync_id)
+    #    if(transaction_list is not None):
+    #        list = []
+    #        for i in transaction_list:
+     #            list.append({'transaction_id': str(i.transaction_id),
+      #                       'cashier_id' : str(cashid), 
+       #                      'product_id':str(i.product_id),
+       #                      'quantity_sold': str(i.quantity_sold), 
+       #                      'batch_id': str(10), 
+        #                     'transaction_date':str(i.transaction_date), 
+         #                    'selling_price': str(selling_price)})
+          #  payload = {
+           #         'store_id': store_sync_id,   
+            #        'transaction':list
+            #}
+            #data = json.dumps(payload)
+            #headers = {'content-type': 'application/json'}
+            #res = requests.post(shop_transaction + store_sync_id,data,headers = headers)
+            #return render(request,'sync_function.html');

@@ -9409,6 +9409,37 @@ function getWindow( elem ) {
 			elem.defaultView || elem.parentWindow :
 			false;
 }
+
+function isDate(txtDate)
+{
+  var currVal = txtDate;
+  if(currVal == '')
+    return false;
+  //Declare Regex 
+  var rxDatePattern = /^(\d{4})(\/|-)(\d{1,2})(\/|-)(\d{1,2})$/;
+  var dtArray = currVal.match(rxDatePattern); // is format OK?
+  if (dtArray == null)
+     return false;
+  //Checks for mm/dd/yyyy format 12/23/1992 xmmddyyyy xyyyy
+  dtMonth = dtArray[5];
+  dtDay= dtArray[7];
+  dtYear = dtArray[1];
+  if (dtMonth < 1 || dtMonth > 12)
+      return false;
+  else if (dtDay < 1 || dtDay> 31)
+      return false;
+  else if ((dtMonth==4 || dtMonth==6 || dtMonth==9 || dtMonth==11) && dtDay ==31)
+      return false;
+  else if (dtMonth == 2)
+  {
+     var isleap = (dtYear % 4 == 0 && (dtYear % 100 != 0 || dtYear % 400 == 0));
+     if (dtDay> 29 || (dtDay ==29 && !isleap))
+          return false;
+  }
+  return true;
+}
+
+
 // Create innerHeight, innerWidth, height, width, outerHeight and outerWidth methods
 jQuery.each( { Height: "height", Width: "width" }, function( name, type ) {
 	jQuery.each( { padding: "inner" + name, content: type, "": "outer" + name }, function( defaultExtra, funcName ) {

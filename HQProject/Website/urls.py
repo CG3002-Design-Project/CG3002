@@ -3,10 +3,8 @@ from django.conf.urls import patterns, url
 from Website import views
 
 urlpatterns = patterns('',
-    url(r'^filter-products$', views.filter_products, name='filter_products'),
+    url(r'^$', views.filter_products, name='filter_products'),
 	url(r'^view-product$', views.view_product, name='view_product'),
-	url(r'^add-product$', views.add_product, name='add_product'),
-	url(r'^add-product/product-added$', views.product_added, name='product_added'),
 	url(r'^view-product/(\d+)/storewise$', views.view_storewise, name='view_storewise'),
     url(r'^view-stores$', views.view_stores,name='view_stores'),
     url(r'^filter-stores$', views.filter_stores,name='filter_stores'),
@@ -21,5 +19,11 @@ urlpatterns = patterns('',
     url(r'^view/(\d+)/inventory-control$', views.inventory_control,name='inventory_control'),
     url(r'^view/inventory-control/(\d+)/(\d+)/(\d+)/edit-product$', views.edit_product,name='edit_product'),
     url(r'^view/inventory-control/(\d+)/(\d+)/(\d+)/product-updated$', views.product_updated,name='product_updated'),
-    url(r'^view/inventory-control/(\d+)/(\d+)/(\d+)/product-deleted$', views.product_deleted,name='product_deleted')
+    url(r'^view/inventory-control/(\d+)/(\d+)/(\d+)/product-deleted$', views.product_deleted,name='product_deleted'),
+    url(r'^transaction_home$', views.transaction_home, name='transaction_home'),
+    url(r'^add_transaction$',views.add_transaction,name='add_transaction'),
+    url(r'^transaction_added$',views.transaction_added,name='transaction_added'),
+    url(r'^(\d+)/(\d+)/edit_transaction$',views.edit_transaction,name='edit_transaction'),
+    url(r'^(\d+)/(\d+)/transaction_edited$',views.transaction_edited,name='transaction_edited'),
+    url(r'^(\d+)/(\d+)/transaction_deleted$',views.transaction_deleted,name='transaction_deleted')
 )

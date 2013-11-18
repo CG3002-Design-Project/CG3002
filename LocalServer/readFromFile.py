@@ -1,6 +1,6 @@
 import re
 import time
-from Inventory.models import Inventory, Perishables
+from Inventory.models import Inventory, Product
 from Transaction.models import Transaction
 import datetime
 
