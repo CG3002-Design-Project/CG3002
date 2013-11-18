@@ -64,52 +64,53 @@
 <div class="container">
 <div class="input-group input-group-sm">
   <span class="input-group-addon">Transaction ID</span>
-  <input type="text" class="form-control" placeholder="Transaction ID" name="transaction_id">
-</div>
-<div class="input-group input-group-sm">
-  <span class="input-group-addon">Cash Register ID</span>
-  <input type="text" class="form-control" placeholder="Cash Register ID" name="cashier_id">
+  <input type="text" class="form-control" placeholder="6 digits" name="transaction_id" id="transaction_id">
 </div>
 <div class="input-group input-group-sm">
   <span class="input-group-addon">Store ID</span>
-  <input type="text" class="form-control" placeholder="Store ID" name="store_id">
+  <input type="text" class="form-control" placeholder="6 digits" name="store_id" id="store_id">
+</div>
+<div class="input-group input-group-sm">
+  <span class="input-group-addon">Cash Register ID</span>
+  <input type="text" class="form-control" placeholder="6 digits" name="cashier_id" id="cashier_id">
 </div>
 <div class="input-group input-group-sm">
   <span class="input-group-addon">Product ID</span>
-  <input type="text" class="form-control" placeholder="Product ID" name="product_id">
+  <input type="text" class="form-control" placeholder="8 digits" name="product_id" id="product_id">
 </div>
 <div class="input-group input-group-sm">
   <span class="input-group-addon">Batch ID</span>
-  <input type="text" class="form-control" placeholder="Batch ID" name="batch_id">
+  <input type="text" class="form-control" placeholder="4 digits" name="batch_id" id="batch_id">
 </div>
 <div class="input-group input-group-sm">
   <span class="input-group-addon">Quantity</span>
-  <input type="text" class="form-control" placeholder="Quantity" name="quantity_sold">
+  <input type="text" class="form-control" placeholder=">=1" name="quantity_sold" id="quantity_sold">
 </div>
 <div class="input-group input-group-sm">
   <span class="input-group-addon">Selling Price</span>
-  <input type="text" class="form-control" placeholder="Selling Price" name="selling_price">
+  <input type="text" class="form-control" placeholder=">0" name="selling_price" id="selling_price">
 </div>
 <div class="input-group input-group-sm">
   <span class="input-group-addon">Purchase Date</span>
-  <input type="text" class="form-control" placeholder="Purchase Date" name="transaction_date">
+  <input type="text" class="form-control" placeholder="YYYY-MM-DD" name="transaction_date" id="transaction_date">
 </div>
-<a href="#myModal" role="button" class="btn" data-toggle="modal">Submit</a>
+<a href="#myModal" role="button" class="btn" data-toggle="modal" style="visibility:hidden" id="submitChecked">Submit</a>
+<button class="btn btn-primary" type="button" id="submitBtn">Submit!</button>
 </div>
 
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Submit</h3>
-  </div>
-  <div class="modal-body">
-    <p>Are you sure you want to submit?</p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
-    <input type="submit" value="Submit" class="btn">
-  </div>
-</div-
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Submit</h3>
+          </div>
+                        <div class="modal-body">
+                          <p>Are you sure you want to submit?</p>
+                        </div>     
+                        <div class="modal-footer">
+                          <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+                          <input type="submit" value="Submit" class="btn">
+                        </div>
+
 </form>
 
 <div class="container">
@@ -122,5 +123,43 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="/static/Website/bootstrap.min.js"></script>
 
+<script>
+$(document).ready(function()
+{
+$("#submitBtn").click(function () {
+
+var dtVal=$('#transaction_date').val();
+
+if($("#transaction_id").val().length!=6){
+alert("Transaction ID must be 6 digits");
+}
+else if($("#store_id").val().length!=6){
+alert("Store ID must be 6 digits");
+}
+else if($("#cashier_id").val().length!=6){
+alert("Cashier ID must be 6 digits");
+}
+else if($("#product_id").val().length!=8){
+alert("Product ID must be 8 digits");
+}
+else if($("#batch_id").val().length!=4){
+alert("Batch ID must be 4 digits");
+}
+else if($("#quantity_sold").val()<=0){
+alert("Quantity must be greater than 0");
+}
+else if($("#selling_price").val()<=0){
+alert("Selling price must be greater than 0");
+}
+/*
+else if(!isDate(dtVal)){
+alert("Please enter date in format YYYY-MM-DD");
+}*/
+else{
+$("#submitChecked").click();
+}
+});
+});
+</script>
 </body>
 </html>

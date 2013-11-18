@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.template import Context, loader, RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from decimal import *
-
+shop_transaction = "http://ec2-user@ec2-54-254-157-48.ap-southeast-1.compute.amazonaws.com:8000/Sync/Shop/"
 
 @csrf_exempt
 def process(request):
@@ -45,25 +45,25 @@ def processT(request):
     	new_transaction.save()	
     return HttpResponse('Yo Transaction')
 
-def local_transaction_sync(request):
-    print "hello"
-    transaction = Transaction.objects.all()
-    
-    if(transaction is not None):
-        list = []
-        for i in transaction:
-             list.append({'transaction_id': str(i.transaction_id),
-                         'cashier_id' : str(cashid), 
-                         'product_id':str(i.product_id),
-                         'quantity_sold': str(i.quantity_sold), 
-                         'batch_id': str(10), 
-                         'transaction_date':str(i.transaction_date), 
-                         'shop_id': str(shopid)})
-        payload = {
-                'shopid': shopid,   
-                'transaction':list
-        }
-        data = json.dumps(payload)
-        headers = {'content-type': 'application/json'}
-        res = requests.post(hq_host_transaction,data,headers = headers)
-        return render(request,'sync_function.html');
+def local_transaction_sync(request,store_sync_id):
+    store_list = Store.objects.all();
+    for store_sync_id in store_list:
+        transaction_list = Transaction.objects.get(store_id=store_sync_id)
+        if(transaction_list is not None):
+            list = []
+            for i in transaction_list:
+                 list.append({'transaction_id': str(i.transaction_id),
+                             'cashier_id' : str(cashid), 
+                             'product_id':str(i.product_id),
+                             'quantity_sold': str(i.quantity_sold), 
+                             'batch_id': str(10), 
+                             'transaction_date':str(i.transaction_date), 
+                             'selling_price': str(selling_price)})
+            payload = {
+                    'store_id': store_sync_id,   
+                    'transaction':list
+            }
+            data = json.dumps(payload)
+            headers = {'content-type': 'application/json'}
+            res = requests.post(shop_transaction + store_sync_id,data,headers = headers)
+            return render(request,'sync_function.html');

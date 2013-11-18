@@ -4,9 +4,9 @@
     <link rel="stylesheet" href="style.css" />
     <title>Adding a Transaction</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/static/Transactions/bootstrap.css" rel="stylesheet">
-    <link href="/static/Transactions/bootstrap-responsive.css" rel="stylesheet">
-    <link href="/static/Transactions/bootstrap-rowlink.css" rel="stylesheet">
+    <link href="/static/Website/bootstrap.css" rel="stylesheet">
+    <link href="/static/Website/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/static/Website/bootstrap-rowlink.css" rel="stylesheet">
 </head>
 
 <body>
@@ -60,60 +60,57 @@
         </div> <!-- /.container -->
 
 
-<!--form action = "{%url 'transactions_added' %}" method="get">
-<div class="container">
-Transaction ID: <input type="text" class="input-xlarge" id="inputName" size="1000" name="transaction_id"></br>
-Cash Register ID: <input type="text" class="input-xlarge" id="inputName" size="1000" name="cashreg_id"></br>
-Product Name: <input type="text" class="input-xlarge" id="inputName" size="1000" name="product_name"></br>
-Barcode: <input type="text" class="input-xlarge" id="inputName" size="1000" name="barcode"></br>
-<Selling Price: <input type="text" class="input-xlarge" id="inputName" size="1000" name="sp"></br> >
-Qty: <input type="text" class="input-xlarge" id="inputName" size="1000" name="qty"></br>
-Purchase Date: (in YYYY-MM-DD format) <input type="text" class="input-xlarge" id="inputName" size="1000" name="purchase_date"></br>
-<a href="#myModal" role="button" class="btn" data-toggle="modal">Submit</a>
-</div-->
-
-<form action = "{%url 'transactions_added' %}" method="get">
+<form action = "{%url 'transaction_added' %}" method="get">
 <div class="container">
 <div class="input-group input-group-sm">
   <span class="input-group-addon">Transaction ID</span>
-  <input type="text" class="form-control" placeholder="Transaction ID" name="transaction_id">
+  <input type="text" class="form-control" placeholder="6 digits" name="transaction_id" id="transaction_id">
 </div>
 <div class="input-group input-group-sm">
   <span class="input-group-addon">Cash Register ID</span>
-  <input type="text" class="form-control" placeholder="Cash Register ID" name="cashreg_id">
+  <input type="text" class="form-control" placeholder="6 digits" name="cashier_id" id="cashier_id">
 </div>
 <div class="input-group input-group-sm">
-  <span class="input-group-addon">Barcode</span>
-  <input type="text" class="form-control" placeholder="Barcode" name="barcode">
+  <span class="input-group-addon">Store ID</span>
+  <input type="text" class="form-control" placeholder="6 digits" name="store_id" id="store_id">
+</div>
+<div class="input-group input-group-sm">
+  <span class="input-group-addon">Product ID</span>
+  <input type="text" class="form-control" placeholder="8 digits" name="product_id" id="product_id">
+</div>
+<div class="input-group input-group-sm">
+  <span class="input-group-addon">Batch ID</span>
+  <input type="text" class="form-control" placeholder="4 digits" name="batch_id" id="batch_id">
 </div>
 <div class="input-group input-group-sm">
   <span class="input-group-addon">Quantity</span>
-  <input type="text" class="form-control" placeholder="Quantity" name="qty">
+  <input type="text" class="form-control" placeholder=">=1" name="quantity_sold" id="quantity_sold">
 </div>
 <div class="input-group input-group-sm">
   <span class="input-group-addon">Selling Price</span>
-  <input type="text" class="form-control" placeholder="Selling Price" name="sp">
+  <input type="text" class="form-control" placeholder=">0" name="selling_price"id="selling_price">
 </div>
 <div class="input-group input-group-sm">
   <span class="input-group-addon">Purchase Date</span>
-  <input type="text" class="form-control" placeholder="Purchase Date" name="purchase_date">
+  <input type="text" class="form-control" placeholder="Valid date format: 2013-12-12" name="transaction_date" id="transaction_date">
 </div>
-<a href="#myModal" role="button" class="btn" data-toggle="modal">Submit</a>
+<!--a href="#myModal" role="button" class="btn" data-toggle="modal">Submit</a-->
+<button class="btn btn-primary" type="button" id="submitBtn" name="submitBtn">Submit</button>
 </div>
+<!--div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Submit</h3>
+          </div>
+                        <div class="modal-body">
+                          <p>Are you sure you want to submit?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+                          <input type="submit" value="Submit" class="btn">
+                        </div-->
+  </div> 
 
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Submit</h3>
-  </div>
-  <div class="modal-body">
-    <p>Are you sure you want to submit?</p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
-    <input type="submit" value="Submit" class="btn">
-  </div>
-</div-
 </form>
 
 <div class="container">
@@ -124,7 +121,29 @@ Purchase Date: (in YYYY-MM-DD format) <input type="text" class="input-xlarge" id
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="/static/Transactions/bootstrap.min.js"></script>
+<script src="/static/Website/bootstrap.min.js"></script>
+<script>
+  $(document).ready(function()
+    {
+      $("#submitBtn").click(function () {
+        $(document).ready(function()
+                    {
+                    $("#submitBtn").click(function () {
+                      if($("#quantity_sold").val().length<=0){
+    alert("Quantity must be over 0");
+    else
+                        confirm("Thank you for leaving a message :)");
+                    });
+                    });
 
+                      if($("#quantity_sold").val().length<=0){
+    alert("Quantity must be over 0");
+                    }     
+                });
+    
+  });
+</script>
 </body>
 </html>
+
+
