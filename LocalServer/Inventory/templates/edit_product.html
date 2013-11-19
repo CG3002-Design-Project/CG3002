@@ -1,0 +1,35 @@
+{% extends "base_store.html" %}
+{% block edit_inventory%}
+
+<div class="container">
+    <h4>Welcome to CEG21 HyperMarket </h4>
+</div>
+</br>
+
+<form action = "{%url 'update_product' product.product_id%}" method="get">
+<div class="container">
+Product ID: <input type="text" size="1000" name="product_id" value="{{product.product_id}}" readonly></br>
+Name: <input type="text" size="1000" name="name" value="{{product.name}}" required></br>
+Min Restock: <input type="text" size="1000" name="min_restock" value="{{product.min_restock}}" required></br>
+Manufacturer: <input type="text" size="1000" name="manufacturer" value="{{product.manufacturer}}" required></br>
+Category: <input type="text" size="1000" name="category" value="{{product.category}}" required></br>
+Status: <input type="text" size="1000" name="status" value="{{product.status}}" readonly></br>
+<a href="#myModal" role="button" class="btn" data-toggle="modal">Submit</a>
+</div>
+
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Submit</h3>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to submit?</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+        <input type="submit" value="Submit" class="btn">
+  </div>
+</div>
+</form>
+
+{%endblock%}
