@@ -58,22 +58,29 @@
         <thead>  
           <tr>  
             <th>Product ID</th>
-			<th>Name</th>  			
-			<th>Category</th>
-			<th>Manufacturer</th>
-			<th>Min Restock</th>
-			<th>Status</th>		
+			<th>Batch ID</th>
+			<th>Qty</th>  			
+			<th>Selling Price</th>
+			<th>Minimum Qty</th>
+			<th>Cost Price</th>
+			<th>Expiry Date</th>
+			<th>Strategy Percentage</th>	
+			<th>Display ID</th>
           </tr>  
         </thead>  
         <tbody>  
-		{% for p in product %}
+		{% for s in inventory %}
           <tr>  
-            <td><a href= "{% url 'edit_product' p.product_id %}" >{{p.product_id}}</td>  
-            <td>{{p.name}}</td>  
-            <td>{{p.category}}</td>  
-            <td>{{p.manufacturer}}</td> 
-			<td>{{p.min_restock}}</td>
-            <td>{{p.status}}</td>		
+            <td>{{s.product_id_id}}</td>  
+            <td>{{s.batch_id}}</td>  
+            <td>{{s.qty}}</td>  
+            <td>{{s.selling_price}}</td> 
+			<td>{{s.minimum_qty}}</td>
+            <td>{{s.cost_price}}</td>
+			<td>{{s.expiry_date}}</td>
+            <td>{{s.strategy_percentage}}</td>	
+			<td>{{s.display_id}}</td>	
+            <td><a href = "{% url 'edit_inventory' s.product_id_id s.batch_id %}" input type="submit" class="btn">EDIT</a></td>			
           </tr> 
          {% endfor %}		  
         </tbody>  

@@ -171,8 +171,6 @@ def inventory_updated(request,s_id,b_id,p_id):
         ex = request.GET['ed']
         if ex == 'None':
             ex = None
-    else:
-        ex = None	
     batch = Inventory.objects.get(store_id_id=s_id,product_id_id=p_id,batch_id=b_id)
     batch.qty = qty
     batch.minimum_qty = minqty

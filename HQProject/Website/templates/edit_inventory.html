@@ -6,7 +6,7 @@
 </div>
 </br>
 
-<form action = "{%url 'inventory_updated' batch.store_id_id batch.batch_id batch.product_id_id%}" method="get">
+<form action = "{%url 'update_inventory' batch.store_id_id batch.batch_id batch.product_id_id%}" method="get">
 <div class="container">
 Product ID: <input type="text" size="1000" name="product_id" value="{{batch.product_id_id}}" readonly></br>
 Batch ID: <input type="text" size="1000" name="batch_id" value="{{batch.batch_id}}" readonly></br>

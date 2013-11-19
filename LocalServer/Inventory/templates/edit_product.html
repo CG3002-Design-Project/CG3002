@@ -1,12 +1,51 @@
-{% extends "base_store.html" %}
-{% block edit_inventory%}
-
-<div class="container">
-    <h4>Welcome to CEG21 HyperMarket </h4>
-</div>
+<!DOCTYPE html>
+<html>
+	<head>
+	<title>View Products</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="/static/css/bootstrap.css" rel="stylesheet">
+	<link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="/static/css/bootstrap-rowlink.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="/static/js/bootstrap.min.js"></script>
+	
+			<div class="container">
+            <div class="row-fluid">
+            <div class="span12">
+                <div class="span8">
+                    <h5 class="muted">CEG 21 HyperMarket</h5>
+                </div>
+            </div>
+			</div>
+			
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner">
+                    <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+                    <div class="nav-collapse ">
+                        <ul class="nav pull-left">
+                            <li id="product-link"><a href="{% url 'product'%}"></i>Products</a></li>
+                            <li id="stock-link"><a href="{% url 'inventory'%}"></i>Stock</a></li>
+							<li id="display-link"><a href="{% url 'display'%}"></i>Price Display</a></li>
+                            <li id="sync-link"><a href="{% url 'sync'%}"></i>Sync</a></li>
+                            <li id="transaction-link"><a href="{% url 'transaction'%}"></i>Transactions</a></li>     
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div><!-- /.navbar-inner -->
+            </div><!-- /.navbar -->
+		</div> <!-- /.container -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/static/css/bootstrap.css" rel="stylesheet">
+        <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+	</head>
 </br>
 
-<form action = "{%url 'update_product' product.product_id%}" method="get">
+<form action = "{%url 'update_product' %}" method="get">
 <div class="container">
 Product ID: <input type="text" size="1000" name="product_id" value="{{product.product_id}}" readonly></br>
 Name: <input type="text" size="1000" name="name" value="{{product.name}}" required></br>
@@ -31,5 +70,4 @@ Status: <input type="text" size="1000" name="status" value="{{product.status}}" 
   </div>
 </div>
 </form>
-
-{%endblock%}
+</html>
