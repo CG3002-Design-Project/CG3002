@@ -15,6 +15,7 @@ import serial
 
 
 def restock_qty(request):
+	print "entered restock method"
 	inventory = Inventory.objects.all()
 	requests = RequestDetails.objects.all()
 	
@@ -23,7 +24,8 @@ def restock_qty(request):
 		tot = 0 
 		for b in batches:
 			tot += b.qty
-		if tot<=i.min_restock:		
+		product = Product.objects.get(product_id = i.product_id_id)	
+		if tot<=product.min_restock:		
 			pr_requests = RequestDetails.objects.filter(product_id=i.product_id_id)
 			if not pr_requests:
 				if not requests:
@@ -31,8 +33,8 @@ def restock_qty(request):
 				else:
 					r = RequestDetails.objects.all().order_by('-request_id')
 					id = r[0].request_id + 1
-				qtyVal = 100*(i.min_restock-i.qty)
-				newRequest = RequestDetails(request_id=id,product_id=i.product_id_id,qty=qtyVal,status='False',request_date=date.today())
+				qtyVal = 100*(product.min_restock-i.qty)
+				newRequest = RequestDetails(request_id = id, product_id = i.product_id_id, qty = qtyVal, status='ADDED', request_date = date.today())
 				newRequest.save()						
 				print newRequest.qty
 	return HttpResponse('yo')		

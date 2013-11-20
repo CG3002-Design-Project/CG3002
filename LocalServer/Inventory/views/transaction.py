@@ -14,10 +14,7 @@ import time
 import serial
 
 def calculate_transaction(request):
-	return render(request,'calculate_transaction.html');
-
-def price_display(request):
-	return render(request,'price_display.html');
+	return render(request,'transaction.html');
 
 @csrf_exempt
 def return_price(request):

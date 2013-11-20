@@ -14,20 +14,47 @@ import time
 import serial
 
 
+def price_display(request):
+	return render(request,'display.html');
+	
 def createConnection():
 	if os.name == 'posix':
 		PORT = "/dev/ttyUSB0"
 	elif os.name == "nt":
-		PORT = "COM1"
-	return serial.Serial(PORT,9600,timeout = 0.5)	
-
+		print "os windows"
+		PORT = "COM8"
+		ser = serial.Serial();
+		print "created"
+		ser.port = PORT;
+		ser.baudrate = 9600
+		ser.timeout = 0.5 
+		try:
+			ser.open()
+		except serial.SerialException: 
+			ser.close()
+			if(ser.isOpen() == False):
+				del ser;
+				ser = serial.Serial();
+				print "creating again"
+				ser.port = PORT;
+				ser.baudrate = 9600
+				ser.timeout = 0.5
+				print "poornima here"
+				print "closing and opening again"
+				ser.open();
+		return ser;
+		
 def write_to_display(name,price):
+	print "inside this method"
 	ser = createConnection()
 	print ser.name;
-	ser.write(name);
-	name_ack = ser.read(8);
-	ser.write(price);
-	price_ack = ser.read(8);
+	a = 'p';
+	ser.write(a);
+	print "writing didnt give error";
+	ser.close();
+	#name_ack = ser.read(8);
+	#ser.write(price);
+	#price_ack = ser.read(8);
 
 @csrf_exempt	
 def setDisplayID(request):
@@ -50,6 +77,7 @@ def setDisplayID(request):
 			'error' : 1
 		 }	
 	data = json.dumps(payload);
+	write_to_display(str(product.name), str(inventory.selling_price));
 	return HttpResponse(data,mimetype='application/json')
 
 @csrf_exempt

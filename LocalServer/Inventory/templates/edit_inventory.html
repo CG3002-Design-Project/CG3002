@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<title>View Inventory</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="/static/css/bootstrap.css" rel="stylesheet">
+	<link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="/static/css/bootstrap-rowlink.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="/static/js/bootstrap.min.js"></script>
+	
+			<div class="container">
+            <div class="row-fluid">
+            <div class="span12">
+                <div class="span8">
+                    <h5 class="muted">CEG 21 HyperMarket</h5>
+                </div>
+            </div>
+			</div>
+			
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner">
+                    <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+                    <div class="nav-collapse ">
+                        <ul class="nav pull-left">
+                            <li id="product-link"><a href="{% url 'product'%}"></i>Products</a></li>
+                            <li id="stock-link"><a href="{% url 'inventory'%}"></i>Stock</a></li>
+							<li id="display-link"><a href="{% url 'display'%}"></i>Price Display</a></li>
+                            <li id="sync-link"><a href="{% url 'sync'%}"></i>Sync</a></li>
+                            <li id="transaction-link"><a href="{% url 'transaction'%}"></i>Transactions</a></li>     
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div><!-- /.navbar-inner -->
+            </div><!-- /.navbar -->
+		</div> <!-- /.container -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/static/css/bootstrap.css" rel="stylesheet">
+        <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+	</head>
+</br>
+<form action = "{%url 'update_inventory'%}" method="get">
+<div class="container">
+Product ID: <input type="text" size="1000" name="product_id_id" value="{{inventory.product_id_id}}" readonly></br>
+Batch ID: <input type="text" size="1000" name="batch_id" value="{{inventory.batch_id}}" readonly></br>
+Qty: <input type="text" size="1000" name="qty" value="{{inventory.qty}}" required></br>
+Cost Price: <input type="text" size="1000" name="cost_price" value="{{inventory.cost_price}}" required></br>
+Selling Price: <input type="text" size="1000" name="selling_price" value="{{inventory.selling_price}}" required></br>
+Minimum Qty: <input type="text" size="1000" name="minimum_qty" value="{{inventory.minimum_qty}}" required></br>
+Strategy Percentage: <input type="text" size="1000" name="strategy_percentage" value="{{inventory.strategy_percentage}}" required></br>
+Display ID:<input type="text" size="1000" name="display_id" value="{{inventory.display_id}}" required></br>
+Expiry Date: (in YYYY-MM-DD format) <input type="text" size="1000" name="expiry_date" value="{{inventory.expiry_date}}"></br>
+<a href="#myModal" role="button" class="btn" data-toggle="modal">Submit</a>
+</div>
+
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Submit</h3>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to submit?</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+	<input type="submit" value="Submit" class="btn">
+  </div>
+</div>
+</form>
+</html>

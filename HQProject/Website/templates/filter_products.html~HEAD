@@ -1,0 +1,23 @@
+        {% extends "base_product.html" %}
+	    {% block filter%}
+			
+	        <div class="container">
+				
+				</br>
+				<form action="{% url 'view_product'%}" method="get">
+				<h4>Select a product category</h4>
+				
+				<select id="cate" class="selectpicker" name="cate">
+				{% for c in categories %}
+				<option>{{c}}</option>
+				{% endfor %}
+				<option>All</option>
+				</select>			   
+				</br><input type="submit" value="Submit" class="btn">
+						
+				</form>	
+            </div>    
+			
+	    {%endblock%}
+               
+        

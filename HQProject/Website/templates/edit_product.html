@@ -1,59 +1,17 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
-
-<html>
-<head>
-<title>View Stores</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="/static/Website/bootstrap.css" rel="stylesheet">
-<link href="/static/Website/bootstrap-responsive.css" rel="stylesheet">
-<link href="/static/Website/bootstrap-rowlink.css" rel="stylesheet">
-</head>
-
-<body>
-
-<div class="container">
-            <div class="navbar navbar-inverse">
-                <div class="navbar-inner">
-                    <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand">CEG 21 Hypermarket</a>
-                    <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
-                    <div class="nav-collapse ">
-                        <ul class="nav pull-right">
-                            <li class="active"><a href="#"> <i class="icon-home icon-white"></i> Home</a></li>
-                            <li><a href="{%url 'filter_products'%}"><i class="icon-star icon-white"></i> Products</a></li>
-                            <li><a href="{%url 'filter_stores'%}"><i class="icon-book icon-white"></i> Stores</a></li>
-                            <li><a href="#"><i class="icon-camera icon-white"></i> Employees</a></li>
-                            <li><a href="#"><i class="icon-comment icon-white"></i> Transactions</a></li>
-                            <form class="navbar-search pull-left">
-                                <input type="text" class="search-query" placeholder="Search">
-                            </form>
-                        </ul>
-                    </div><!--/.nav-collapse -->
-                </div><!-- /.navbar-inner -->
-            </div><!-- /.navbar -->
-        </div> <!-- /.container -->
+{% extends "base_store.html" %}
+{% block edit_product%}
 
 <div class="container">
 		<h4>Welcome to CEG21 HyperMarket at {{store.address}}, {{store.city}}, {{store.state}}, {{store.country}}</h4>
 </div>
-
 </br>
 
-<form action = "{%url 'product_updated' p_b.store_id p_b.batch_id p_b.product_id%}" method="get">
+<form action = "{%url 'product_edited' store.store_id product.product_id%}" method="get">
 <div class="container">
-Name: <input type="text" id="inputName" size="1000" name="name" value="{{p_b.name}}"></br>
-Manufacturer: <input type="text" id="inputName" size="1000" name="manufacturer" value="{{p_b.manufacturer}}"></br>
-Category: <input type="text" id="inputName" size="1000" name="category" value="{{p_b.category}}"></br>
-Minimum Quantity: <input type="text" id="inputName" size="1000" name="minqty" value="{{p_b.minimum_qty}}"></br>
-Selling Price: <input type="text" id="inputName" size="1000" name="sp" value="{{p_b.selling_price}}"></br>
-Stock: <input type="text" id="inputName" size="1000" name="stock" value="{{p_b.qty}}"></br>
-Expiry Date: (in YYYY-MM-DD format) <input type="text" id="inputName" size="1000" name="ed" value="{{p_b.expiry_date}}"></br>
+Product ID: <input type="text" size="1000" name="product_id" value="{{product.product_id}}" readonly></br>
+Name: <input type="text" size="1000" name="name" value="{{product.name}}" required></br>
+Manufacturer: <input type="text" size="1000" name="manu" value="{{product.manufacturer}}" required></br>
+Category: <input type="text" size="1000" name="cate" value="{{product.category}}" required></br>
 <a href="#myModal" role="button" class="btn" data-toggle="modal">Submit</a>
 </div>
 
@@ -67,12 +25,9 @@ Expiry Date: (in YYYY-MM-DD format) <input type="text" id="inputName" size="1000
   </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
-	<input type="submit" value="Submit" class="btn">
+	<input type="submit" value="Yes" class="btn">
   </div>
 </div>
 </form>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="/static/Website/bootstrap.min.js"></script>
-</body>
-</html>
+{%endblock%}

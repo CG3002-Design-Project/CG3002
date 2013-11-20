@@ -104,7 +104,8 @@ MIDDLEWARE_CLASSES = (
 
 TEMPLATE_CONTEXT_PROCESSORS  = (
 'django.contrib.messages.context_processors.messages',
-'django.contrib.auth.context_processors.auth'
+'django.contrib.auth.context_processors.auth',
+'django.core.context_processors.request'
 )
 
 ROOT_URLCONF = 'local.urls'
@@ -127,7 +128,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'Inventory'
+	'Inventory',
+	'django_tables2'
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

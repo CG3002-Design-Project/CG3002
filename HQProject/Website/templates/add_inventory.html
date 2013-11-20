@@ -1,0 +1,40 @@
+{% extends "base_store.html" %}
+
+{% block addtab%}
+        <li><a href="{%url 'add_inventory' store.store_id%}">Add inventory</a></li>		
+{%endblock%}
+
+{% block add_inventory%}
+
+
+<form action = "{%url 'inventory_added' store.store_id%}" method="get">
+<div class="container">
+Product ID:<select id="product_id" class="selectpicker" name="product_id">
+				{% for p in productids %}
+				<option>{{p}}</option>
+				{% endfor %}
+				</select>			   
+Current Stock: <input type="text" size="1000" name="qty" required></br>
+Cost Price: <input type="text" size="1000" name="cp" required></br>
+Selling Price: <input type="text" size="1000" name="sp" required></br>
+Minimum Stock: <input type="text" size="1000" name="minqty" required></br>
+Expiry Date: (in YYYY-MM-DD format; Leave empty for a non-perishable product) <input type="text" size="1000" name="ed"></br>
+<a href="#myModal" role="button" class="btn" data-toggle="modal">Submit</a>
+</div>
+
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Submit</h3>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to submit?</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+	<input type="submit" value="Yes" class="btn">
+  </div>
+</div>
+</form>
+
+{%endblock%}
