@@ -1,22 +1,21 @@
+# tutorial/tables.py
 import django_tables2 as tables
-from django.http import HttpResponse
-from django.core.urlresolvers import reverse
-from django.shortcuts import render
-from django.template import Context, loader, RequestContext
-from Inventory.models import Inventory, RequestDetails
-from Inventory.models import Product
-from Inventory.models import Transaction
-from datetime import date
-from decimal import *
-from django.views.decorators.csrf import csrf_exempt
-import json
-import os
-import time
-import serial
+from Inventory.models import Product,Inventory
+from django_tables2.utils import A 
 
-
+TEMPLATE = """
+<input id="count" maxlength="100" name="count" type="text"/>
+"""
 class ProductTable(tables.Table):
-    class Meta:
-        model = Product
-        # add class="paleblue" to <table> tag
-        attrs = {"class": "paleblue"}
+	product_id = tables.LinkColumn('edit_product', args=[A('product_id')])
+	class Meta:
+		model = Product
+		# add class="paleblue" to <table> tag
+		attrs = {"class": "paleblue"}
+
+class InventoryTable(tables.Table):
+	id = tables.TemplateColumn(TEMPLATE)
+	class Meta:
+		model = Inventory
+		# add class="paleblue" to <table> tag
+		attrs = {"class": "bordered"}

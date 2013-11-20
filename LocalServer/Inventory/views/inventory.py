@@ -35,7 +35,6 @@ def update_inventory(request):
 	selling_price = request.GET['selling_price']
 	minimum_qty = request.GET['minimum_qty']
 	cost_price = request.GET['cost_price']
-	expiry_date = request.GET['expiry_date']
 	strategy_percentage = request.GET['strategy_percentage']
 	display_id = request.GET['display_id']
 	
@@ -44,7 +43,13 @@ def update_inventory(request):
 	if request.GET['expiry_date']:
 		expiry_date = request.GET['expiry_date']
 		if expiry_date == 'None':
-			expiry_date = None	
+			expiry_date = None
+
+	if request.GET['display_id']:
+		display_id = request.GET['display_id']
+		if display_id == 'None':
+			display_id = None	
+			
 	inventory.product_id_id = product_id
 	inventory.batch_id = batch_id
 	inventory.qty = qty
@@ -52,8 +57,6 @@ def update_inventory(request):
 	inventory.minimum_qty = minimum_qty
 	inventory.cost_price = cost_price
 	inventory.expiry_date = expiry_date
-	print inventory.strategy_percentage
-	print strategy_percentage
 	inventory.strategy_percentage = strategy_percentage
 	inventory.display_id = display_id
 	inventory.save()
