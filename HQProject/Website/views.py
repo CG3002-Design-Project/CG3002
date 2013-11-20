@@ -4,6 +4,10 @@ from django.shortcuts import render
 from django.template import Context, loader, RequestContext
 from Website.models import Store,Product,Inventory
 from decimal import *
+<<<<<<< HEAD
+=======
+from chartit import DataPool, Chart
+>>>>>>> 2a317c37ce2c56f74b609aa3169bfe91900c0218
 import random
 
 def filter_products(request):
@@ -361,4 +365,164 @@ def store_edited(request,id):
     stores = Store.objects.all()
     edit_message = 'Store has been successfully edited'
     context = {'stores':stores,'edit_message':edit_message}
+<<<<<<< HEAD
     return render(request,'view_stores.html',context)	
+=======
+    return render(request,'view_stores.html',context)
+	
+def transaction_home(request):
+    transaction_list = Transaction.objects.all()
+    context = {'transaction_list':transaction_list}
+    return render(request, 'transaction_home.html',context)
+
+def add_transaction(request):
+    return render_to_response('add_transaction.html',{},
+        context_instance=RequestContext(request))
+
+def transaction_added(request):
+    if 'transaction_id' in request.GET and request.GET['transaction_id']:
+        transaction_id = request.GET['transaction_id']
+    else:
+        transaction_id = ' '
+    if 'cashier_id' in request.GET and request.GET['cashier_id']:
+        cashier_id = request.GET['cashier_id']
+    else:
+        cashier_id = ' '
+    if 'store_id' in request.GET and request.GET['store_id']:
+        store_id = request.GET['store_id']
+    else:
+        store_id = ' '
+    if 'product_id' in request.GET and request.GET['product_id']:
+        product_id = request.GET['product_id']
+    else:
+        product_id = ' '
+    if 'quantity_sold' in request.GET and request.GET['quantity_sold']:
+        quantity_sold = request.GET['quantity_sold']
+    else:
+        quantity_sold = ' '
+    if 'cost_price' in request.GET and request.GET['cost_price']:
+        cost_price = request.GET['cost_price']
+    else:
+        cost_price = ' '
+    if 'selling_price' in request.GET and request.GET['selling_price']:
+        selling_price = request.GET['selling_price']
+    else:
+        selling_price = ' '
+    if 'transaction_date' in request.GET and request.GET['transaction_date']:
+        transaction_date = request.GET['transaction_date']
+    else:
+        transaction_date = ' '
+    if 'batch_id' in request.GET and request.GET['batch_id']:
+        batch_id = request.GET['batch_id']
+    else:
+        batch_id = ' '
+         
+    new_transaction = Transaction(transaction_id=transaction_id, store_id=store_id, transaction_date=transaction_date, product_id=product_id, quantity_sold=quantity_sold, batch_id=batch_id, cashier_id=cashier_id,cost_price=cost_price, selling_price=selling_price)
+    new_transaction.save()
+    return render_to_response('transaction_added.html',{},
+        context_instance=RequestContext(request))
+
+def transaction_deleted(request,transaction_id_del,product_id_del):        
+    del_transaction = Transaction.objects.get(transaction_id=transaction_id_del,product_id=product_id_del)
+    del_transaction.delete()
+    context = {'del_transaction':del_transaction}
+    return render(request,'transaction_deleted.html',context)  
+ 
+def edit_transaction(request,transaction_id,product_id):
+    transaction_list = Transaction.objects.get(transaction_id=transaction_id,product_id=product_id)
+    context = {'transaction_list':transaction_list} 
+    return render(request,'edit_transaction.html',context)
+       
+def transaction_edited(request,transaction_id,product_id):
+    if 'cashier_id' in request.GET and request.GET['cashier_id']:
+        cashier_id = request.GET['cashier_id']
+    if 'store_id' in request.GET and request.GET['store_id']:
+        store_id = request.GET['store_id']
+    if 'quantity_sold' in request.GET and request.GET['quantity_sold']:
+        quantity_sold = request.GET['quantity_sold']
+    if 'cost_price' in request.GET and request.GET['cost_price']:
+        cost_price = request.GET['cost_price']
+    if 'selling_price' in request.GET and request.GET['selling_price']:
+        selling_price = request.GET['selling_price']
+    if 'transaction_date' in request.GET and request.GET['transaction_date']:
+        transaction_date = request.GET['transaction_date']
+    if 'batch_id' in request.GET and request.GET['batch_id']:
+        batch_id = request.GET['batch_id']
+     
+    transaction_list = Transaction.objects.get(transaction_id=transaction_id,product_id=product_id)
+    transaction_list.cashier_id = cashier_id
+    transaction_list.selling_price = selling_price
+    transaction_list.quantity_sold = quantity_sold
+    transaction_list.transaction_date = transaction_date
+    transaction_list.batch_id = batch_id
+    transaction_list.store_id = store_id
+    transaction_list.save()
+    context = {'transaction_list':transaction_list}
+    return render(request,'transaction_edited.html',context)
+
+def transaction_stats(request):
+    #Step 1: Create a DataPool with the data we want to retrieve.
+    storeRevenue = \
+        DataPool(
+           series=
+            [{'options': {
+               'source': Transaction.objects.all()},
+              'terms': [
+                'store_id',
+                'cost_price']}
+             ])
+
+    def storename(store_id):
+        return store_id
+
+    productrevenue = \
+        DataPool(
+           series=
+            [{'options': {
+               'source': Transaction.objects.all()},
+              'terms': [
+                'product_id',
+                'cost_price']}
+             ])
+
+    #Step 2: Create the Chart object
+    transaction_stats1 = Chart(
+            datasource = storeRevenue,
+            series_options =
+              [{'options':{
+                  'type': 'pie',
+                  'stacking': False},
+                'terms':{
+                  'store_id': [
+                    'cost_price']
+                  }}],
+            chart_options =
+              {'title': {
+                   'text': 'Revenue by Stores'}},
+            x_sortf_mapf_mts = (None,storename,False))
+
+    transaction_stats2 = Chart(
+            datasource = productrevenue,
+            series_options =
+              [{'options':{
+                  'type': 'bar',
+                  'stacking': False},
+                'terms':{
+                  'product_id': [
+                    'cost_price']
+                  }}],
+            chart_options =
+              {'title': {
+                   'text': 'Revenue per Product'},
+               'xAxis': {
+                    'title': {
+                       'text': 'Product ID'}}})    
+
+    #return render_to_response('transaction_stats.html',{'transaction_stats': transaction_stats})
+    return render(request,'transaction_stats.html',
+                    {
+                        'transaction_stats': [transaction_stats1, transaction_stats2],
+                    }
+                )
+
+>>>>>>> 2a317c37ce2c56f74b609aa3169bfe91900c0218

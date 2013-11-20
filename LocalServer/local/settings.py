@@ -128,8 +128,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'whoosh',
-	'haystack',
 	'django_filters',
 	'Inventory',
 	'django_tables2'
@@ -168,12 +166,4 @@ LOGGING = {
             'propagate': True,
         },
     }
-}
-
-import os
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
-    },
 }

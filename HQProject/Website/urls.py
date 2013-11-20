@@ -26,5 +26,16 @@ urlpatterns = patterns('',
 	url(r'^view/inventory-control/(\d+)/(\d+)/product-edited$', views.product_edited,name='product_edited'),
     url(r'^view/inventory-control/(\d+)/(\d+)/(\d+)/edit-inventory$', views.edit_inventory,name='edit_inventory'),
     url(r'^view/inventory-control/(\d+)/(\d+)/(\d+)/inventory-updated$', views.inventory_updated,name='inventory_updated'),
+<<<<<<< HEAD
     url(r'^view/inventory-control/(\d+)/(\d+)/(\d+)/inventory-deleted$', views.inventory_deleted,name='inventory_deleted')
+=======
+    url(r'^view/inventory-control/(\d+)/(\d+)/(\d+)/inventory-deleted$', views.inventory_deleted,name='inventory_deleted'),
+	url(r'^transaction_home$', views.transaction_home, name='transaction_home'),
+    url(r'^transaction_stats$', views.transaction_stats, name='transaction_stats'),
+    url(r'^add_transaction$',views.add_transaction,name='add_transaction'),
+    url(r'^transaction_added$',views.transaction_added,name='transaction_added'),
+    url(r'^(\d+)/(\d+)/edit_transaction$',views.edit_transaction,name='edit_transaction'),
+    url(r'^(\d+)/(\d+)/transaction_edited$',views.transaction_edited,name='transaction_edited'),
+    url(r'^(\d+)/(\d+)/transaction_deleted$',views.transaction_deleted,name='transaction_deleted')
+>>>>>>> 2a317c37ce2c56f74b609aa3169bfe91900c0218
 )

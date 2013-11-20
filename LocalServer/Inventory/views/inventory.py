@@ -13,7 +13,6 @@ import json
 import os
 import time
 import serial
-from Inventory.views.tables import ProductTable
 
 def inventory_list(request):
 	inventory = Inventory.objects.all();
