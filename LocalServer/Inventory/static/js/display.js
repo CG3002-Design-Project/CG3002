@@ -31,7 +31,7 @@ function initAddDisplay(){
 		var batchid = $('#inputBatchid').val();
 		var description = $('#inputDescription').val();
 		if (validPriceDisplay(display_id, barcode,batchid,description))
-			$.ajax({url: "http://127.0.0.1:8000/Inventory/display",
+			$.ajax({url: "http://127.0.0.1:8000/Inventory/check_display",
 					type: 'POST',
 					contentType: "application/json; charset=utf-8",
 					dataType: "json",
