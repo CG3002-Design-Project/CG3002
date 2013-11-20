@@ -1,75 +1,128 @@
+var cashier = 3002;
+var itemIdx = 0;
+var totalPrice = 0;
 
-var app = angular.module('myApp', []);
-var GLOBALS = {};
-GLOBALS.inventory = [];
-
-function TransactionCtrl($scope, $http) {
-	console.log("controller initialised");
-	$scope.inventory = GLOBALS.inventory;
-    
-	$scope.loadTransaction = function(barcode, batchid, quantity) {
-		if(barcode.length != 8 || !isNumber(parseInt(barcode))) {
-				alert("barcode has to be a valid 8 digit number!!");
-		}
-		else if(batchid.length !=4 || !isNumber(parseInt(batchid))) {
-				alert("Batch id has to be a valid 5 digit number!!"); 
-		}
-		else if(!isNumber(parseInt(quantity)) || parseInt(quantity) <= 0 ) {
-				alert("quantity should be greater than 0");
-		} 
-		else{
-		
-			  $http({method:'POST', 
-			  url: 'http://127.0.0.1:8000/Inventory/returnPrice', 
-			  data: {'barcode' : barcode,'batchid': batchid, 'qty': quantity}}).success(function(data){	
-			  console.log(data.error);
-			  if(data.error == -1) {
-				alert("No such product exists");
-			  } else if (data.error == -2) {
-				alert("only " + data.qty + " products are available");
-			  } else {
-					GLOBALS.inventory[GLOBALS.inventory.length] = data;	 		
-			  }
-		})
-		.error(function( data, status, header,config ) {
-			var err = status + ", " + data;
-			console.log( "Request Failed: " + err );
-        });
-		
-		}
-	}
-	
-	$scope.cancelTransaction = function() {
-		if (confirm('Are you sure you want to cancel the transaction?')) {
-			console.log("add qty back to products");
-			$http({method:'POST', 
-				   url: 'http://127.0.0.1:8000/Inventory/addQuantity', 
-				   data: GLOBALS.inventory}).success(function(data){
-						console.log("Quantity added back");
-						$scope.inventory.splice(0, 1);
-				   });	
-		} else {
-				// Do nothing!
-		}
-	}
-	
-	$scope.checkOut = function() {
-		if (confirm('Are you done shopping?')) {
-				console.log("Saving transaction");
-				$http({method:'POST', 
-					url: 'http://127.0.0.1:8000/Inventory/saveTransaction', 
-					data: GLOBALS.inventory}).success(function(data){
-						console.log("Transaction added");
-						$scope.inventory.splice(0, 1);
-				   });	
-		} else {
-				// Do nothing!
-		}
-	}
+window.onload = function() {
+	initAddItem();
+	initAddTransaction();
 }
 
+function validItem(barcode, quantity, batchid) {
+	var valid = true;
+	if (barcode == '' || quantity == '' || batchid = '')
+		valid = false;
+	if (!is_int(quantity)){
+		alert('Integers only')
+		valid = false;
+	} if (barcode.length != 8 || !is_int(barcode)) {
+		alert('Barcode has to be a valid 8 digit number')
+		valid = false;
+	} if (batchid.length !=4 ||  !is_int(batchid)) {
+		alert("Batch id has to be a valid 5 digit number!!"); 
+		valid = false;
+	}
+	if (parseInt(quantity)<0){
+		alert('Non-negative quantity only');
+		valid = false;
+	}
+	return valid;
+}
 
-function isNumber(n){
-    return typeof n == 'number' && !isNaN(n) && isFinite(n);
- }
+function is_int(value) { 
+	if((parseFloat(value) == parseInt(value)) && !isNaN(value)){
+		return true;
+	} else { 
+		return false;
+	} 
+}
 
+function initAddItem(){
+$('#add-item').click(function(){
+		var barcode = $('#inputBarcode').val();
+		var quantity = $('#inputQuantity').val();
+		var quantity = $('#inputBatchid').val();
+		if (!validItem(barcode,quantity)){
+			$('#prompt-error').show();
+			return;
+		}
+		else
+			$('#prompt-error').hide();
+			$.ajax({
+			url: 'http://127.0.0.1:8000/Inventory/returnPrice', 
+			type: 'POST',
+			data: {'barcode' : barcode,'batchid': batchid, 'qty': quantity}},
+			success: function (response) {
+				if (response.error == 1){
+					var unitprice = response.price;
+					var collectiveprice = parseFloat(unitprice).toFixed(2) * parseInt(quantity);
+					totalPrice = totalPrice + collectiveprice;
+					$('#total-price').text(totalPrice);
+					$('#item-table').append('<tr barcode="'+barcode+'" class="items" id="item-'+itemIdx+'">'+
+					'<td>'+batchid+'</td>'+
+					'<td>'+response.name+'</td>'+
+					'<td>'+quantity+'</td>'+
+					'<td>'+unitprice+'</td>'+
+					'<td id="collective-'+itemIdx+'">'+collectiveprice+'</td>'+
+					'<td><img onclick="removeItem('+itemIdx+')" src="images/delete.png" style="cursor:pointer;" title="Delete item"/></td>');
+					$('#new-item-form')[0].reset();
+					itemIdx++;
+				}
+				else if(response.error == -2) {
+					alert("only " + response.qty + " products are available");
+				} else {
+					alert('No such product exist');
+				}
+			}
+		});
+	});
+}
+
+function initAddTransaction(){
+	$('#confirm-checkout').click(function(){
+		var itemList = [];
+		$('.items').each(function(idx,item){
+			var item_obj = new Object();
+			item_obj.barcode = $(item).attr('barcode');
+			item_obj.quantity = $(item).children()[1].textContent;
+			item_obj.price = $(item).children()[2].textContent;
+			itemList.push(item_obj);
+		});
+		$.ajax({
+			url: "/processTransaction",
+			type: 'POST',
+			data: {
+				"cashier":cashier,
+				"list":itemList
+			},
+			success: function (response) {
+				if (response.STATUS != "ERROR")	{
+					initTable();
+					$('#addNewTransaction').modal('hide');
+					itemIdx = 0;
+					$('.items').remove();
+					totalPrice = 0;
+					$('#total-price').text(totalPrice);	
+				}
+				else{
+					alert("Error processing transaction");
+					$('#addNewTransaction').modal('hide');
+					itemIdx = 0;
+					$('.items').remove();
+					totalPrice = 0;
+					$('#total-price').text(totalPrice);	
+				}	
+			}
+		});
+
+	});
+}
+
+function removeItem(index){
+
+	var contents = $('td#collective-'+index).text();
+	$('#item-'+index).remove();	
+	totalPrice = totalPrice - parseFloat(contents).toFixed(2);
+	$('#total-price').text(totalPrice);	
+}
+
+	

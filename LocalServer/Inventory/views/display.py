@@ -84,7 +84,8 @@ def setDisplayID(request):
 			'error' : 1
 		 }	
 	data = json.dumps(payload);
-	write_to_display(str(product.name), str(inventory.selling_price));
+	#write_to_display(str(product.name), str(inventory.selling_price));
+	
 	return HttpResponse(data,mimetype='application/json')
 
 @csrf_exempt

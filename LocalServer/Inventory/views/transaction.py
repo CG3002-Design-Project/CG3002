@@ -14,7 +14,9 @@ import time
 import serial
 
 def calculate_transaction(request):
-	return render(request,'transaction.html');
+	transaction = Transaction.objects.all();
+	context = {'transaction':transaction};
+	return render(request,'transaction.html',context);
 
 @csrf_exempt
 def return_price(request):
@@ -38,10 +40,7 @@ def return_price(request):
 		 product = Product.objects.get(product_id = d['barcode']);
 		 payload = {
 			'price' : str(inventory[0].selling_price),
-			'barcode' : str(d['barcode']),
-			'batchid': str(d['batchid']),
 			'name': str(product.name),
-			'qty' : str(d['qty']),
 			'error' : 1
 		 }
 		 inventory[0].qty = inventory[0].qty - int(d['qty']);
