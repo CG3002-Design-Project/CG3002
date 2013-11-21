@@ -1,16 +1,20 @@
 
 <!DOCTYPE html>
 <html >
-    <head>
-        <title>View Products</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.js"></script>
-		<link href="/static/css/bootstrap.css" rel="stylesheet">
-        <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
-		<script src="/static/js/transaction.js"></script>
-
-	
-	<div class="container">
+  	<head>
+	<title>View Products</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="/static/css/bootstrap.css" rel="stylesheet">
+	<link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="/static/css/bootstrap-rowlink.css" rel="stylesheet">
+	<link rel="stylesheet" href="/static/css/screen.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="/static/js/bootstrap.min.js"></script>
+	<link href="/static/css/demo_table.css">
+	<script src="/static/js/jquery.js"></script>
+	<script src="/static/js/jquery.dataTables.js"></script>
+	<script src="/static/js/DT_bootstrap.js"></script>
+		<div class="container">
             <div class="row-fluid">
             <div class="span12">
                 <div class="span8">
@@ -31,7 +35,7 @@
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
                             <li id="product-link"><a href="{% url 'product'%}"></i>Products</a></li>
-                            <li id="stock-link"><a href="{% url 'stock'%}"></i>Stock</a></li>
+                            <li id="stock-link"><a href="{% url 'inventory'%}"></i>Stock</a></li>
 							<li id="display-link"><a href="{% url 'display'%}"></i>Price Display</a></li>
                             <li id="sync-link"><a href="{% url 'sync'%}"></i>Sync</a></li>
                             <li id="transaction-link"><a href="{% url 'transaction'%}"></i>Transactions</a></li>     
@@ -39,65 +43,59 @@
                     </div><!--/.nav-collapse -->
                 </div><!-- /.navbar-inner -->
             </div><!-- /.navbar -->
+			<a href="#addNewTransaction" role="button" class="btn" data-toggle="modal">New Transaction</a>
+			<div id="addNewTransaction" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="addNewTransactionLabel" aria-hidden="true">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h3 id="addNewTransactionLabel">Add New Transaction</h3>
+				</div>
+				<div class="modal-body">
+					<table class="table" id="item-table"><thead><tr><th class="span2">Product Name</th><th class="span2">Quantity</th><th class="span2">Unit Price</th><th class="span1">Subtotal</th><th></th></tr></thead></table><hr/>
+					<div>Total: $<span id = "total-price">0</span></div><hr/>
+					<form id ="new-item-form" class="form-horizontal" onsubmit="return false;">
+						<input type="text" class="span2" id="inputBarcode" placeholder="Barcode" /> 
+						<input type="text" class="span2" id="inputQuantity" placeholder="Quantity" /> &nbsp;
+						<input type="text" class="span2" id="inputBatchID" placeholder="Batchid" /> &nbsp;
+						<button class="btn" id = "add-item">Add</button><span id="prompt-error" class="invalid" style="display:none;">&nbsp; *Please fill in all fields</span>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+					<button id ="confirm-checkout" class="btn btn-primary">Checkout</button>
+				</div>
+			</div>
     </div> <!-- /.container -->
 	</head>
-    <body ng-app="myApp" ng-controller = "TransactionCtrl" >
-        <div class="outer">	
-			<div class="first" style="white-space:nowrap; float:left; margin-left:50px; margin-top:50px";>
-				<label for="barcode" style="white-space:nowrap; float:left";"width:300px";> Barcode </label>
-				<input ng-model = "barcode" type="text" id="barcode" placeholder="Enter Product Barcode"/>
-			</div>
-			<div class="first" style="white-space:nowrap; float:left; margin-left:50px; margin-top:50px";>
-				<label for="batchid" style="white-space:nowrap; float:left";"width:200px";> Batch ID </label>
-				<input ng-model = "batchid" type="text" id="batchid" placeholder="Enter Batch ID"/>
-			</div>
-			<div class="second" style="white-space:nowrap; float:left; margin-left:50px; margin-top:50px";>
-				<label for="quantity" style="white-space:nowrap; float:left"; "width:200px";>Quantity </label>
-				<input ng-model = "quantity" type="text" id="quantity" placeholder="Enter Product Quantity"/>
-			</div>
-			<div class="third" style="float:left; margin-left:50px; margin-top:50px";>
-				<a ng-href='#here' ng-click="loadTransaction(barcode,batchid,quantity)" role="button" class="btn" data-toggle="modal">Add Product</a>
-			</div>
-			<div class="fourth" style="float:left; margin-left:50px; margin-top:50px";>
-				<a ng-href='#cancel' ng-click="cancelTransaction()" role="button" class="btn" data-toggle="modal">Cancel Transaction</a>
-			</div>
-			<div class="fifth" style="float:left; margin-left:50px; margin-top:50px";>
-				<a ng-href='#checkOut' ng-click="checkOut()" role="button" class="btn" data-toggle="modal">Check Out</a>
-			</div>
-	    <div>
-		<table>  
+	<br>
+	<br>
+	<body>
+	<div class="container">
+	<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered dataTable" id="example" aria-describedby="example_info">  
+        <thead>  
           <tr>  
-            <th>Barcode</th>  
-            <th>Name</th>  
-			<th>Quantity</th>  
-			<th>Price</th> 
+            <th>Transaction ID</th>
+			<th>Product ID</th>  			
+			<th>Batch ID</th>
+			<th>Cashier ID</th>
+			<th>Quantity Sold</th>
+			<th>Selling Price</th>
+			<th>Transaction Date</th>				
           </tr>  
-		</table>
-		<table>
-		
-          <tr ng-repeat="i in inventory" ng-controller = "TransactionCtrl">  
-		  		{% verbatim %}
-            <td>{{i.barcode}}</td>     
-            <td>{{i.name}}</td>  
-            <td>{{i.qty}}</td>  
-			<td>{{i.price}}</td> 
-				{% endverbatim %}
-          </tr> 	  
+        </thead>  
+        <tbody>  
+		{% for t in transaction %}
+          <tr>  
+            <td>{{t.transaction_id}}</td>  
+            <td>{{t.product_id}}</td> 
+			<td>{{t.batch_id}}</td>	
+			<td>{{t.cashier_id}}</td>			
+			<td>{{t.quantity_sold}}</td>
+			<td>{{t.selling_price}}</td>
+			<td>{{t.transaction_date}}</td>  
+          </tr> 
+         {% endfor %}		  
+        </tbody>  
       </table>	
-	  </div>
-	  </div>
-	  <style>
-		  table {
-		  border: 1px solid #666;   
-		  width: 100%;
-		}
-		th {
-		  background: #f8f8f8; 
-		  font-weight: bold;    
-		  padding: 2px;
-		}
-	  </style>
-        <!-- JavaScript placed at the end of the document so the pages load faster -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  </body>
+ </div>
+</body>
 </html>

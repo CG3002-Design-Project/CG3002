@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.template import Context, loader, RequestContext
 from Website.models import Store,Product,Inventory,Transaction
 from decimal import *
+from chartit import DataPool, Chart
 import random
 
 def filter_products(request):
@@ -161,8 +162,6 @@ def inventory_updated(request,s_id,b_id,p_id):
         ex = request.GET['ed']
         if ex == 'None':
             ex = None
-    else:
-        ex = None	
     batch = Inventory.objects.get(store_id_id=s_id,product_id_id=p_id,batch_id=b_id)
     batch.qty = qty
     batch.minimum_qty = minqty
@@ -338,16 +337,7 @@ def store_edited(request,id):
     edit_message = 'Store has been successfully edited'
     context = {'stores':stores,'edit_message':edit_message}
     return render(request,'view_stores.html',context)		
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
 def delete_store(request,id):
     store = Store.objects.get(store_id = id)
     context = {'store':store}
@@ -381,11 +371,70 @@ def transaction_home(request):
     transaction_list = Transaction.objects.all()
     context = {'transaction_list':transaction_list}
     return render(request, 'transaction_home.html',context)
+	
+	
+def transaction_stats(request):
+    #Step 1: Create a DataPool with the data we want to retrieve.
+    storeRevenue = \
+        DataPool(
+           series=
+            [{'options': {
+               'source': Transaction.objects.all()},
+              'terms': [
+                'store_id',
+                'cost_price']}
+             ])
 
+    def storename(store_id):
+        return store_id
 
+    productrevenue = \
+        DataPool(
+           series=
+            [{'options': {
+               'source': Transaction.objects.all()},
+              'terms': [
+                'product_id',
+                'cost_price']}
+             ])
 
+    #Step 2: Create the Chart object
+    transaction_stats1 = Chart(
+            datasource = storeRevenue,
+            series_options =
+              [{'options':{
+                  'type': 'pie',
+                  'stacking': False},
+                'terms':{
+                  'store_id': [
+                    'cost_price']
+                  }}],
+            chart_options =
+              {'title': {
+                   'text': 'Revenue by Stores'}},
+            x_sortf_mapf_mts = (None,storename,False))
 
-			
-			
-			
-			
+    transaction_stats2 = Chart(
+            datasource = productrevenue,
+            series_options =
+              [{'options':{
+                  'type': 'bar',
+                  'stacking': False},
+                'terms':{
+                  'product_id': [
+                    'cost_price']
+                  }}],
+            chart_options =
+              {'title': {
+                   'text': 'Revenue per Product'},
+               'xAxis': {
+                    'title': {
+                       'text': 'Product ID'}}})    
+
+    #return render_to_response('transaction_stats.html',{'transaction_stats': transaction_stats})
+    return render(request,'transaction_stats.html',
+                    {
+                        'transaction_stats': [transaction_stats1, transaction_stats2],
+                    }
+                )
+

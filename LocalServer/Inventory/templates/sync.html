@@ -21,7 +21,7 @@
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
                             <li id="product-link"><a href="{% url 'product'%}"></i>Products</a></li>
-                            <li id="stock-link"><a href="{% url 'stock'%}"></i>Stock</a></li>
+                            <li id="stock-link"><a href="{% url 'inventory'%}"></i>Stock</a></li>
 							<li id="display-link"><a href="{% url 'display'%}"></i>Price Display</a></li>
                             <li id="sync-link"><a href="{% url 'sync'%}"></i>Sync</a></li>
                             <li id="transaction-link"><a href="{% url 'transaction'%}"></i>Transactions</a></li>     
@@ -35,7 +35,8 @@
         <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
 	</head>
 	<body>
-		<div>
+	<div class="container">
+		<div >
 		<a href="{% url 'transaction_sync'%}" role="button" class="btn" data-toggle="modal">SYNC TRANSACTION WITH HQ</a>
 		</div>
 		<div>
@@ -68,5 +69,6 @@
 			bottom: 300px;
         }
     </style>
+	</div>
 	</body>
 </html>

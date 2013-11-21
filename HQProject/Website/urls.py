@@ -31,5 +31,6 @@ urlpatterns = patterns('',
 	url(r'^view/inventory-control/(\d+)/(\d+)/(\d+)/delete-inventory$', views.delete_inventory,name='delete_inventory'),
     url(r'^view/inventory-control/(\d+)/(\d+)/(\d+)/inventory-updated$', views.inventory_updated,name='inventory_updated'),
     url(r'^view/inventory-control/(\d+)/(\d+)/(\d+)/inventory-deleted$', views.inventory_deleted,name='inventory_deleted'),
-	url(r'^transaction_home$', views.transaction_home, name='transaction_home')
+	url(r'^transaction_home$', views.transaction_home, name='transaction_home'),
+    url(r'^transaction_stats$', views.transaction_stats, name='transaction_stats')
 )

@@ -15,7 +15,14 @@ import serial
 
 
 def price_display(request):
-	return render(request,'display.html');
+	inventory = Inventory.objects.all();
+	list = []
+	for i in inventory:
+		if i.display_id is not None:
+			list.append(i);
+			
+	context = {'inventory':list}
+	return render(request,'display.html',context);
 	
 def createConnection():
 	if os.name == 'posix':
@@ -77,11 +84,12 @@ def setDisplayID(request):
 			'error' : 1
 		 }	
 	data = json.dumps(payload);
-	write_to_display(str(product.name), str(inventory.selling_price));
+	#write_to_display(str(product.name), str(inventory.selling_price));
+	
 	return HttpResponse(data,mimetype='application/json')
 
 @csrf_exempt
-def display(request):
+def check_display(request):
 	print "reached display method"
 	d =  json.loads(request.body)
 	print d['barcode']
