@@ -2,7 +2,7 @@
 
 <html>
 <head>
-<title>View Stores</title>
+<title>Product</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="/static/Website/bootstrap.css" rel="stylesheet">
 <link href="/static/Website/bootstrap-responsive.css" rel="stylesheet">
@@ -363,10 +363,10 @@ function print_city_state(oCountrySel, oCity_StateSel)
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
                             <li class="active"><a href="#"> <i class="icon-home icon-white"></i>Home</a></li>
-                            <li><a href="../../Product"><i class="icon-star icon-white"></i>Products</a></li>
-                            <li><a href="../../Store"><i class="icon-book icon-white"></i>Stores</a></li>
+                            <li class="active"><a href="{% url 'view_product'%}"><i class="icon-star icon-white"></i>Products</a></li>
+                            <li><a href="{% url 'filter_stores'%}"><i class="icon-book icon-white"></i>Stores</a></li>
                             <li><a href="#"><i class="icon-camera icon-white"></i>Employees</a></li>
-                            <li><a href="../../Transactions"><i class="icon-comment icon-white"></i>Transactions</a></li>
+                            <li><a href="{% url 'transaction_home'%}"><i class="icon-comment icon-white"></i>Transactions</a></li>
                             <form class="navbar-search">
                             <input type="text" class="search-query" placeholder="Search"> 
                             </form>
@@ -385,12 +385,12 @@ function print_city_state(oCountrySel, oCity_StateSel)
 		
 		<div class="container">
 		<ul class="nav nav-tabs">
-        <li><a href="{%url 'filter_products'%}">View Products</a></li>
+        <li><a href="{%url 'view_product'%}">View Products</a></li>
         <li><a href="{%url 'add_product'%}">Add Product</a></li>
 		</ul>
 		</div>		
 		<div>
-        {% block filter %}{% endblock %}
+		{% block filter %}{% endblock %}
 		{% block view_products %}{% endblock %}
 		{% block add_product%}{%endblock%}
 		{% block product_added%}{%endblock%}

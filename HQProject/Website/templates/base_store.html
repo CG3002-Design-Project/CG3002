@@ -363,10 +363,10 @@ function print_city_state(oCountrySel, oCity_StateSel)
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
                             <li class="active"><a href="#"> <i class="icon-home icon-white"></i>Home</a></li>
-                            <li><a href="../../Product"><i class="icon-star icon-white"></i>Products</a></li>
-                            <li><a href="../../Store"><i class="icon-book icon-white"></i>Stores</a></li>
+                            <li><a href="{% url 'view_product'%}"><i class="icon-star icon-white"></i>Products</a></li>
+                            <li class="active"><a href="{% url 'filter_stores'%}"><i class="icon-book icon-white"></i>Stores</a></li>
                             <li><a href="#"><i class="icon-camera icon-white"></i>Employees</a></li>
-                            <li><a href="../../Transactions"><i class="icon-comment icon-white"></i>Transactions</a></li>
+                            <li><a href="{% url 'transaction_home'%}"><i class="icon-comment icon-white"></i>Transactions</a></li>
                             <form class="navbar-search">
                             <input type="text" class="search-query" placeholder="Search"> 
                             </form>
@@ -390,6 +390,8 @@ function print_city_state(oCountrySel, oCity_StateSel)
 		</ul>
 		</div>		
 		<div>
+		{% block create_store %}{%endblock%}
+		{% block edit_store %}{%endblock%}
 		{% block add_inventory %} {% endblock %}
         {% block filter %}{% endblock %}
 		{% block view_stores %}{% endblock %}

@@ -2,7 +2,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import Context, loader, RequestContext
-from Website.models import Store,Product,Inventory
+from Website.models import Store,Product,Inventory,Transaction
 from decimal import *
 import random
 
@@ -19,10 +19,9 @@ def filter_products(request):
 def view_product(request):
     products = Product.objects.all()    
     context = {'products':products}
-	print products
     return render(request,'view_product.html',context)
 
-		
+
 def add_product(request):
     products = Product.objects.all()
     categories = []
@@ -35,10 +34,11 @@ def add_product(request):
 		
 
 def product_added(request):
-    if 'name' in request.GET and request.GET['name'] and 'manufacturer' in request.GET and request.GET['manufacturer'] and 'cate' in request.GET and request.GET['cate']:
+    if 'name' in request.GET and request.GET['name'] and 'manufacturer' in request.GET and request.GET['manufacturer'] and 'cate' in request.GET and request.GET['cate'] and 'minrestock' in request.GET and request.GET['minrestock']:
         name = request.GET['name']
         manufacturer = request.GET['manufacturer']
         cate = request.GET['cate']
+        minrestock = request.GET['minrestock']
         if cate == 'Other':
            category = request.GET['category']
         else:
@@ -47,31 +47,47 @@ def product_added(request):
         if not products:
             pid = 1
         else:
-            pid = p[0] + 1
-        p = Product(product_id=pid, name = name, manufacturer = manufacturer, category = category)
+            pid = products[0].product_id + 1
+        p = Product(product_id=pid, name = name, manufacturer = manufacturer, category = category, min_restock = minrestock)
         p.save()
-        context = {'product':product}
-        return render(request,'product_added.html',product)
+        pr = p 
+        products = Product.objects.all()
+        message = 'The following product has been successfully added: '
+        context = {'pr':pr,'message':message,'products':products}
+        return render(request,'view_product.html',context)
 		
+def delete_product(request,id):
+    product = Product.objects.get(product_id=id)
+    context = {'product':product}
+    return render(request,'delete_product.html',context)
+		
+def product_deleted(request,id):
+    product = Product.objects.get(product_id=id)
+    inv = Inventory.objects.filter(product_id_id=id)
+    for i in inv:
+        i.selling_price = i.selling_price * Decimal(0.5)
+        i.save()	
+	product.status = 'Discontinued'
+    product.save()
+    products = Product.objects.all()	
+    messagedelete = 'The following product has been discontinued: '
+    context = {'product':product,'products':products,'messagedelete':messagedelete}
+    return render(request,'view_product.html',context)	
+			
 		
 def view_storewise(request,id):
-    product = Product.objects.get(product_id_id=id)
-    inventory = Inventory.objects.filter(product_id_id=id)
-    storeids = []
-    for i in inventory:     
-        if i.store_id not in storeids:
-            storeids.append(i.store_id)
+    product = Product.objects.get(product_id=id)
+    inventory = Inventory.objects.filter(product_id=id)
     stores = []
-    for s in storeids:
-        st = Store.objects.get(store_id=s)
-        stores.append(st)
-    list = zip(store, inventory)		
+    for i in inventory:     
+        store = Store.objects.get(store_id=i.store_id_id) 
+        stores.append(store)
+    list = zip(stores, inventory)		
     context = {'list':list,'product':product}
     return render(request, 'view_storewise.html',context)
-	
-	
+
 def filter_stores(request):
-   return render(request,'filter_stores.html')
+    return render(request,'filter_stores.html')
    
    
 def view_stores(request):
@@ -160,19 +176,6 @@ def inventory_updated(request,s_id,b_id,p_id):
     context = {'store':store,'batch':batch,'messageupdate':messageupdate,'batches':batches}
     return render(request,'inventory_control.html',context)
 	
-def inventory_deleted(request,s_id,b_id,p_id): 		
-    print b_id 
-    print s_id
-    print p_id
-    batch = Inventory.objects.get(store_id_id=s_id,product_id_id=p_id,batch_id=b_id)
-    print batch.batch_id
-    batch.delete()
-    store = Store.objects.get(store_id=s_id)
-    messagedelete = 'Requested inventory row has been deleted'
-    batches = Inventory.objects.filter(store_id=s_id)
-    context = {'store':store,'messagedelete':messagedelete, 'batches':batches}
-    return render(request,'inventory_control.html',context)	
-
 def edit_product(request,sid,pid):
     product = Product.objects.get(product_id=pid)
     store = Store.objects.get(store_id=sid)
@@ -194,12 +197,11 @@ def product_edited(request,sid,pid):
 	
 
 def add_inventory(request,sid):
-    store = Store.objects.get(store_id = sid)
-    inventory = Inventory.objects.filter(store_id_id = sid)
+    products = Product.objects.all()	
     productids = []
-    for i in inventory:
-        if i.product_id_id not in productids:
-            productids.append(i.product_id_id)			
+    for p in products:
+        productids.append(p.product_id)
+    store = Store.objects.get(store_id=sid)
     context = {'productids':productids,'store':store}
     return render(request,'add_inventory.html',context)	
     	
@@ -229,10 +231,7 @@ def inventory_added(request,sid):
     batches = Inventory.objects.filter(store_id=sid)
     context = {'store':store,'messageadd':messageadd,'batches':batches}
     return render(request,'inventory_control.html',context)
-    
-		
-		
-		
+    		
 def create_product(request,s_id):
     store = Store.objects.get(store_id=s_id)
     context = {'store':store}
@@ -294,47 +293,99 @@ def create_store(request):
     return render(request,'create_store.html')
 
 def store_created(request):
-    if 'address' in request.GET and request.GET['address'] and 'city' in request.GET and request.GET['city'] and 'city_state' in request.GET and request.GET['city_state'] and 'country' in request.GET and request.GET['country'] and 'region' in request.GET and request.GET['region']:
+    if 'address' in request.GET and request.GET['address'] and 'city' in request.GET and request.GET['city'] and 'country' in request.GET and request.GET['country'] and 'region' in request.GET and request.GET['region']:
         address = request.GET['address']
         city = request.GET['city']
-        country = request.GET['country']
-        city_state = request.GET['city_state']
+        country = request.GET['country']		
+        if 'city_state' in request.GET:		
+            city_state = request.GET['city_state']
+        else:
+            city_state = city
         region = request.GET['region']
-        store = Store(address=address,city=city,country=country,state=city_state,region=region)
-        store.save()
-        context = {'store':store}
-        return render(request,'view_specific.html',context)
-    
+    stores = Store.objects.all().order_by('-store_id')
+    if not stores:
+        id = 1
+    else:
+        id = stores[0].store_id+1
+    store = Store(store_id=id, address=address,city=city,country=country,state=city_state,region=region)
+    store.save() 
+    stores = Store.objects.all()
+    messageadd = 'Store has been successfully added'
+    context = {'stores':stores,'messageadd':messageadd}
+    return render(request,'view_stores.html',context)
+
+
+def edit_store(request,id):
+    store = Store.objects.get(store_id=id)
+    context = {'store':store}
+    return render(request,'edit_store.html',context)   
+
+def store_edited(request,id):
+    print id
+    store = Store.objects.get(store_id=id)
+    address = request.GET['address']
+    city = request.GET['city']
+    country = request.GET['country']		
+    state = request.GET['state']
+    region = request.GET['region']
+    store.address = address
+    store.city = city
+    store.country = country
+    store.state = state
+    store.region = region
+    store.save()
+    stores = Store.objects.all()
+    edit_message = 'Store has been successfully edited'
+    context = {'stores':stores,'edit_message':edit_message}
+    return render(request,'view_stores.html',context)		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+def delete_store(request,id):
+    store = Store.objects.get(store_id = id)
+    context = {'store':store}
+    return render(request,'delete_store.html',context)
+		 
 def store_deleted(request,id):
     store = Store.objects.get(store_id=id)
     store.delete()
-    batches = Inventory.objects.filter(batch_id=id)
+    batches = Inventory.objects.filter(store_id_id=id)
     batches.delete()
     message = 'Store has been successfully deleted'
     stores = Store.objects.all()
     context = {'stores':stores,'message':message}
     return render(request,'view_stores.html',context)
-	
-def edit_store(request,id):
-    store = Store.objects.get(id=id)
-    context = {'store':store}
-    return render(request,'edit_store.html',context)   
 
-def store_edited(request,id):
-    store = Store.objects.get(store_id=id)
-    if 'address' in request.GET and request.GET['address'] and 'city' in request.GET and request.GET['city'] and 'city_state' in request.GET and request.GET['city_state'] and 'country' in request.GET and request.GET['country'] and 'region' in request.GET and request.GET['region']:
-        address = request.GET['address']
-        city = request.GET['city']
-        country = request.GET['country']		
-        state = request.GET['city_state']
-        region = request.GET['region']
-        store.address = address
-        store.city = city
-        store.country = country
-        store.state = state
-        store.region = region
-        store.save()
-    stores = Store.objects.all()
-    edit_message = 'Store has been successfully edited'
-    context = {'stores':stores,'edit_message':edit_message}
-    return render(request,'view_stores.html',context)	
+def delete_inventory(request,sid,bid,pid):
+    inv = Inventory.objects.get(store_id_id=sid,product_id_id=pid,batch_id=bid)
+    context = {'inv':inv}
+    return render(request,'delete_inventory.html',context)    
+
+def inventory_deleted(request,sid,bid,pid):
+    inv = Inventory.objects.get(store_id_id=sid,product_id_id=pid,batch_id=bid)
+    inv.delete()
+    batches = Inventory.objects.all()
+    store = Store.objects.get(store_id=sid)
+    messagedelete = 'Requested inventory row has been deleted'
+    context = {'store':store,'batches':batches,'messagedelete':messagedelete}
+    return render(request,'inventory_control.html',context)    
+			
+def transaction_home(request):
+    transaction_list = Transaction.objects.all()
+    context = {'transaction_list':transaction_list}
+    return render(request, 'transaction_home.html',context)
+
+
+
+
+			
+			
+			
+			

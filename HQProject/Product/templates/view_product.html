@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>View Products</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/static/Product/bootstrap.css" rel="stylesheet">
+        <link href="/static/Product/bootstrap-responsive.css" rel="stylesheet">
+
+    </head>
+    <body>
+
+        <!-- NAVBAR================================================== -->
+        <div class="container">
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner">
+                    <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand">CEG 21 Hypermarket</a>
+                    <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+                    <div class="nav-collapse ">
+                        <ul class="nav pull-right">
+                            <li class="active"><a href="#"> <i class="icon-home icon-white"></i> Home</a></li>
+                            <li><a href="{%url 'filter_products'%}"><i class="icon-star icon-white"></i> Products</a></li>
+                            <li><a href="{%url 'filter_stores'%}"><i class="icon-book icon-white"></i> Stores</a></li>
+                            <li><a href="#"><i class="icon-camera icon-white"></i> Employees</a></li>
+                            <li><a href="#"><i class="icon-comment icon-white"></i> Transactions</a></li>
+                            <form class="navbar-search pull-left">
+                                <input type="text" class="search-query" placeholder="Search">
+                            </form>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div><!-- /.navbar-inner -->
+            </div><!-- /.navbar -->
+        </div> <!-- /.container -->
+
+		
+		<div class="container">
+		<h4>Displaying {{c}}</h4>
+		<h5>Click on product name to view store-wise inventory of product</h5>
+		<table class="table table-striped" data-provides="rowlink">  
+        <thead>  
+          <tr>  
+            <th>Name</th>  
+            <th>Manufacturer</th>  
+            <th>Category</th>  
+          </tr>  
+        </thead>  
+        <tbody>  
+		 {% for p in products %}
+          <tr>  
+            <td><a href="{% url 'view_storewise' p.id %}">{{p.name}}</a></td>     
+            <td>{{p.manufacturer}}</td>  
+            <td>{{p.category}}</td>  
+          </tr> 
+         {% endfor %}		  
+        </tbody>  
+      </table>	
+	  </div>
+		
+		
+	
+		
+        <!-- JavaScript placed at the end of the document so the pages load faster -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script src="/static/Product/bootstrap.min.js"></script>
+       
+  </body>
+</html>
