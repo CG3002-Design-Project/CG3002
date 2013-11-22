@@ -7,6 +7,13 @@
 <link href="/static/Website/bootstrap.css" rel="stylesheet">
 <link href="/static/Website/bootstrap-responsive.css" rel="stylesheet">
 <link href="/static/Website/bootstrap-rowlink.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="/static/Website/bootstrap.min.js"></script>
+<link href="/static/Website/demo_table.css">
+<script src="/static/Website/jquery.js"></script>
+<script src="/static/Website/jquery.dataTables.js"></script>
+<script src="/static/Website/DT_bootstrap.js"></script>
+<script src="/static/Website/bootstrap-alert.js"></script> 
 
 <script type="text/javascript"> var countries = Object();
 
@@ -326,12 +333,45 @@ function print_city_state(oCountrySel, oCity_StateSel)
 }
 </script>
 
+<script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAe7AU0uJTU1sdfRQOiS7wwf1vkVNJxJwQ&sensor=false">
+    </script>
+    <script type="text/javascript">
+      var geocoder;
+  var map;
+
+  function codeAddress() {
+    var address = document.getElementById("address").value;
+	geocoder = new google.maps.Geocoder();
+    var latlng = new google.maps.LatLng(-34.397, 150.644);
+    var mapOptions = {
+      zoom: 14,
+      center: latlng
+    }
+   map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);	
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location
+        });
+      } else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+    });
+	
+  }
+</script>
 
 
 
 
 </head>
- 
+
+
+
+<body> 
  <!-- NAVBAR================================================== -->
         <div class="container">
                     <div class="row-fluid">
@@ -362,7 +402,7 @@ function print_city_state(oCountrySel, oCity_StateSel)
                     <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
-                            <li class="active"><a href="#"> <i class="icon-home icon-white"></i>Home</a></li>
+                            <li><a href="#"> <i class="icon-home icon-white"></i>Home</a></li>
                             <li><a href="{% url 'view_product'%}"><i class="icon-star icon-white"></i>Products</a></li>
                             <li class="active"><a href="{% url 'filter_stores'%}"><i class="icon-book icon-white"></i>Stores</a></li>
                             <li><a href="#"><i class="icon-camera icon-white"></i>Employees</a></li>
@@ -400,7 +440,6 @@ function print_city_state(oCountrySel, oCity_StateSel)
 		{% block edit_inventory %}{% endblock %}
 		{% block edit_product %}{% endblock %}
     </div>		
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="/static/Website/bootstrap.min.js"></script>
+		
 </body>
 </html>

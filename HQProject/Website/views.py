@@ -4,7 +4,6 @@ from django.shortcuts import render
 from django.template import Context, loader, RequestContext
 from Website.models import Store,Product,Inventory,Transaction
 from decimal import *
-from chartit import DataPool, Chart
 import random
 
 def filter_products(request):
@@ -18,8 +17,9 @@ def filter_products(request):
    
    
 def view_product(request):
-    products = Product.objects.all()    
-    context = {'products':products}
+    products = Product.objects.all()
+    message = 'Click on Product ID to view storewise inventory'    
+    context = {'products':products,'message':message}
     return render(request,'view_product.html',context)
 
 
@@ -53,7 +53,7 @@ def product_added(request):
         p.save()
         pr = p 
         products = Product.objects.all()
-        message = 'The following product has been successfully added: '
+        message = 'The following product has been successfully added. '
         context = {'pr':pr,'message':message,'products':products}
         return render(request,'view_product.html',context)
 		
@@ -71,7 +71,7 @@ def product_deleted(request,id):
 	product.status = 'Discontinued'
     product.save()
     products = Product.objects.all()	
-    messagedelete = 'The following product has been discontinued: '
+    message = 'Product has been successfully discontinued '
     context = {'product':product,'products':products,'messagedelete':messagedelete}
     return render(request,'view_product.html',context)	
 			
@@ -92,37 +92,38 @@ def filter_stores(request):
    
    
 def view_stores(request):
-	if 'region' in request.GET and request.GET['region']:
-		region = request.GET['region']
-		if 'country' in request.GET and request.GET['country']:
-			country = request.GET['country']
-			if 'city_state' in request.GET and request.GET['city_state']:
-				city_state = request.GET['city_state']
-				if 'city' in request.GET and request.GET['city']:
-					city = request.GET['city']
-					stores = Store.objects.filter(region=region,country=country,state=city_state,city=city)				
-				else:
-					stores = Store.objects.filter(region=region,country=country,state=city_state)
-			else:
-				if 'city' in request.GET and request.GET['city']:
-					city = request.GET['city']
-					stores = Store.objects.filter(region=region,country=country,city=city)
-				else:
-					stores = Store.objects.filter(region=region,country=country)
-		else:
-			if 'city' in request.GET and request.GET['city']:
-				city = request.GET['city']
-				stores = Store.objects.filter(region=region,city=city)
-			else:
-				stores = Store.objects.filter(region=region)
-	else:
-		if 'city' in request.GET and request.GET['city']:
-			city = request.GET['city']
-			stores = Store.objects.filter(city=city)
-		else:
-			stores = Store.objects.all()	
-	context = {'stores':stores}	
-	return render(request, 'view_stores.html',context)
+    if 'region' in request.GET and request.GET['region']:
+        region = request.GET['region']
+        if 'country' in request.GET and request.GET['country']:
+            country = request.GET['country']
+            if 'city_state' in request.GET and request.GET['city_state']:
+                city_state = request.GET['city_state']
+                if 'city' in request.GET and request.GET['city']:
+                    city = request.GET['city']
+                    stores = Store.objects.filter(region=region,country=country,state=city_state,city=city)				
+                else:
+                    stores = Store.objects.filter(region=region,country=country,state=city_state)
+            else:
+                if 'city' in request.GET and request.GET['city']:
+                    city = request.GET['city']
+                    stores = Store.objects.filter(region=region,country=country,city=city)
+                else:
+                    stores = Store.objects.filter(region=region,country=country)
+        else:
+            if 'city' in request.GET and request.GET['city']:
+                city = request.GET['city']
+                stores = Store.objects.filter(region=region,city=city)
+            else:
+                stores = Store.objects.filter(region=region)
+    else:
+        if 'city' in request.GET and request.GET['city']:
+            city = request.GET['city']
+            stores = Store.objects.filter(city=city)
+        else:
+            stores = Store.objects.all()	
+    message = 'Click on store ID to view store inventory'
+    context = {'stores':stores,'message':message}	
+    return render(request, 'view_stores.html',context)
 
 def view_specific(request,id):
 	store = Store.objects.get(store_id=id)
@@ -162,6 +163,8 @@ def inventory_updated(request,s_id,b_id,p_id):
         ex = request.GET['ed']
         if ex == 'None':
             ex = None
+    else:
+        ex = None	
     batch = Inventory.objects.get(store_id_id=s_id,product_id_id=p_id,batch_id=b_id)
     batch.qty = qty
     batch.minimum_qty = minqty
@@ -189,9 +192,9 @@ def product_edited(request,sid,pid):
     product.category = request.GET['cate']
     product.save()
     store = Store.objects.get(store_id=sid)
-    messageprodupdate = 'The following product has been successfully updated: '
+    message = 'Product has been successfully updated'
     batches = Inventory.objects.filter(store_id=s_id)
-    context = {'product':product,'store':store,'messageprodupdate':messageprodupdate,'batches':batches}
+    context = {'product':product,'store':store,'message':message,'batches':batches}
     return render(request,'inventory_control.html',context)	
 	
 
@@ -309,8 +312,8 @@ def store_created(request):
     store = Store(store_id=id, address=address,city=city,country=country,state=city_state,region=region)
     store.save() 
     stores = Store.objects.all()
-    messageadd = 'Store has been successfully added'
-    context = {'stores':stores,'messageadd':messageadd}
+    message = 'Store has been successfully added'
+    context = {'stores':stores,'message':message}
     return render(request,'view_stores.html',context)
 
 
@@ -334,10 +337,19 @@ def store_edited(request,id):
     store.region = region
     store.save()
     stores = Store.objects.all()
-    edit_message = 'Store has been successfully edited'
-    context = {'stores':stores,'edit_message':edit_message}
+    message = 'Store has been successfully edited'
+    context = {'stores':stores,'message':message}
     return render(request,'view_stores.html',context)		
-		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 def delete_store(request,id):
     store = Store.objects.get(store_id = id)
     context = {'store':store}
@@ -371,70 +383,11 @@ def transaction_home(request):
     transaction_list = Transaction.objects.all()
     context = {'transaction_list':transaction_list}
     return render(request, 'transaction_home.html',context)
-	
-	
-def transaction_stats(request):
-    #Step 1: Create a DataPool with the data we want to retrieve.
-    storeRevenue = \
-        DataPool(
-           series=
-            [{'options': {
-               'source': Transaction.objects.all()},
-              'terms': [
-                'store_id',
-                'cost_price']}
-             ])
 
-    def storename(store_id):
-        return store_id
 
-    productrevenue = \
-        DataPool(
-           series=
-            [{'options': {
-               'source': Transaction.objects.all()},
-              'terms': [
-                'product_id',
-                'cost_price']}
-             ])
 
-    #Step 2: Create the Chart object
-    transaction_stats1 = Chart(
-            datasource = storeRevenue,
-            series_options =
-              [{'options':{
-                  'type': 'pie',
-                  'stacking': False},
-                'terms':{
-                  'store_id': [
-                    'cost_price']
-                  }}],
-            chart_options =
-              {'title': {
-                   'text': 'Revenue by Stores'}},
-            x_sortf_mapf_mts = (None,storename,False))
 
-    transaction_stats2 = Chart(
-            datasource = productrevenue,
-            series_options =
-              [{'options':{
-                  'type': 'bar',
-                  'stacking': False},
-                'terms':{
-                  'product_id': [
-                    'cost_price']
-                  }}],
-            chart_options =
-              {'title': {
-                   'text': 'Revenue per Product'},
-               'xAxis': {
-                    'title': {
-                       'text': 'Product ID'}}})    
-
-    #return render_to_response('transaction_stats.html',{'transaction_stats': transaction_stats})
-    return render(request,'transaction_stats.html',
-                    {
-                        'transaction_stats': [transaction_stats1, transaction_stats2],
-                    }
-                )
-
+			
+			
+			
+			

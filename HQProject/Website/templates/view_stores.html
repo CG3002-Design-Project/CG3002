@@ -9,36 +9,38 @@
 			
 <div id="widget" class="container">
 <form action="{% url 'view_stores'%}" method="get">
-Choose Region: <select onchange="set_country(this,country,city_state)" size="1" name="region">
+Region: <select onchange="set_country(this,country,city_state)" size="1" name="region">
 <option value=""selected="selected">Select Region</option>
 
 <script type="text/javascript">
 setRegions(this);
 </script>
 </select>
-Choose Country: <select name="country" size="1" disabled="disabled" onchange="set_city_state(this,city_state)"></select>
-State: <select name="city_state" size="1" disabled="disabled" onchange="print_city_state(country,this)"></select></br></br>
-City: <input type="text" name="city">
-</br></br><input type="submit" value="Submit" class="btn">
+Country: <select name="country" size="1" disabled="disabled" onchange="set_city_state(this,city_state)"></select>
+State: <select name="city_state" size="1" disabled="disabled" onchange="print_city_state(country,this)"></select>
+City: <input type="text" name="city" >
+<input type="submit" value="Submit" class="btn btn-primary" style="float:right">
 </form>
 </div>
 
-<div class="container">
-<h5>{{message}}</h5>
-<h5>{{edit_message}}</h5>
-<h5>{{messageadd}}</h5>
-<h5>Click on a store address to perform the following operations for the store:</h5>
-<h5>1. Inventory Control</h5>
-<h5>2. Employee Control</h5></br>
+<div class = "container">
+<div class="alert">  
+  <a class="close" data-dismiss="alert">×</a>  
+  <strong> {{message}} </strong> 
+</div>  
+</div>
 
-
+</br>
 <style type="text/css">
     table { page-break-inside:auto }
     tr    { page-break-inside:avoid; page-break-after:auto }
     thead { display:table-header-group }
     tfoot { display:table-footer-group }
 </style>
-<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered dataTable" id="example" aria-describedby="example_info" data-provides="rowlink">  
+
+
+<div class="container">
+<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered dataTable" id="example" aria-describedby="example_info">  
         <thead>  
           <tr>  
             <th>Address</th>  
@@ -46,6 +48,8 @@ City: <input type="text" name="city">
             <th>State</th>  
             <th>Country</th>  
 			<th>Region</th> 
+			<th>Edit</th>
+			<th>Delete</th>
           </tr>  
         </thead>  
         <tbody>  

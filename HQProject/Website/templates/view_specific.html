@@ -1,12 +1,25 @@
 {% extends "base_store.html" %}
-{% block view_specific%}
 
-		<div class ="container">
-		<h4>Welcome to CEG21 HyperMarket at {{store.address}}, {{store.city}}, {{store.state}}, {{store.country}}</h4>
-		</br></br>
-		<form action = "{% url 'inventory_control' store.store_id%}" method="get">
-		<input type="submit" value="Inventory Control">
-		</form>	
-		</div>
-				
-   {%endblock%}
+{% block addspecific%}
+<li><a href="{%url 'inventory_control' store.store_id%}">View Inventory</a></li>
+<li><a href="{%url 'add_inventory' store.store_id%}">Add Inventory</a></li>	
+{%endblock%}
+
+
+{% block view_specific%}
+<body onload="codeAddress()">
+
+<div class ="container" style="text-align:center">
+<h4>Welcome to CEG21 HyperMarket at </h4>
+<h3>{{store.address}}, {{store.city}}, {{store.state}}, {{store.country}}</h3>
+</div></br>
+
+ <div id="map-canvas" style="width: 960px; height: 320px;  margin-left:auto; margin-right:auto;"></div>
+  <div>
+    <input id="address" type="hidden" value="{{store.address}}, {{store.city}}, {{store.country}}">
+  </div></br></br>
+ </body>
+	
+		
+{%endblock%}		
+	
