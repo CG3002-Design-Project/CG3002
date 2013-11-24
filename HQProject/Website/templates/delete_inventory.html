@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+<title>Delete</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="/static/Website/bootstrap.css" rel="stylesheet">
+<link href="/static/Website/bootstrap-responsive.css" rel="stylesheet">
+<link href="/static/Website/bootstrap-rowlink.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    $('#myModal').modal('show')
+});
+</script>
+</head>
+<body>	
+
+<div class="modal hide fade" id="myModal">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3>Delete</h3>
+  </div>
+  <div class="modal-body"> 
+    <p>Are you sure you want to delete the inventory</br>
+	Product ID: {{inv.product_id_id}},  Batch ID: {{inv.batch_id}}</p>
+	Choose Reason: <select id="reason" class="selectpicker" name="reason">
+				<option>Damaged Items</option>
+				<option>Expired Items</option>
+				<option>Out of Stock</option>
+				</select>	
+  </div>
+  <div class="modal-footer">
+    <a href="{% url 'inventory_control' inv.store_id_id%}" class="btn">Close</a>
+    <a href="{% url 'inventory_deleted'  inv.store_id_id inv.batch_id inv.product_id_id%}" class="btn btn-primary">Delete</a>
+  </div>
+</div>
+
+<script src="/static/Website/bootstrap.min.js"></script>
+</body>
+</html>

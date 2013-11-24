@@ -2,11 +2,18 @@
 
 <html>
 <head>
-<title>View Stores</title>
+<title>Product</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="/static/Website/bootstrap.css" rel="stylesheet">
 <link href="/static/Website/bootstrap-responsive.css" rel="stylesheet">
 <link href="/static/Website/bootstrap-rowlink.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="/static/Website/bootstrap.min.js"></script>
+<link href="/static/Website/demo_table.css">
+<script src="/static/Website/jquery.js"></script>
+<script src="/static/Website/jquery.dataTables.js"></script>
+<script src="/static/Website/DT_bootstrap.js"></script>
+<script src="/static/Website/bootstrap-alert.js"></script> 
 
 <script type="text/javascript"> var countries = Object();
 
@@ -362,11 +369,11 @@ function print_city_state(oCountrySel, oCity_StateSel)
                     <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
-                            <li class="active"><a href="#"> <i class="icon-home icon-white"></i>Home</a></li>
-                            <li><a href="../../Product"><i class="icon-star icon-white"></i>Products</a></li>
-                            <li><a href="../../Store"><i class="icon-book icon-white"></i>Stores</a></li>
+                            <li><a href="#"> <i class="icon-home icon-white"></i>Home</a></li>
+                            <li class="active"><a href="{% url 'view_product'%}"><i class="icon-star icon-white"></i>Products</a></li>
+                            <li><a href="{% url 'filter_stores'%}"><i class="icon-book icon-white"></i>Stores</a></li>
                             <li><a href="#"><i class="icon-camera icon-white"></i>Employees</a></li>
-                            <li><a href="../../Transactions"><i class="icon-comment icon-white"></i>Transactions</a></li>
+                            <li><a href="{% url 'transaction_home'%}"><i class="icon-comment icon-white"></i>Transactions</a></li>
                             <form class="navbar-search">
                             <input type="text" class="search-query" placeholder="Search"> 
                             </form>
@@ -385,20 +392,15 @@ function print_city_state(oCountrySel, oCity_StateSel)
 		
 		<div class="container">
 		<ul class="nav nav-tabs">
-        <li><a href="{%url 'filter_products'%}">View Products</a></li>
+        <li><a href="{%url 'view_product'%}">View Products</a></li>
         <li><a href="{%url 'add_product'%}">Add Product</a></li>
 		</ul>
 		</div>		
 		<div>
-        {% block filter %}{% endblock %}
+		{% block filter %}{% endblock %}
 		{% block view_products %}{% endblock %}
 		{% block add_product%}{%endblock%}
 		{% block product_added%}{%endblock%}
     </div>
-		
-		
-		
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="/static/Website/bootstrap.min.js"></script>
 </body>
 </html>

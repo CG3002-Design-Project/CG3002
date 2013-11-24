@@ -23,5 +23,5 @@ urlpatterns = patterns('',
 	#url(r'^Store/', include('Store.urls')),
 	#url(r'^Product/', include('Product.urls')),
 	url(r'^Website/', include('Website.urls')),
-    url(r'^Sync/',include('Sync.urls'))
+        url(r'^Sync/',include('Sync.urls'))
 )

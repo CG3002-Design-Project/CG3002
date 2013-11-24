@@ -69,8 +69,8 @@ def invenf():
 	
 
 def main():
-   # invenf() 
-    addToTables()
+    invenf() 
+    #addToTables()
 	
 
 

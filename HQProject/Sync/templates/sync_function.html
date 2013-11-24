@@ -4,9 +4,9 @@
     <link rel="stylesheet" href="style.css" />
     <title>Push to Local</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/static/Website/bootstrap.css" rel="stylesheet">
-    <link href="/static/Website/bootstrap-responsive.css" rel="stylesheet">
-    <link href="/static/Website/bootstrap-rowlink.css" rel="stylesheet">
+    <link href="/static/Sync/bootstrap.css" rel="stylesheet">
+    <link href="/static/Sync/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/static/Sync/bootstrap-rowlink.css" rel="stylesheet">
 </head>
 
 <body>
@@ -60,69 +60,20 @@
         </div> <!-- /.container -->
 
 
-<!--form action = "{%url 'transactions_added' %}" method="get">
-<div class="container">
-Transaction ID: <input type="text" class="input-xlarge" id="inputName" size="1000" name="transaction_id"></br>
-Cash Register ID: <input type="text" class="input-xlarge" id="inputName" size="1000" name="cashreg_id"></br>
-Product Name: <input type="text" class="input-xlarge" id="inputName" size="1000" name="product_name"></br>
-Barcode: <input type="text" class="input-xlarge" id="inputName" size="1000" name="barcode"></br>
-<Selling Price: <input type="text" class="input-xlarge" id="inputName" size="1000" name="sp"></br> >
-Qty: <input type="text" class="input-xlarge" id="inputName" size="1000" name="qty"></br>
-Purchase Date: (in YYYY-MM-DD format) <input type="text" class="input-xlarge" id="inputName" size="1000" name="purchase_date"></br>
-<a href="#myModal" role="button" class="btn" data-toggle="modal">Submit</a>
-</div-->
-
-<form action = "{%url 'transactions_added' %}" method="get">
-<div class="container">
-<div class="input-group input-group-sm">
-  <span class="input-group-addon">Transaction ID</span>
-  <input type="text" class="form-control" placeholder="Transaction ID" name="transaction_id">
-</div>
-<div class="input-group input-group-sm">
-  <span class="input-group-addon">Cash Register ID</span>
-  <input type="text" class="form-control" placeholder="Cash Register ID" name="cashreg_id">
-</div>
-<div class="input-group input-group-sm">
-  <span class="input-group-addon">Barcode</span>
-  <input type="text" class="form-control" placeholder="Barcode" name="barcode">
-</div>
-<div class="input-group input-group-sm">
-  <span class="input-group-addon">Quantity</span>
-  <input type="text" class="form-control" placeholder="Quantity" name="qty">
-</div>
-<div class="input-group input-group-sm">
-  <span class="input-group-addon">Selling Price</span>
-  <input type="text" class="form-control" placeholder="Selling Price" name="sp">
-</div>
-<div class="input-group input-group-sm">
-  <span class="input-group-addon">Purchase Date</span>
-  <input type="text" class="form-control" placeholder="Purchase Date" name="purchase_date">
-</div>
-<a href="#myModal" role="button" class="btn" data-toggle="modal">Submit</a>
-</div>
-
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Submit</h3>
-  </div>
-  <div class="modal-body">
-    <p>Are you sure you want to submit?</p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
-    <input type="submit" value="Submit" class="btn">
-  </div>
-</div-
-</form>
-
-<div class="container">
-            <a href="/Transactions/" class="btn btn-primary btn-sm">Back</a>
-</div>
-<div id="content">
-    {% block content %}{% endblock %}
-</div>
-
+<html>
+        <h2>Manual Sync</h2>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <body>
+                <div>
+                <a href="{% url 'sync_function'%}" role="button" class="btn" data-toggle="modal">SYNC TRANSACTION WITH SHOPS</a>
+                </div>
+         <style>
+        #btn {
+                        position:absolute;
+            left: 500px;
+                        bottom: 300px;
+        }
+    </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="/static/Transactions/bootstrap.min.js"></script>
 

@@ -52,29 +52,13 @@
 			<td>{{b.selling_price}}</td>
             <td>{{b.minimum_qty}}</td>
             <td>{{b.expiry_date}}</td>			
-			<td><a href = "{% url 'edit_inventory' b.store_id_id b.batch_id b.product_id_id%}" input type="submit" class="btn">EDIT</a></td>
-			<form action = "{%url 'inventory_deleted' b.store_id_id b.batch_id b.product_id_id%}">
-			<td><a href="#mymodal" role="button" class="btn" data-toggle="modal">Delete</a></td>
-          </tr> 
-         {% endfor %}		  
-        </tbody>  
-      </table>	
-
-
- <div id="mymodal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-   <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Submit</h3>
-  </div>
-  <div class="modal-body">
-    <p>Are you sure you want to delete?</p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
-	<a href="{%url 'inventory_deleted' b.store_id_id b.batch_id b.product_id_id%}" role="button" class="btn">Yes</a>
-  </div>
-</div>	
-</form>
-</div>
-
-{%endblock%}
+			<td><a href = "{% url 'edit_inventory' b.store_id_id b.batch_id b.product_id_id%}" class="btn">Edit</a></td>		
+			<td><a href = "{% url 'delete_inventory' b.store_id_id b.batch_id b.product_id_id%}" class="btn">Delete</a></td>		
+            </tr>
+			{% endfor %}	
+          </tbody>
+          </table>
+			
+{%endblock%}			
+			
+		
