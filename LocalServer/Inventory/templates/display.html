@@ -37,6 +37,7 @@
                     <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
+							<li id="home-link"><a href="{% url 'home'%}"></i>Home</a></li>
                             <li id="product-link"><a href="{% url 'product'%}"></i>Products</a></li>
                             <li id="stock-link"><a href="{% url 'inventory'%}"></i>Stock</a></li>
 							<li id="display-link"><a href="{% url 'display'%}"></i>Price Display</a></li>
@@ -78,18 +79,20 @@
           <tr>  			
 			<th>Display ID</th>
 			<th>Product ID</th>
-			<th>Batch ID</th>  
+			<th>Batch ID</th>
+			<th>Edit</th>	
           </tr>  
         </thead>  
         <tbody>  
 		{% for p in inventory %}
           <tr>  
-            <td>{{p.display_id}}</td>  
-            <td>{{p.product_id_id}}</td>  
-            <td>{{p.batch_id}}</td>  	
+            <td id = "display_id">{{p.display_id}}</td>  
+            <td id = "product_id">{{p.product_id_id}}</td>  
+            <td id = "batch_id" >{{p.batch_id}}</td>
+			<td><a href = "{% url 'edit_display' p.display_id  p.product_id_id p.batch_id %}" input type="submit" class="btn">EDIT</a></td>	
           </tr> 
          {% endfor %}		  
         </tbody>  
       </table>	
- </div>
-</html>
+	</div>
+	</html>

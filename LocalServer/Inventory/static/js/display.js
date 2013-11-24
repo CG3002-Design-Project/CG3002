@@ -23,14 +23,10 @@ function validPriceDisplay(display_id, barcode,batchid, description){
 	return true;
 }
 
-function initAddDisplay(){
-	$('#confirm-add-display').click(function(){
-	    console.log("reached add button click method");
-		var display_id = $('#inputId').val();
-		var barcode = $('#inputBarcode').val();
-		var batchid = $('#inputBatchid').val();
-		var description = $('#inputDescription').val();
+
+function edit_display(display_id,barcode,batchid,description) {
 		if (validPriceDisplay(display_id, barcode,batchid,description))
+			console.log("valid");
 			$.ajax({url: "http://127.0.0.1:8000/Inventory/check_display",
 					type: 'POST',
 					contentType: "application/json; charset=utf-8",
@@ -60,8 +56,15 @@ function initAddDisplay(){
 										}),
 										success: function (response) {
 											console.log("inside close button");
-											$('#addNewDisplay').modal('hide');
+											console.log(description);
+											if(description == 'edit') {
+												console.log("ajax");
+												document.location.href="http://127.0.0.1:8000/Inventory/display";
+											}		
+											else {		
+												$('#addNewDisplay').modal('hide');
 												location.reload();
+											}	
 										},
 										error: function (response){
 											bootbox.alert(response.responseText);
@@ -83,8 +86,15 @@ function initAddDisplay(){
 										}),
 										success: function (response) {
 											console.log("inside close button");
-											 $('#addNewDisplay').modal('hide');
+											console.log(description);
+											if(description == 'edit') {
+												console.log("ajax");
+												document.location.href="http://127.0.0.1:8000/Inventory/display";
+											}		
+											else {		
+												$('#addNewDisplay').modal('hide');
 												location.reload();
+											}
 										},
 										error: function (response){
 											bootbox.alert(response.responseText);
@@ -93,7 +103,28 @@ function initAddDisplay(){
 							   }		
 			     	}
 		 });
-    });
 
+}
+
+function initAddDisplay(){
+	$('#confirm-add-display').click(function(){
+	    console.log("reached add button click method");
+		var display_id = $('#inputId').val();
+		var barcode = $('#inputBarcode').val();
+		var batchid = $('#inputBatchid').val();
+		var description = $('#inputDescription').val();
+		edit_display(display_id,barcode,batchid,description);
+    });
+	$('#editDisplay').click(function(){
+	    console.log("YAAYNESS");
+		var display_id = $('#display_id').val();
+		console.log(display_id);
+		var barcode = $('#product_id').val();
+		console.log(barcode);
+		var batchid = $('#batch_id').val();
+		console.log(batchid);
+		var description = "edit" 
+		edit_display(display_id,barcode,batchid,description);
+    });
 }
 

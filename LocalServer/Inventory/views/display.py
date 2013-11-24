@@ -15,6 +15,7 @@ import serial
 
 
 def price_display(request):
+	print "view all display"
 	inventory = Inventory.objects.all();
 	list = []
 	for i in inventory:
@@ -23,6 +24,11 @@ def price_display(request):
 			
 	context = {'inventory':list}
 	return render(request,'display.html',context);
+
+def edit_display(request,did, pid, bid):
+	print "entered this function"
+	context = {'did':did, 'pid':pid, 'bid':bid}	
+	return render(request,'edit_display.html',context)
 	
 def createConnection():
 	if os.name == 'posix':
