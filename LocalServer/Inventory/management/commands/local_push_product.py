@@ -13,7 +13,7 @@ import json
 import os
 import time
 import serial
-from restock import *
+#from restock import *
 shopid = 00000005
 cashid = 00001
 

@@ -24,30 +24,22 @@ def edit_inventory(request, pid, bid):
 	inventory = Inventory.objects.get(product_id=pid,batch_id=bid)
 	context = {'inventory':inventory}	
 	return render(request,'edit_inventory.html',context)
-	
+
+@csrf_exempt	
 def update_inventory(request):
 		  
-	print "reached here"  
-	product_id = request.GET['product_id_id']
-	batch_id = request.GET['batch_id']
-	qty = request.GET['qty']
-	selling_price = request.GET['selling_price']
-	minimum_qty = request.GET['minimum_qty']
-	cost_price = request.GET['cost_price']
-	strategy_percentage = request.GET['strategy_percentage']
-	display_id = request.GET['display_id']
+	d =  json.loads(request.body)
+	product_id = d['product_id_id']
+	batch_id = d['batch_id']
+	qty = d['qty']
+	selling_price = d['selling_price']
+	minimum_qty = d['minimum_qty']
+	cost_price = d['cost_price']
+	strategy_percentage = d['strategy_percentage']
+	display_id = d['display_id']
 	
 	inventory = Inventory.objects.get(product_id_id = product_id, batch_id = batch_id)
 	
-	if request.GET['expiry_date']:
-		expiry_date = request.GET['expiry_date']
-		if expiry_date == 'None':
-			expiry_date = None
-
-	if request.GET['display_id']:
-		display_id = request.GET['display_id']
-		if display_id == 'None':
-			display_id = None	
 			
 	inventory.product_id_id = product_id
 	inventory.batch_id = batch_id
@@ -55,15 +47,15 @@ def update_inventory(request):
 	inventory.selling_price = selling_price
 	inventory.minimum_qty = minimum_qty
 	inventory.cost_price = cost_price
-	inventory.expiry_date = expiry_date
 	inventory.strategy_percentage = strategy_percentage
-	inventory.display_id = display_id
 	inventory.save()
 		
-	messageupdate = 'Product has been successfully updated'
-	inventory_result = Inventory.objects.all();
-	context = {'inventory': inventory_result}
-	return render(request,'inventory.html',context)	
+	payload = {	
+	 'messageupdate' : 1,
+	}
+	data = json.dumps(payload)
+	print data;
+	return HttpResponse(data,mimetype='application/json')	
 	
 
 		

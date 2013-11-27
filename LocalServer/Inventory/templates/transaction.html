@@ -34,7 +34,6 @@
                     <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
-							<li id="home-link"><a href="{% url 'home'%}"></i>Home</a></li>
                             <li id="product-link"><a href="{% url 'product'%}"></i>Products</a></li>
                             <li id="stock-link"><a href="{% url 'inventory'%}"></i>Stock</a></li>
 							<li id="display-link"><a href="{% url 'display'%}"></i>Price Display</a></li>
@@ -44,27 +43,7 @@
                     </div><!--/.nav-collapse -->
                 </div><!-- /.navbar-inner -->
             </div><!-- /.navbar -->
-			<a href="#addNewTransaction" role="button" class="btn" data-toggle="modal">New Transaction</a>
-			<div id="addNewTransaction" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="addNewTransactionLabel" aria-hidden="true">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 id="addNewTransactionLabel">Add New Transaction</h3>
-				</div>
-				<div class="modal-body">
-					<table class="table" id="item-table"><thead><tr><th class="span2">Product Name</th><th class="span2">Quantity</th><th class="span2">Unit Price</th><th class="span1">Subtotal</th><th></th></tr></thead></table><hr/>
-					<div>Total: $<span id = "total-price">0</span></div><hr/>
-					<form id ="new-item-form" class="form-horizontal" onsubmit="return false;">
-						<input type="text" class="span2" id="inputBarcode" placeholder="Barcode" /> 
-						<input type="text" class="span2" id="inputQuantity" placeholder="Quantity" /> &nbsp;
-						<input type="text" class="span2" id="inputBatchID" placeholder="Batchid" /> &nbsp;
-						<button class="btn" id = "add-item">Add</button><span id="prompt-error" class="invalid" style="display:none;">&nbsp; *Please fill in all fields</span>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-					<button id ="confirm-checkout" class="btn btn-primary">Checkout</button>
-				</div>
-			</div>
+			<a href="{% url 'add_transaction'%}"" role="button" class="btn" data-toggle="modal">New Transaction</a>	
     </div> <!-- /.container -->
 	</head>
 	<br>

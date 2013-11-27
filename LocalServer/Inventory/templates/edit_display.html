@@ -31,7 +31,6 @@
                     <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
-							<li id="home-link"><a href="{% url 'home'%}"></i>Home</a></li>
                             <li id="product-link"><a href="{% url 'product'%}"></i>Products</a></li>
                             <li id="stock-link"><a href="{% url 'inventory'%}"></i>Stock</a></li>
 							<li id="display-link"><a href="{% url 'display'%}"></i>Price Display</a></li>
@@ -51,6 +50,7 @@
 Display ID: <input type="text" size="1000" id="display_id" value="{{did}}" required></br>
 Product ID: <input type="text" size="1000" id="product_id" value="{{pid}}" required></br>
 Batch ID: <input type="text" size="1000" id="batch_id" value="{{bid}}" required></br>
+<button id ="cancel" class="btn">Cancel</button> &nbsp;
 <button id ="editDisplay" class="btn btn-primary">Edit</button>
 </div>
 </html>

@@ -8,6 +8,8 @@
 	<link href="/static/css/bootstrap-rowlink.css" rel="stylesheet">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script src="/static/js/bootstrap.min.js"></script>
+	<script src="/static/js/bootbox.min.js"></script>
+	<script src="/static/js/inventory.js"></script>
 	
 			<div class="container">
             <div class="row-fluid">
@@ -29,7 +31,6 @@
                     <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
-						    <li id="home-link"><a href="{% url 'home'%}"></i>Home</a></li>
                             <li id="product-link"><a href="{% url 'product'%}"></i>Products</a></li>
                             <li id="stock-link"><a href="{% url 'inventory'%}"></i>Stock</a></li>
 							<li id="display-link"><a href="{% url 'display'%}"></i>Price Display</a></li>
@@ -45,32 +46,20 @@
         <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
 	</head>
 </br>
-<form action = "{%url 'update_inventory'%}" method="get">
+
 <div class="container">
-Product ID: <input type="text" size="1000" name="product_id_id" value="{{inventory.product_id_id}}" readonly></br>
-Batch ID: <input type="text" size="1000" name="batch_id" value="{{inventory.batch_id}}" readonly></br>
-Qty: <input type="text" size="1000" name="qty" value="{{inventory.qty}}" readonly></br>
-Cost Price: <input type="text" size="1000" name="cost_price" value="{{inventory.cost_price}}" required></br>
-Selling Price: <input type="text" size="1000" name="selling_price" value="{{inventory.selling_price}}" required></br>
-Minimum Qty: <input type="text" size="1000" name="minimum_qty" value="{{inventory.minimum_qty}}" required></br>
-Strategy Percentage: <input type="text" size="1000" name="strategy_percentage" value="{{inventory.strategy_percentage}}" required></br>
-Display ID:<input type="text" size="1000" name="display_id" value="{{inventory.display_id}}" required></br>
-Expiry Date: (in YYYY-MM-DD format) <input type="text" size="1000" name="expiry_date" value="{{inventory.expiry_date}}"></br>
-<a href="#myModal" role="button" class="btn" data-toggle="modal">Submit</a>
+Product ID: <input type="text" size="1000" id="product_id_id" value="{{inventory.product_id_id}}" readonly></br>
+Batch ID: <input type="text" size="1000" id="batch_id" value="{{inventory.batch_id}}" readonly></br>
+Qty: <input type="text" size="1000" id="qty" value="{{inventory.qty}}" readonly></br>
+Cost Price: <input type="text" size="1000" id="cost_price" value="{{inventory.cost_price}}" readonly></br>
+Selling Price: <input type="text" size="1000" id="selling_price" value="{{inventory.selling_price}}" required></br>
+Minimum Qty: <input type="text" size="1000" id="minimum_qty" value="{{inventory.minimum_qty}}" required></br>
+Strategy Percentage: <input type="text" size="1000" id="strategy_percentage" value="{{inventory.strategy_percentage}}" required></br>
+Display ID:<input type="text" size="1000" id="display_id" value="{{inventory.display_id}}" readonly></br>
+Expiry Date: (in YYYY-MM-DD format) <input type="text" size="1000" id="expiry_date" value="{{inventory.expiry_date}} " readonly></br>
+<button id ="cancel" class="btn">Cancel</button> &nbsp;
+<button id ="editInventory" class="btn btn-primary">Submit</button>
 </div>
 
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Submit</h3>
-  </div>
-  <div class="modal-body">
-    <p>Are you sure you want to submit?</p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
-	<input type="submit" value="Submit" class="btn">
-  </div>
-</div>
-</form>
+
 </html>

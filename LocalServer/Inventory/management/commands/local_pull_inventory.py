@@ -48,7 +48,7 @@ class Command(BaseCommand):
 
             for inventory in inventor:
                 if(inventory is not None): 
-                    inventory.product_id = product_id
+                    inventory.product_id_id = product_id
                     inventory.batch_id = batch_id
                     inventory.qty = qty
                     inventory.cost_price = cost_price

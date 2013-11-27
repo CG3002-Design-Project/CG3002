@@ -1,0 +1,1 @@
+cd C:\Users\Poornima\Documents\GitHub\CG3002\LocalServer && python manage.py request_details_delete

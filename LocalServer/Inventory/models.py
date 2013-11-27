@@ -7,12 +7,12 @@ class Inventory(models.Model):
 	product_id = models.ForeignKey('Product')
 	qty = models.PositiveIntegerField(validators=[MaxValueValidator(531441), MinValueValidator(0)])
 	selling_price = models.DecimalField(max_digits=6,decimal_places=2) #create validator
-	minimum_qty = models.PositiveIntegerField(validators=[MaxValueValidator(531441), MinValueValidator(0)])
-	batch_id = models.PositiveIntegerField(validators=[MaxValueValidator(59049)])
+	minimum_qty = models.PositiveIntegerField(validators=[MaxValueValidator(999999), MinValueValidator(0)])
+	batch_id = models.PositiveIntegerField(validators=[MaxValueValidator(99999)])
 	cost_price = models.DecimalField(max_digits=6,decimal_places=2)
 	expiry_date = models.DateField(auto_now=False,auto_now_add=False, null=True, blank = True)
 	strategy_percentage = models.DecimalField(max_digits=6,decimal_places=2,blank=True,null=True)
-	display_id = models.DecimalField(max_digits=6,decimal_places=2, null = True, blank = True)
+	display_id = models.DecimalField(max_digits=4,decimal_places=0, null = True, blank = True)
 	
 class Product(models.Model):
 	product_id = models.PositiveIntegerField(validators=[MaxValueValidator(99999999)],primary_key=True )

@@ -126,5 +126,19 @@ function initAddDisplay(){
 		var description = "edit" 
 		edit_display(display_id,barcode,batchid,description);
     });
+	$('#refreshDisplay').click(function(){
+	    console.log("refresh display is clicked");
+		$.ajax({
+				url: "http://127.0.0.1:8000/Inventory/write_to_display",
+				success: function (response) {
+					bootbox.alert("LCD reset successfully");
+				}
+				});
+				
+    });
+	$('#cancel').click(function(){
+	    console.log("refresh display is clicked");
+		document.location.href="http://127.0.0.1:8000/Inventory/display";
+    });
 }
 

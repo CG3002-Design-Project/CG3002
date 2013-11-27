@@ -13,7 +13,7 @@ import json
 import os
 import time
 import serial
-from restock import *
+#from restock import *
 shopid = 00000005
 cashid = 00001
 
@@ -37,14 +37,13 @@ class Command(BaseCommand):
                 list.append({'qty' : str(i.qty), 
                             'batchid' : str(i.batch_id),
                             'product_id': str(i.product_id_id),
-                             'minimum_qty': str(i.minimum_qty),
-                             'selling_price' : str(i.selling_price),
-                             'shopid': shopid}) 
+                            'minimum_qty': str(i.minimum_qty),
+                            'selling_price' : str(i.selling_price),
+                            'shopid': shopid}) 
             payload = {
                     'inventory': list   
             }
             data = json.dumps(payload)
-            print data;
             headers = {'content-type': 'application/json'}
             res = requests.post(hq_host_inventory ,data,headers = headers)                    
 

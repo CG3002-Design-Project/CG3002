@@ -37,6 +37,8 @@ def request_details_sync(request):
 	if(request is not None):
 		list = []
 		for i in request:
+			i.status = "sent"
+			i.save();
 			list.append({'qty' : str(i.qty), 
 						'request_id' : str(i.request_id),
 						'product_id': str(i.product_id),
@@ -191,3 +193,37 @@ def transaction_sync(request):
 		headers = {'content-type': 'application/json'}
 		res = requests.post(hq_host_transaction,data,headers = headers)
 		return render(request,'sync_function.html');
+		
+		
+def transaction_remove(request):
+	transaction = Transaction.objects.all()
+	if(transaction is not None):
+		for i in transaction:
+			i.delete();
+				
+				
+def update_request_details(request):
+	inventory = Inventory.objects.all()
+	requests = RequestDetails.objects.all()
+	
+	for i in inventory:
+		batches = Inventory.objects.filter(product_id_id=i.product_id_id)
+		tot = 0 
+		for b in batches:
+			tot += b.qty
+		product = Product.objects.get(product_id = i.product_id_id)	
+		if tot > product.min_restock:	
+			pr_requests = RequestDetails.objects.filter(product_id=i.product_id_id)
+			if pr_requests is not None:
+				pr_requests.delete();
+	
+#includes both discontinue delete and inventory batch delete	
+def delete_batch(request):
+	inventory = inventory.objects.all()
+	
+	for i in inventory:
+		if (i.qty == 0):
+			i.delete();
+	
+
+		

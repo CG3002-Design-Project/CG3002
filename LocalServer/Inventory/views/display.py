@@ -9,9 +9,9 @@ from decimal import *
 from django.views.decorators.csrf import csrf_exempt
 import requests
 import json
+import serial
 import os
 import time
-import serial
 
 
 def price_display(request):
@@ -31,44 +31,31 @@ def edit_display(request,did, pid, bid):
 	return render(request,'edit_display.html',context)
 	
 def createConnection():
-	if os.name == 'posix':
-		PORT = "/dev/ttyUSB0"
-	elif os.name == "nt":
-		print "os windows"
-		PORT = "COM8"
-		ser = serial.Serial();
-		print "created"
-		ser.port = PORT;
-		ser.baudrate = 9600
-		ser.timeout = 0.5 
-		try:
-			ser.open()
-		except serial.SerialException: 
-			ser.close()
-			if(ser.isOpen() == False):
-				del ser;
-				ser = serial.Serial();
-				print "creating again"
-				ser.port = PORT;
-				ser.baudrate = 9600
-				ser.timeout = 0.5
-				print "poornima here"
-				print "closing and opening again"
-				ser.open();
-		return ser;
+    if os.name == 'posix':
+        PORT = "/dev/ttyUSB1"
+    elif os.name == "nt":
+        PORT = "COM8"
+    return serial.Serial(PORT, 9600, timeout = 0.5)
 		
-def write_to_display(name,price):
+def write_to_display(request):
 	print "inside this method"
-	ser = createConnection()
-	print ser.name;
-	a = 'p';
-	ser.write(a);
-	print "writing didnt give error";
+	ser = createConnection();
+	print "connection established"
+	inventory = Inventory.objects.all();
+	for i in inventory:
+		product = Product.objects.get(product_id_id = i.product_id);
+		ser.write("*");
+		ser.write(i.display_id);
+		ser.write(product.name);
+		ser.write(i.selling_price);
+        print "finished writing one";	
+	
 	ser.close();
-	#name_ack = ser.read(8);
-	#ser.write(price);
-	#price_ack = ser.read(8);
-
+	print "finished writing all"
+	return HttpResponse("success");
+	
+	
+	
 @csrf_exempt	
 def setDisplayID(request):
 	print "reached setDisplayID method"
@@ -77,6 +64,13 @@ def setDisplayID(request):
 	print d['batchid']
 	print d['display_id']
 	inventory = Inventory.objects.get(product_id_id = d['barcode'], batch_id=d['batchid'])
+	dis_inventory = Inventory.objects.filter(display_id = d['display_id'])
+	print ("same copy");
+	for invent in dis_inventory:
+		if invent is not None:
+			invent.display_id = None;
+			invent.save();
+		
 	product = Product.objects.get(product_id = d['barcode']);
 	payload = {
 		'price' : str(inventory.selling_price),
@@ -110,10 +104,9 @@ def check_display(request):
 			'error': -1
 		}	
 	elif (inventory[0].display_id):
-		product = Product.objects.get(product_id = d['barcode']);
 		payload = {
 			'error': -2,
-		}
+		}	
 	else:
 		 payload = {
 			'error' : 1

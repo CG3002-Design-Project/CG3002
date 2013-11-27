@@ -1,5 +1,18 @@
+<!doctype html>
 <html>
-    <head>
+	<head>
+	<title>View Products</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="/static/css/bootstrap.css" rel="stylesheet">
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+	<link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="/static/css/bootstrap-rowlink.css" rel="stylesheet">
+	<link rel="stylesheet" href="/static/css/screen.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="/static/js/bootstrap.min.js"></script>
+	<script src="/static/js/jquery.js"></script>
+	<script src="/static/js/sync.js"></script>
+	<script src="/static/js/bootbox.min.js"></script>
         <div class="container">
             <div class="row-fluid">
             <div class="span12">
@@ -20,7 +33,6 @@
                     <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
-							<li id="home-link"><a href="{% url 'home'%}"></i>Home</a></li>
                             <li id="product-link"><a href="{% url 'product'%}"></i>Products</a></li>
                             <li id="stock-link"><a href="{% url 'inventory'%}"></i>Stock</a></li>
 							<li id="display-link"><a href="{% url 'display'%}"></i>Price Display</a></li>
@@ -37,30 +49,26 @@
 	</head>
 	<body>
 	<div class="container">
-		<div >
-		<a href="{% url 'transaction_sync'%}" role="button" class="btn" data-toggle="modal">SYNC TRANSACTION WITH HQ</a>
-		</div>
-		<div>
-		<a href="{% url 'inventory_sync'%}" role="button" class="btn" data-toggle="modal">SYNC INVENTORY WITH HQ</a>
-		</div>
-		<div>
-		<a href="{% url 'request_details_sync'%}" role="button" class="btn" data-toggle="modal">RESTOCK WITH HQ</a>
-		</div>
-		<div>
-		<a href="{% url 'product_sync'%}" role="button" class="btn" data-toggle="modal">PRODUCT SYNC WITH HQ</a>
-		</div>
-		<div>
-		<a href="{% url 'pull_product_from_hq'%}" role="button" class="btn" data-toggle="modal">PULL PRODUCT FROM HQ</a>
-		</div>
-		<div>
-		<a href="{% url 'pull_inventory_from_hq'%}" role="button" class="btn" data-toggle="modal">PULL INVENTORY FROM HQ</a>
-		</div>
-		<div>
-		<a href="{% url 'update_perishable_price'%}" role="button" class="btn" data-toggle="modal">PRICING STRATEGY</a>
-		</div>
-		<div>
-		<a href="{% url 'update_nonperishable_price'%}" role="button" class="btn" data-toggle="modal">PRICING STRATEGY FOR NON PERISHABLES</a>
-		</div>
+		<button id ="syncTransaction" type="button" class="btn btn-default btn-lg">
+		  <span class="glyphicon glyphicon-cloud-upload"></span> Sync Transaction
+		</button>
+		<br>
+		<br>
+		<button id ="SyncInventory" type="button" class="btn btn-default btn-lg">
+		  <span class="glyphicon glyphicon-cloud-upload"></span> Sync Inventory
+		</button>
+		<br>
+		<br>
+		<button id ="Restock" type="button" class="btn btn-default btn-lg">
+		  <span class="glyphicon glyphicon-cloud-upload"></span> Send Restock Request
+		</button>
+		<br>
+		<br>
+		<button id ="SyncProduct" type="button" class="btn btn-default btn-lg">
+		  <span class="glyphicon glyphicon-cloud-upload"></span> Sync Product
+		</button>
+		<br>
+		<br>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
         <script src="/static/css/bootstrap.min.js"></script>
 	 <style>

@@ -17,6 +17,10 @@ def calculate_transaction(request):
 	transaction = Transaction.objects.all();
 	context = {'transaction':transaction};
 	return render(request,'transaction.html',context);
+	
+	
+def add_transaction(request):
+	return render(request,'add_transaction.html');	
 
 @csrf_exempt
 def return_price(request):
