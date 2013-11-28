@@ -1,4 +1,4 @@
-8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    14:18:59  11/27/;3  PAGE    1
+8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    10:51:24  11/28/;3  PAGE    1
 
 
 DOS 5.0 (038-N) 8086/87/88/186 MACRO ASSEMBLER V3.1 ASSEMBLY OF MODULE TIMER
@@ -58,7 +58,7 @@ LOC  OBJ                  LINE     SOURCE
                       =1    39     ;IO Setup for 80C188XL 
                       =1    40     ;By Zhu Shunyu
                       =1    41     
-8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    14:18:59  11/27/;3  PAGE    2
+8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    10:51:24  11/28/;3  PAGE    2
 
 
 LOC  OBJ                  LINE     SOURCE
@@ -118,7 +118,7 @@ LOC  OBJ                  LINE     SOURCE
                       =1    93     ;Definition of content of SST register
                       =1    94     ;|Not Use|TE|THRE|BI|FE|PE|OE|DR|
                       =1    95     ;TE Transmitter empty
-8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    14:18:59  11/27/;3  PAGE    3
+8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    10:51:24  11/28/;3  PAGE    3
 
 
 LOC  OBJ                  LINE     SOURCE
@@ -178,7 +178,7 @@ LOC  OBJ                  LINE     SOURCE
   FF52                =1   148              T0_CA     EQU      0FF52H ;
   FF50                =1   149              TO_CNT    EQU      0FF50H   
                       =1   150              
-8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    14:18:59  11/27/;3  PAGE    4
+8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    10:51:24  11/28/;3  PAGE    4
 
 
 LOC  OBJ                  LINE     SOURCE
@@ -238,7 +238,7 @@ LOC  OBJ                  LINE     SOURCE
 001C 9A0000----     E      203                     CALL FAR PTR DELAY
                            204                     
 0021 B038                  205                     MOV AL, 38H ; Set function set
-8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    14:18:59  11/27/;3  PAGE    5
+8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    10:51:24  11/28/;3  PAGE    5
 
 
 LOC  OBJ                  LINE     SOURCE
@@ -298,7 +298,7 @@ LOC  OBJ                  LINE     SOURCE
                            258     ; PRINTNEXTLINE:
                            259                     ; MOV AL, DS:D3[BX]
                            260                     ; CALL FAR PTR DATA_WRITE
-8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    14:18:59  11/27/;3  PAGE    6
+8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    10:51:24  11/28/;3  PAGE    6
 
 
 LOC  OBJ                  LINE     SOURCE
@@ -358,7 +358,7 @@ LOC  OBJ                  LINE     SOURCE
                            313                     
 00B4 B90100                314                     MOV CX, 1H
 00B7 BB----         R      315                     MOV BX, DATA_SEG
-8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    14:18:59  11/27/;3  PAGE    7
+8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    10:51:24  11/28/;3  PAGE    7
 
 
 LOC  OBJ                  LINE     SOURCE
@@ -418,7 +418,7 @@ LOC  OBJ                  LINE     SOURCE
                            368                     ; POP AX
                            369                     ;MOV DX, 180H
                            370                     ;OUT DX, 0FFH
-8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    14:18:59  11/27/;3  PAGE    8
+8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    10:51:24  11/28/;3  PAGE    8
 
 
 LOC  OBJ                  LINE     SOURCE

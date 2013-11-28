@@ -34,23 +34,52 @@ def createConnection():
     if os.name == 'posix':
         PORT = "/dev/ttyUSB1"
     elif os.name == "nt":
-        PORT = "COM8"
+        PORT = "COM10"
     return serial.Serial(PORT, 9600, timeout = 0.5)
-		
+
+@csrf_exempt
 def write_to_display(request):
 	print "inside this method"
-	ser = createConnection();
 	print "connection established"
 	inventory = Inventory.objects.all();
 	for i in inventory:
-		product = Product.objects.get(product_id_id = i.product_id);
-		ser.write("*");
-		ser.write(i.display_id);
-		ser.write(product.name);
-		ser.write(i.selling_price);
-        print "finished writing one";	
+		product = Product.objects.get(product_id = i.product_id_id);
+		ser = createConnection();
+		ser.write("@")
+		time.sleep(0.5);
+		
+		print("writing display id")
+		number = i.display_id
+		if number is not None:
+			while number:
+				digit = number % 10
+				ser.write(number)
+				time.sleep(0.5)
+				# do whatever with digit
+				number /= 10
+			
+			print("writing hash")
+			ser.write("#")
+			time.sleep(0.5);
+			
+			print("writing product name")		
+			s = product.name
+			for a in s:
+				ser.write(a);
+				time.sleep(0.5);
+			print("writing dollar")
+			ser.write("$")
+			time.sleep(0.5);
+			
+			print("writing price")	
+			s = str(i.selling_price)
+			for a in s:
+				ser.write(a);
+				time.sleep(0.5);
+			
+			ser.close();		
+			print "finished writing one";	
 	
-	ser.close();
 	print "finished writing all"
 	return HttpResponse("success");
 	

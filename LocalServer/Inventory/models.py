@@ -5,7 +5,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Inventory(models.Model):
 	#pricing strategy to be added
 	product_id = models.ForeignKey('Product')
-	qty = models.PositiveIntegerField(validators=[MaxValueValidator(531441), MinValueValidator(0)])
+	qty = models.PositiveIntegerField(validators=[MaxValueValidator(99999), MinValueValidator(0)])
 	selling_price = models.DecimalField(max_digits=6,decimal_places=2) #create validator
 	minimum_qty = models.PositiveIntegerField(validators=[MaxValueValidator(999999), MinValueValidator(0)])
 	batch_id = models.PositiveIntegerField(validators=[MaxValueValidator(99999)])

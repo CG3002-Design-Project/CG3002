@@ -1,3 +1,3 @@
-LINK86 working.OBJ, MISC.OBJ TO working.LNK
-LOC86 working.LNK TO working.ABS ST(START) AD(SEGMENTS(CODE_SEG(100H)))
-OH86 working.ABS TO working.HEX
+LINK86 working1.OBJ, MISC.OBJ TO working1.LNK
+LOC86 working1.LNK TO working1.ABS ST(START) AD(SEGMENTS(CODE_SEG(100H)))
+OH86 working1.ABS TO working1.HEX
