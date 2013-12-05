@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
-from django_tables2   import RequestConfig
+#from django_tables2   import RequestConfig
 from django.template import Context, loader, RequestContext
 from Inventory.models import Inventory, RequestDetails
 from Inventory.models import Product

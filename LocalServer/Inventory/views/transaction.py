@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import Context, loader, RequestContext
 from Inventory.models import Inventory, RequestDetails
-from Inventory.models import Product
+from Inventory.models import Product, Cashier
 from Inventory.models import Transaction
 from datetime import date
 from decimal import *
@@ -12,6 +12,7 @@ import json
 import os
 import time
 import serial
+import datetime
 
 def calculate_transaction(request):
 	transaction = Transaction.objects.all();
@@ -22,6 +23,76 @@ def calculate_transaction(request):
 def add_transaction(request):
 	return render(request,'add_transaction.html');	
 
+	
+@csrf_exempt
+def checkId(request):   
+    print 'hihihi'
+    id = request.GET['id']
+    cashier = Cashier.objects.filter(cashier_id=int(id))
+    payload = {}
+    if not cashier:
+        payload = {
+            'error': -1
+        }		   
+    else:
+	    payload = {
+            'error': 0
+        }       
+    data = json.dumps(payload)
+    print data
+    return HttpResponse(data,mimetype='application/json')
+	
+@csrf_exempt
+def get_price(request):
+    print "reached this method"
+    barcode = request.GET['barcode']
+    batchid = request.GET['batchid']
+    qty = request.GET['qty']
+    payload = {}
+    print barcode
+    print batchid
+    print qty
+    inventory = Inventory.objects.filter(product_id_id = barcode, batch_id= batchid)
+    if not inventory:
+        payload = { 'error': -1}	
+    elif(inventory[0].qty < int(qty)):
+        payload = { 'error': -2, 'qty': inventory[0].qty}
+    else:
+        payload = { 'error': 1, 'price': str(inventory[0].selling_price)}		
+    data = json.dumps(payload)
+    print data;
+    return HttpResponse(data,mimetype='application/json')
+
+
+@csrf_exempt
+def deduct_inventory(request):
+    data = json.loads(request.body)
+    inventory = data['product']
+    for i in inventory:
+        batchid = int(i['batchid'])
+        productid=int(i['barcode'])
+        qty = int(i['qty'])
+        cid = i['cid']
+        inv = Inventory.objects.get(product_id_id=productid,batch_id=batchid)
+        inv.qty = inv.qty - qty
+        inv.save()	
+    trans = Transaction.objects.all().order_by('-transaction_id')
+    todayDate = datetime.datetime.now()
+    b = str(todayDate.year) + '-' + str(todayDate.month) + '-' + str(todayDate.date) 
+    if not trans:
+        id = 1
+    else:
+        t = Transaction.objects.filter(transaction_date = datetime.datetime.strptime(b, '%Y-%m-%d').date()).order_by('-transaction_id')
+        if not t:
+            id = 1
+        else:
+            id = t[0] + 1
+    p = Inventory.objects.get(product_id_id=barcode,batch_id=batchid)
+    tran = Transaction(transaction_id=id,transaction_date=datetime.datetime.strptime(b, '%Y-%m-%d').date(),product_id=barcode,batch_id=batchid,selling_price=p.selling_price,cost_price=p.cost_price,cashier_id=int(cid),quantity_sold=qty)
+    tran.save()
+    return HttpResponse('hi')
+
+			
 @csrf_exempt
 def return_price(request):
 	print "reached this method"

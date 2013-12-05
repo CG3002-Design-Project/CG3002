@@ -34,8 +34,8 @@ def createConnection():
     if os.name == 'posix':
         PORT = "/dev/ttyUSB1"
     elif os.name == "nt":
-        PORT = "COM10"
-    return serial.Serial(PORT, 9600, timeout = 0.5)
+        PORT = "COM20"
+    return serial.Serial(PORT, 9600, timeout = 0.0)
 
 @csrf_exempt
 def write_to_display(request):
@@ -43,42 +43,75 @@ def write_to_display(request):
 	print "connection established"
 	inventory = Inventory.objects.all();
 	for i in inventory:
+		print i.product_id_id
 		product = Product.objects.get(product_id = i.product_id_id);
 		ser = createConnection();
+		print 'connection was created'
 		ser.write("@")
-		time.sleep(0.5);
 		
 		print("writing display id")
 		number = i.display_id
+		emptyList = []
 		if number is not None:
-			while number:
-				digit = number % 10
-				ser.write(number)
-				time.sleep(0.5)
-				# do whatever with digit
-				number /= 10
+			#creates an empty list of 4 
 			
+			while number:
+				digit = int(number % 10)
+				print digit
+				emptyList.append(digit) #4321
+				# do whatever with digit
+				number = int(number/10)
+				print emptyList #for loop
+			
+			#reversing the display_id buffer
+			#tester
+			emptyList = list(reversed(emptyList))
+			print emptyList
+			for j in emptyList:
+				print j
+				ser.write(str(j))			
+				time.sleep(0.5)
+				
 			print("writing hash")
 			ser.write("#")
-			time.sleep(0.5);
 			
-			print("writing product name")		
-			s = product.name
-			for a in s:
-				ser.write(a);
+			while(True):
+				charact = ser.read(1)
+				if charact  == '(':
+					flag = 0
+					break
+				elif charact == ')':
+					flag = 1
+					break
+				else:
+					continue
+					
+			print charact
+			if (flag == 0):
+				ser.close()
+				continue
+			elif (flag == 1):			
+				print("writing product name")		
+				s = str(product.name)
+				print s
+				for a in s:
+					ser.write(a)
+					time.sleep(0.5)
+				print("writing dollar")
+				ser.write("$")
 				time.sleep(0.5);
-			print("writing dollar")
-			ser.write("$")
-			time.sleep(0.5);
 			
-			print("writing price")	
-			s = str(i.selling_price)
-			for a in s:
-				ser.write(a);
-				time.sleep(0.5);
-			
-			ser.close();		
-			print "finished writing one";	
+				print("writing price")	
+				s = str(i.selling_price)
+				for a in s:
+					ser.write(a);
+					time.sleep(0.5);
+					
+				print "finished writing one";	
+			else:
+				print 'character wrong'
+		ser.close()
+	
 	
 	print "finished writing all"
 	return HttpResponse("success");
