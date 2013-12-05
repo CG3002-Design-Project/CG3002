@@ -1,0 +1,25 @@
+
+DOS 5.0 (038-N) 8086 LINKER, V2.7
+
+INPUT FILES: SOUNDTRY.OBJ, MISC.OBJ
+OUTPUT FILE: SOUNDTRY.LNK
+CONTROLS SPECIFIED IN INVOCATION COMMAND:
+DATE:  11/27/;3  TIME:  15:08:07
+
+
+LINK MAP OF MODULE SOUNDTRY
+
+LOGICAL SEGMENTS INCLUDED:
+LENGTH ADDRESS ALIGN  SEGMENT         CLASS           OVERLAY
+ 0073H ------    G    ??SEG                                         
+ 0100H ------    G    STACK_SEG                                     
+ 0099H ------    G    DATA_SEG                                      
+ 0000H ------    G    EXTRA_SEG                                     
+ 017AH ------    G    CODE_SEG                                      
+ 00A0H 00000H    A    INT_VEC_SEG                                   
+ 0084H ------    G    INT_RAM_AREA                                  
+ 016BH ------    G    MISC_ROUTINE                                  
+
+INPUT MODULES INCLUDED:
+SOUNDTRY.OBJ(SOUNDTRY)
+MISC.OBJ(MISC)

@@ -1,0 +1,628 @@
+8086/87/88/186 MACRO ASSEMBLER    KEYSOUND                                                 15:34:49  11/27/;3  PAGE    1
+
+
+DOS 5.0 (038-N) 8086/87/88/186 MACRO ASSEMBLER V3.1 ASSEMBLY OF MODULE KEYSOUND
+OBJECT MODULE PLACED IN KEYSOUND.OBJ
+ASSEMBLER INVOKED BY:  C:\ASM86.EXE KEYSOUND.ASM
+
+
+LOC  OBJ                  LINE     SOURCE
+
+                             1 +1  $MOD186
+                             2 +1  $ep
+                             3 +1  $include(80188.inc)
+                      =1     4     ;IO Setup for 80C188XL 
+                      =1     5     ;By Zhu Shunyu
+                      =1     6     
+  FFA0                =1     7             UMCR    EQU    0FFA0H ; Upper Memory Control Register
+  FFA2                =1     8             LMCR    EQU    0FFA2H ; Lower Memory control Register         
+  FFA4                =1     9             PCSBA   EQU    0FFA4H ; Peripheral Chip Select Base Address
+  FFA6                =1    10                     MMCS    EQU        0FFA6H ; Middle memory control register
+  FFA8                =1    11             MPCS    EQU    0FFA8H ; MMCS and PCS Alter Control Register
+                      =1    12                     
+                      =1    13             
+                      =1    14             
+                      =1    15                     
+                      =1    16     ; Initial 80C188XL UCS Pin
+                      =1    17     ; |start address|block size| value for No waits, No Ready   
+                      =1    18     ;   FE000H            8K                 3E04H
+                      =1    19     ;   FC000H           16K                 3C04H
+                      =1    20     ;   F8000H           32K                 3804H
+                      =1    21      
+                      =1    22              
+                      =1    23     ; Initialize Upper Chip Select pin with 8K ROM 
+0000 BAA0FF           =1    24             MOV DX, UMCR
+0003 B8043E           =1    25             MOV AX, 03E04H
+0006 EF               =1    26             OUT DX, AX
+                      =1    27     
+                      =1    28     ; Initialize Lower Chip Select pin with 8k RAM
+0007 BAA2FF           =1    29             MOV DX, LMCR
+000A B8C401           =1    30             MOV AX, 01C4H  ; Starting address 1FFFH, 8K, No waits, last shoud be 5H for 1
+                                    waits      
+000D EE               =1    31                     OUT DX, AL
+                      =1    32                     
+                      =1    33     ; Initialize MPCS to MAP peripheral to IO address
+                      =1    34              ;MOV DX, MPCS
+                      =1    35              ;MOV AX, 2083H ; ;0010 0000 1000 0110; MMCS block size is 20H or 256KB, PCS 
+                                   programmed for I/O operation 
+                      =1    36              ;OUT DX, AL
+                      =1    37                      
+                      =1    38     ; Initialize Middle Memory chip select
+                      =1    39                     ;MOV    DX, MMCS        ; 
+                      =1    40                     ;MOV    AX, 3D03H       ;0100 0000 0000 0110 ;no ready, 2 waits 
+                                      
+                      =1    41                     ;OUT    DX, AX
+                      =1    42                      
+                      =1    43     ; PCSBA initial, set the serial port start from 00H
+000E BAA4FF           =1    44              MOV DX, PCSBA
+0011 B80300           =1    45              MOV AX, 0003H ; Peripheral starting address 00H no READY, No Waits
+0014 EE               =1    46              OUT DX, AL
+                      =1    47     
+8086/87/88/186 MACRO ASSEMBLER    KEYSOUND                                                 15:34:49  11/27/;3  PAGE    2
+
+
+LOC  OBJ                  LINE     SOURCE
+
+                      =1    48     
+                      =1    49     
+                      =1    50     ;Serial port definition and initialize 
+  0000                =1    51              SRB     EQU       00H ; Serial Receiver Buffer Register (R)
+  0000                =1    52              STB     EQU       00H ; Serial Transmitter Holding Register(W)  
+  0001                =1    53              SIER    EQU       01H ; Serial Interrupte Enable Register (w)
+  0002                =1    54              IIR     EQU       02H ; Interrupt Identification Register (R)
+  0003                =1    55              SMD     EQU       03H ; Serial Line Control Register
+  0005                =1    56              SST     EQU       05H ; Serial Line Status Register
+  0000                =1    57              DLL     EQU       00H ; Divisor Latch Least Significant BYTE
+  0001                =1    58              DLM     EQU       01H ; Divisor Latch most  Significant BYTE
+                      =1    59     
+                      =1    60     ;Definition of content of SST register
+                      =1    61     ;|Not Use|TE|THRE|BI|FE|PE|OE|DR|
+                      =1    62     ;TE Transmitter empty
+                      =1    63     ;THRE Transmittor Holding Register Empty
+                      =1    64     ;BI Breakr Interrupt
+                      =1    65     ;FE Framing Error
+                      =1    66     ;PE Parity Error
+                      =1    67     ;OE Overrun Error 
+                      =1    68     ;DR Data Ready
+  0001                =1    69               REC_RDY    EQU   00000001B ;DR bit is 1
+  0020                =1    70               TRAN_RDY   EQU   00100000B ;THRE bit is 1
+  000E                =1    71               ERR_DET    EQU   00001110B ;set FE, PE and OE bits
+  0010                =1    72               BREAK_DET  EQU   00010000B ;BI set
+                      =1    73                       
+                      =1    74     ;Line control register
+                      =1    75     
+                      =1    76     ; Serial Line Control Data
+  0007                =1    77             SMD_DATA     EQU    00000111B ;
+  0003                =1    78             S_INT_ENA    EQU    00000011B
+  0000                =1    79             S_INT_DIS    EQU    00000000B
+                      =1    80        
+                      =1    81     ;1st bit set 1 to access the Divisor latch 
+                      =1    82     ;2 stop bits, 8 data bits, no parity check
+  0087                =1    83             SMD_DATA_DIV EQU    10000111B
+                      =1    84     ; Set divisor value        
+0015 BA0300           =1    85             MOV DX, SMD ;accessing the line control reg
+0018 B087             =1    86             MOV AL, SMD_DATA_DIV ; bit 0 and 1 set to 11, means that each serial characte
+                                   r rec or sent will be 8bits
+                      =1    87                                                             ; bit 2 is set, which means t
+                                   hat because characters are 8 bits, 2 stop bits are generated
+                      =1    88                                                             ; bit 7 is the divisor access
+                                    latch bit (DLAB)
+001A EE               =1    89             OUT DX, AL ; 
+                      =1    90                     
+                      =1    91                     ; the divisor latch is basically a 16 bit register which holds the 16
+                                    bit number that helps set the baud rate 
+                      =1    92                     ; divisor = input frequency/ ( desired baud rate * 16)
+001B BA0000           =1    93             MOV DX, DLL ;lower 8 bits of div latch
+001E B034             =1    94             MOV AL, 52
+0020 EE               =1    95             OUT DX, AL
+0021 BA0100           =1    96             MOV DX, DLM ;higher 8 bits of div latch. 
+                      =1    97                                             ;latch is set to 34h or 52d, which using a 16
+                                   MHz crystal gives a baud rate of 19230
+8086/87/88/186 MACRO ASSEMBLER    KEYSOUND                                                 15:34:49  11/27/;3  PAGE    3
+
+
+LOC  OBJ                  LINE     SOURCE
+
+0024 B000             =1    98             MOV AL, 0
+0026 EE               =1    99             OUT DX, AL
+                      =1   100                     
+                      =1   101     ;SET SERIAL PORT WORKING MODE
+0027 BA0300           =1   102              MOV DX, SMD ; line control register
+002A B007             =1   103              MOV AL, SMD_DATA ; same as previous, but bit 7 set to 0, ready for read or w
+                                   rite operation
+002C EE               =1   104              OUT DX, AL
+                      =1   105                      
+                      =1   106     ;DISABLE SERIAL PORT INT
+002D BA0100           =1   107              MOV DX, SIER ;serial interrupt enable reg
+0030 B000             =1   108              MOV AL, 0 ;all interrupts disables
+0032 EE               =1   109              OUT DX, AL
+                      =1   110     
+                      =1   111     
+                      =1   112     
+                      =1   113     ; Timer control Unit
+                      =1   114       
+  FF66                =1   115              T2_CON    EQU      0FF66H ; Timer 2 Control Register
+  FF62                =1   116              T2_CA     EQU      0FF62H ; Timer 2 compare register
+  FF60                =1   117              T2_CNT    EQU      0FF60H ;
+                      =1   118     
+  FF5E                =1   119              T1_CON    EQU      0FF5EH ; Timer 1 control
+  FF5C                =1   120              T1_CB     EQU      0FF5CH ; Timer 1 compare B
+  FF5A                =1   121              T1_CA     EQU      0FF5AH ; Timer 1 compare A
+  FF58                =1   122              T1_CNT    EQU      0FF58H ; Timer 1 counter
+                      =1   123              
+  FF56                =1   124              T0_CON    EQU      0FF56H ;
+  FF54                =1   125              T0_CB     EQU      0FF54H ;
+  FF52                =1   126              T0_CA     EQU      0FF52H ;
+  FF50                =1   127              TO_CNT    EQU      0FF50H   
+                      =1   128              
+                      =1   129     ; Timer Control Data
+                      =1   130     
+                      =1   131     
+                      =1   132     ;Interrupt Control Registers
+                      =1   133           
+                      =1   134     
+  FF3E                =1   135             INT3_CTRL       EQU 0FF3EH ;Interrupt 3 Control Register
+  FF3C                =1   136             INT2_CTRL       EQU 0FF3CH
+  FF3A                =1   137             INT1_CTRL       EQU 0FF3AH
+  FF38                =1   138             INT0_CTRL       EQU 0FF38H
+  FF32                =1   139             TIMER_CTRL      EQU 0FF32H ;Timer Interrupt Control Register
+  FF30                =1   140             ISR                     EQU 0FF30H ; Interrupt Status Register
+  FF22                =1   141             EOI         EQU 0FF22H ; END OF INTERRUPT REGISTER
+  FF28                =1   142             IMKW        EQU 0FF28H ; Interrupt Mask 
+  FF2A                =1   143             IPMK        EQU 0FF2Ah ; Interrupt Priority Mask 
+                      =1   144     
+                      =1   145     ;| - | - | - | - |MSK|PM2|PM1|PM0| For TCU INT
+                      =1   146     
+                      =1   147     ;| - |SFNM|CAS|LVL|MSK|PM2|PM1|PM0| For TCU INT0,1
+                      =1   148     
+                      =1   149     ;MSK 1-enable, 0-mask int 
+                      =1   150     ;pm0-pm1 Priority
+                      =1   151     
+8086/87/88/186 MACRO ASSEMBLER    KEYSOUND                                                 15:34:49  11/27/;3  PAGE    4
+
+
+LOC  OBJ                  LINE     SOURCE
+
+                           152     NAME keysound
+                           153     ;combines keypad and sound
+                           154     ;use with keycomb.asm
+                           155     ; =========================================================================
+                           156     
+                           157     public  serial_rec_action, timer2_action , timer1_action
+                           158     extrn   print_char:far, print_2hex:far, iodefine:far
+                           159     extrn   set_timer1:far, set_timer2:far, keypad:far
+                           160     
+----                       161     STACK_SEG       SEGMENT
+0000 (256                  162                     DB      256 DUP(?)
+     ??
+     )
+0100                       163             TOS     LABEL   WORD
+----                       164     STACK_SEG       ENDS
+                           165     
+                           166     
+----                       167     DATA_SEG        SEGMENT
+0000 0A                    168             TIMER0_MESS     DB      10,13,'TIMER0 INTERRUPT    '
+0001 0D
+0002 54494D45523020
+     494E5445525255
+     505420202020
+0016 0A                    169             TIMER1_MESS     DB      10,13,'TIMER1 INTERRUPT    '
+0017 0D
+0018 54494D45523120
+     494E5445525255
+     505420202020
+002C 0A                    170             TIMER2_MESS     DB      10,13,'TIMER2 INTERRUPT    '
+002D 0D
+002E 54494D45523220
+     494E5445525255
+     505420202020
+0042 2F                    171             T_COUNT         DB      2FH
+0043 2F                    172             T_COUNT_SET     DB      2FH
+0044 0A                    173             REC_MESS        DB      10,13,'Period of timer0 =     '
+0045 0D
+0046 506572696F6420
+     6F662074696D65
+     7230203D202020
+     2020
+                           174      
+                           175       ;===========LED stuff
+005D 80                    176      LED_displays DB 80H,80H,80H,80H,80H,80H
+005E 80
+005F 80
+0060 80
+0061 80
+0062 80
+                           177             
+                           178             
+0063 00                    179             LED_COUNT DB 00H
+                           180             
+                           181             ;BCD                DB        7EH,30H,6DH,79H,33H,5BH,5FH,70H,7FH,7BH
+0064 5F                    182             CATHODES            DB         5FH,     50H, 6DH, 79H, 72H, 3BH, 3FH, 51H, 7F
+8086/87/88/186 MACRO ASSEMBLER    KEYSOUND                                                 15:34:49  11/27/;3  PAGE    5
+
+
+LOC  OBJ                  LINE     SOURCE
+
+                                   H, 7BH, 80H
+0065 50
+0066 6D
+0067 79
+0068 72
+0069 3B
+006A 3F
+006B 51
+006C 7F
+006D 7B
+006E 80
+006F 3412                  183             DISPLAY_NUM        DW        1234H
+                           184             
+0071 06                    185             empty_led_counter DB 06H
+                           186     ;================LED stuff ends
+                           187       
+                           188       ;============= New Sound Start
+0072 0000                  189             sound_q_head    DW 0H
+0074 0000                  190             sound_q_end             DW 0H
+                           191             
+0076 0000                  192             sound_start_1   DW 0, 0, 0, 0, 0
+0078 0000
+007A 0000
+007C 0000
+007E 0000
+0080 6B0F                  193             sound_end_1     DW 0F6BH, 0F6BH, 0F6BH, 0F6BH, 0F6BH
+0082 6B0F
+0084 6B0F
+0086 6B0F
+0088 6B0F
+                           194             
+                           195             ;=============New sound end
+008A 0000                  196             sound_queue_head DW 0d
+008C FF00                  197             sound_queue_tail DW 255d
+                           198             
+                           199             
+008E 0000                  200             SOUND_REM                       DW      0
+0090 0000                  201             SOUND_SIZE dw 00h
+                           202             ;my_current_sound dd 00h
+                           203             
+0092 0000                  204             my_sound_index  dw 0 ; specifies index ( i.e can be 0,1,2,3,4,5,6,7,8,9,10) ,
+                                    till sound "ten"
+                           205             
+                           206             ;starting address of sounds till "ten" 
+0094 0000                  207             my_sound_word_start DW  0, 4713, 8481, 11945, 15315, 18317, 21615, 26121, 300
+                                   13, 31809,36107
+0096 6912
+0098 2121
+009A A92E
+009C D33B
+009E 8D47
+00A0 6F54
+00A2 0966
+00A4 3D75
+00A6 417C
+8086/87/88/186 MACRO ASSEMBLER    KEYSOUND                                                 15:34:49  11/27/;3  PAGE    6
+
+
+LOC  OBJ                  LINE     SOURCE
+
+00A8 0B8D
+                           208             
+                           209             ; number of words for souund till "ten"
+                           210             ;count starting from 0
+00AA 6912                  211             my_sound_word_size dw 4713, 3768, 3464, 3371, 3002, 3297, 4506, 3893, 1796, 4
+                                   298,3003
+00AC B80E
+00AE 880D
+00B0 2B0D
+00B2 BA0B
+00B4 E10C
+00B6 9A11
+00B8 350F
+00BA 0407
+00BC CA10
+00BE BB0B
+                           212             
+00C0 0000                  213             CURRENT_SOUND DW 0H
+                           214       
+                           215       ;============= Sound End
+                           216       
+----                       217     DATA_SEG        ENDS
+                           218     
+----                       219     EXTRA_SEG SEGMENT
+----                       220     EXTRA_SEG ENDS
+                           221     
+                           222     
+                           223     
+----                       224     CODE_SEG        SEGMENT
+                           225     PUBLIC          START
+                           226     
+                           227     ASSUME  CS:CODE_SEG, SS:STACK_SEG, DS:DATA_SEG , ES:EXTRA_SEG
+                           228     
+0000                       229     START:
+0000 FA                    230             CLI
+                           231     ;initialize stack area
+0001 B8----         R      232             MOV     AX,STACK_SEG            
+0004 8ED0                  233             MOV     SS,AX
+0006 368B260001            234             MOV     SP,TOS
+                           235     
+000B BB----         R      236             MOV BX, DATA_SEG
+000E 8EDB                  237             MOV DS, BX
+                           238             
+                           239             
+                           240     ; Initialize the on-chip pheripherals
+0010 9A0000----     E      241             CALL    FAR PTR IODEFINE
+                           242             
+                           243     ;Initialisation for Sound done in 80188.inc file
+                           244             
+                           245     ; ^^^^^^^^^^^^^^^^^  Start of User Main Routine  ^^^^^^^^^^^^^^^^^^
+                           246             
+                           247     ; Initialize MPCS to MAP peripheral to IO address
+0015 BAA8FF                248              MOV DX, MPCS
+0018 B88320                249              MOV AX, 2083H ; ;0010 0000 1000 0110; MMCS block size is 20H or 256KB, PCS p
+                                   rogrammed for I/O operation 
+8086/87/88/186 MACRO ASSEMBLER    KEYSOUND                                                 15:34:49  11/27/;3  PAGE    7
+
+
+LOC  OBJ                  LINE     SOURCE
+
+001B EE                    250              OUT DX, AL
+                           251                      
+                           252     ; Initialize Middle Memory chip select
+001C BAA6FF                253                     MOV     DX, MMCS        ; 
+001F B80340                254                     MOV     AX, 4003H       ;0100 0000 0000 0110 ;no ready, 2 waits 
+                                      
+0022 EF                    255                     OUT     DX, AX
+                           256             
+                           257             ;call far ptr set_timer2
+0023 9A0000----     E      258             call far ptr set_timer1
+0028 FB                    259             STI
+                           260             
+                           261             ;set the value of sound_q_head and sound_q_end to some test values and run co
+                                   de
+                           262     
+0029                       263     NEXT:   
+0029 9A0000----     E      264             call far ptr keypad     
+                           265                     
+002E EBF9                  266     JMP NEXT
+                           267     
+                           268     ; ^^^^^^^^^^^^^^^ End of User main routine ^^^^^^^^^^^^^^^^^^^^^^^^^
+                           269     
+                           270             
+                           271     ;------------------------------------------------------------------------------ 
+0030                       272     SERIAL_REC_ACTION       PROC    FAR
+0030 51                    273                     PUSH    CX
+0031 53                    274                     PUSH    BX
+0032 1E                    275                     PUSH    DS
+0033 BB----         R      276                     MOV     BX,DATA_SEG             ;initialize data segment register
+0036 8EDB                  277                     MOV     DS,BX
+0038 3C3C                  278                     CMP     AL,'<'
+003A 750B                  279                     JNE     S_FAST
+003C FE064300              280                     INC     DS:T_COUNT_SET
+0040 FE064300              281                     INC     DS:T_COUNT_SET
+0044 EB0D90                282                     JMP     S_NEXT0
+0047                       283     S_FAST:
+0047 3C3E                  284                     CMP     AL,'>'
+0049 7521                  285                     JNE     S_RET
+004B FE0E4300              286                     DEC     DS:T_COUNT_SET
+004F FE0E4300              287                     DEC     DS:T_COUNT_SET
+0053                       288     S_NEXT0:
+0053 B91600                289                     MOV     CX,22                   ;initialize counter for message
+0056 BB0000                290                     MOV     BX,0
+0059 8A4744                291     S_NEXT1:        MOV     AL,DS:REC_MESS[BX]      ;print message
+005C 9A0000----     E      292                     call    FAR ptr print_char
+0061 43                    293                     INC     BX
+0062 E2F5                  294                     LOOP    S_NEXT1
+0064 A04300                295                     MOV     AL,DS:T_COUNT_SET       ;print current period of timer0
+0067 9A0000----     E      296                     CALL    FAR PTR PRINT_2HEX
+006C                       297     S_RET:
+006C 1F                    298                     POP     DS
+006D 5B                    299                     POP     BX
+006E 59                    300                     POP     CX
+006F CB                    301                     RET
+                           302     SERIAL_REC_ACTION       ENDP
+8086/87/88/186 MACRO ASSEMBLER    KEYSOUND                                                 15:34:49  11/27/;3  PAGE    8
+
+
+LOC  OBJ                  LINE     SOURCE
+
+                           303     
+                           304     
+                           305     
+0070                       306     TIMER2_ACTION   PROC    FAR
+0070 50                    307                     PUSH    AX
+0071 1E                    308                     PUSH    DS
+0072 53                    309                     PUSH    BX
+0073 51                    310                     PUSH    CX
+                           311                     
+                           312                     
+0074 59                    313                     POP     CX
+0075 5B                    314                     POP     BX
+0076 1F                    315                     POP     DS
+0077 58                    316                     POP AX
+0078 CB                    317                     RET
+                           318     TIMER2_ACTION   ENDP
+                           319     
+0079                       320     TIMER1_ACTION   PROC    FAR
+0079 50                    321                     PUSH    AX
+007A 1E                    322                     PUSH    DS
+007B 53                    323                     PUSH    BX
+007C 51                    324                     PUSH    CX
+                           325                     
+                           326                     
+007D B8----         R      327                     MOV     AX,DATA_SEG
+0080 8ED8                  328                     MOV     DS,AX
+                           329             
+0082 A17200                330                     MOV AX, DS:sound_q_head
+0085 8B0E7400              331                     MOV CX, DS:sound_q_end
+0089 3BC1                  332                     CMP AX, CX
+008B 741B                  333                     JE reset_pointers
+                           334                     
+                           335                     
+008D 33C0                  336                     XOR AX, AX
+008F 33DB                  337                     xor bx,bx
+0091 B80050                338                     mov ax, 5000h ;address of Middle Memory active? This should activate 
+                                   only middle memory block 1
+0094 8EC0                  339                     mov es, ax
+0096 8B3E7200              340                     mov di, DS:sound_q_head
+                           341                             
+009A 268A05                342                     mov al, es:[di]
+                           343                     
+                           344                     ;call far ptr print_2hex
+                           345                     
+                           346                     ;mov al, es:[di]
+009D BA0002                347                     mov dx, 0200h ;address of PCS4
+00A0 EE                    348                     out dx,al
+                           349     
+00A1 FF067200              350                     inc DS:sound_q_head
+00A5 EB0790                351                     jmp exit_timer1
+                           352     
+00A8                       353     reset_pointers:
+00A8 B80000                354             mov ax, 0d
+00AB A37200                355             mov ds:sound_q_head, ax 
+                           356                     
+8086/87/88/186 MACRO ASSEMBLER    KEYSOUND                                                 15:34:49  11/27/;3  PAGE    9
+
+
+LOC  OBJ                  LINE     SOURCE
+
+                           357                     
+00AE                       358     exit_timer1:    
+00AE 59                    359                     POP     CX
+00AF 5B                    360                     POP     BX
+00B0 1F                    361                     POP     DS
+00B1 58                    362                     POP AX
+00B2 CB                    363                     RET
+                           364                     
+                           365     TIMER1_ACTION   ENDP
+                           366     
+                           367     
+                           368     ;character/number for keypress is in AL
+00B3                       369     analyze_key proc far
+00B3 53                    370     push bx
+00B4 51                    371     push cx
+00B5 52                    372     push dx
+                           373     
+                           374     ;need to access data_segment
+00B6 BB----         R      375     mov bx, data_seg
+00B9 8EDB                  376     mov ds, bx
+                           377     
+                           378     ;check if number has been pressed
+00BB 3C09                  379     cmp al, 09H
+00BD 7F51                  380     jg action_key ;if not number, it is an action key
+                           381     
+                           382     ;if it's a number-
+00BF 33DB                  383     xor bx, bx
+00C1 8AD8                  384     mov bl, al ;bl now has the number
+                           385     
+                           386     
+                           387     ;AUDIO PART
+                           388     ;currently al has the number
+00C3 8B4776                389     mov AX, DS:sound_start_1[BX]
+00C6 A37200                390     mov DS:sound_q_head, AX
+                           391     
+00C9 8B878000              392     mov AX, DS:sound_end_1[BX]
+00CD A37400                393     mov DS:sound_q_end, AX
+                           394     
+                           395     
+                           396     ;LED PART
+                           397     ;call far ptr print_char
+                           398     ;xor bx, bx
+                           399     ;mov bl, al ;bl now has the number
+                           400     
+00D0 8A4764                401     mov al, DS:CATHODES[BX] ;now AL has the BCD version of the number
+                           402     
+00D3 8A0E7100              403     mov cl, DS:empty_led_counter ;this keeps track of how many empty leds (hence how many
+                                    successive buttons pressed)
+00D7 80F900                404     cmp cl, 0H ;no free leds
+00DA 7476                  405     je exit_analyze_key
+                           406     
+00DC 80F906                407     cmp cl, 06H ;all leds empty, no buttons pressed yet
+00DF 750D                  408     jne shift_LEDs ;not empty, we need to shift 
+                           409     
+                           410     ;if equal to 0, first number press
+8086/87/88/186 MACRO ASSEMBLER    KEYSOUND                                                 15:34:49  11/27/;3  PAGE   10
+
+
+LOC  OBJ                  LINE     SOURCE
+
+00E1 BB0500                411     mov bx, 05H ;access the right most LED
+00E4 88475D                412     mov DS:LED_displays[bx], AL ;mov that number into led5
+00E7 FE0E7100              413     dec DS:empty_led_counter ; decrement empty LEDs
+00EB EB6590                414     jmp exit_analyze_key
+                           415     
+00EE                       416     shift_LEDs:
+                           417     ;cl has the number_counter
+00EE 33DB                  418     xor bx, bx
+00F0 8AD9                  419     mov bl, cl 
+                           420     
+00F2 33D2                  421     xor dx, dx
+00F4 8A575D                422     mov dl, DS:LED_displays[bx]
+00F7 FECB                  423     dec bl
+00F9 88575D                424     mov DS:LED_displays[bx], dl
+                           425     
+00FC FEC1                  426     inc cl
+00FE 80F906                427     cmp cl, 06H
+0101 75EB                  428     jne shift_LEDs
+                           429     
+                           430     ;latest number to right most LED
+0103 BB0500                431     mov bx, 05H
+0106 88475D                432     mov DS:LED_displays[bx], al
+0109 FE0E7100              433     dec DS:empty_led_counter ; decrement empty LEDs
+010D EB4390                434     jmp exit_analyze_key
+                           435     
+0110                       436     action_key:
+0110 3C3E                  437     cmp al, '>'
+0112 7407                  438     je clearleds
+0114 3C2E                  439     cmp al, '.'
+0116 742B                  440     je decimal
+0118 EB3890                441     jmp exit_analyze_key
+                           442     
+                           443     ;if it is >
+011B                       444     clearleds:
+                           445     
+011B BB0000                446     mov BX, 0H
+011E C6475D00              447     mov DS:LED_displays[BX], 0H
+0122 43                    448     inc BX
+0123 C6475D00              449     mov DS:LED_displays[BX], 0H
+0127 43                    450     inc BX
+0128 C6475D00              451     mov DS:LED_displays[BX], 0H
+012C 43                    452     inc BX
+012D C6475D00              453     mov DS:LED_displays[BX], 0H
+0131 43                    454     inc BX
+0132 C6475D00              455     mov DS:LED_displays[BX], 0H
+0136 43                    456     inc BX
+0137 C6475D00              457     mov DS:LED_displays[BX], 0H
+013B C606710006            458     mov DS:empty_led_counter, 06H
+0140 EB1090                459     jmp exit_analyze_key
+                           460     
+0143                       461     decimal:
+                           462     
+0143 BB0500                463     mov bx,  05H
+0146 8A4F5D                464     mov cl, DS:LED_displays[BX]
+0149 80C980                465     or cl, 80H ;mask to make the dp place 1
+8086/87/88/186 MACRO ASSEMBLER    KEYSOUND                                                 15:34:49  11/27/;3  PAGE   11
+
+
+LOC  OBJ                  LINE     SOURCE
+
+014C 884F5D                466     mov DS:LED_displays[BX], cl
+014F EB0190                467     jmp exit_analyze_key
+                           468     
+                           469     
+                           470     
+0152                       471     exit_analyze_key:
+                           472     ;mov al, 'E'
+                           473     ;call far ptr print_char
+                           474     
+0152 5A                    475     pop dx
+0153 59                    476     pop cx
+0154 5B                    477     pop bx
+0155 CB                    478     ret
+                           479     
+                           480     
+                           481     analyze_key endp
+                           482     
+                           483     
+                           484     
+----                       485     CODE_SEG        ENDS
+                           486     END
+
+ASSEMBLY COMPLETE, NO ERRORS FOUND

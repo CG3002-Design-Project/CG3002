@@ -1,0 +1,27 @@
+
+DOS 5.0 (038-N) 8086 LINKER, V2.7
+
+INPUT FILES: COMBINE.OBJ, MISC.OBJ, KEYCOMB.OBJ
+OUTPUT FILE: COMBINE.LNK
+CONTROLS SPECIFIED IN INVOCATION COMMAND:
+DATE:  11/07/;3  TIME:  18:08:35
+
+
+LINK MAP OF MODULE COMBINE
+
+LOGICAL SEGMENTS INCLUDED:
+LENGTH ADDRESS ALIGN  SEGMENT         CLASS           OVERLAY
+ 00BAH ------    G    ??SEG                                         
+ 0100H ------    G    STACK_SEG                                     
+ 0053H ------    G    DATA_SEG                                      
+ 00E5H ------    G    CODE_SEG                                      
+ 00A0H 00000H    A    INT_VEC_SEG                                   
+ 0084H ------    G    INT_RAM_AREA                                  
+ 0138H ------    G    MISC_ROUTINE                                  
+ 0018H ------    G    KEYPAD_SEG                                    
+ 00B2H ------    G    KEYPAD_ROUTINE                                
+
+INPUT MODULES INCLUDED:
+COMBINE.OBJ(COMBINE)
+MISC.OBJ(MISC)
+KEYCOMB.OBJ(KEYCOMB)
