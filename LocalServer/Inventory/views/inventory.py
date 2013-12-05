@@ -1,9 +1,9 @@
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
-from django_tables2   import RequestConfig
+#from django_tables2   import RequestConfig
 from django.template import Context, loader, RequestContext
-from Inventory.models import Inventory, RequestDetails
+from Inventory.models import Inventory, RequestDetails, Cashier
 from Inventory.models import Product
 from Inventory.models import Transaction
 from datetime import date
@@ -15,6 +15,8 @@ import time
 import serial
 
 def inventory_list(request):
+	cid3 = Cashier(cashier_id = 1234)
+	cid3.save()
 	inventory = Inventory.objects.all();
 	context = {'inventory':inventory}
 	return render(request,'inventory.html',context);

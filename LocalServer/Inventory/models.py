@@ -1,7 +1,14 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+
 #Create your models here.
+
+
+class Cashier(models.Model):
+	cashier_id = models.PositiveIntegerField(validators=[MaxValueValidator(99999999)],primary_key=True )
+
+
 class Inventory(models.Model):
 	#pricing strategy to be added
 	product_id = models.ForeignKey('Product')
