@@ -12,7 +12,6 @@ from django.template import Context, loader, RequestContext
 from django.db.models import Avg, Sum
 from Website.models import Store,Product,Inventory,Transaction, Employee
 from decimal import *
-from chartit import DataPool, PivotDataPool, Chart, PivotChart
 import random
 
 @login_required

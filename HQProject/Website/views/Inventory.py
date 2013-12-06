@@ -11,7 +11,6 @@ from django.shortcuts import render, render_to_response
 from django.template import Context, loader, RequestContext
 from Website.models import Store,Product,Inventory,Transaction, Employee
 from decimal import *
-from chartit import DataPool, Chart
 import random
 from django.contrib.auth.models import User
     

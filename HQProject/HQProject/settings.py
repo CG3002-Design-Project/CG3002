@@ -15,13 +15,9 @@ DATABASES = {
         'NAME': 'HQ',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'root',
-<<<<<<< HEAD
         'PASSWORD': 'poornima92',
-=======
-        'PASSWORD': 'blinky23',
->>>>>>> c3447bc89a07e4a8fcd3f0a9cfc87baf35081f4f
         'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '3306',                      # Set to empty string for default.
+        'PORT': '3306 ',                      # Set to empty string for default.
     }
 }
 
@@ -127,10 +123,6 @@ INSTALLED_APPS = (
     'Customer',
 	'Sync',
 	'Website',
-<<<<<<< HEAD
-=======
-    'chartit',
->>>>>>> c3447bc89a07e4a8fcd3f0a9cfc87baf35081f4f
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
