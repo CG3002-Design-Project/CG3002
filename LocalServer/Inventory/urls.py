@@ -3,8 +3,13 @@ from django.conf.urls import patterns, url
 from Inventory import views
 
 urlpatterns = patterns('',
+	url(r'^accounts/login/$', 'django.contrib.auth.views.login', name='login'),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page' : '../login'}, name='logout'),
+    url(r'^login_home/$', views.login_home, name='login_home'),
     url(r'^transaction$', views.calculate_transaction, name='transaction'),
 	url(r'^transaction/add_transaction$', views.add_transaction, name='add_transaction'),
+	url(r'^transaction/add_cachier_transaction$', views.add_cachier_transaction, name='add_cachier_transaction'),
+	url(r'^transaction/cachier_transaction$', views.cachier_transaction, name='cachier_transaction'),
 	url(r'^display$', views.price_display, name='display'),
 	url(r'^home$', views.home_page, name='home'),
 	url(r'^sync$', views.sync_function, name='sync'),

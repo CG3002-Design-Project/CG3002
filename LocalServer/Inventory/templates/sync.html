@@ -1,18 +1,18 @@
 <!doctype html>
 <html>
-	<head>
-	<title>View Products</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="/static/css/bootstrap.css" rel="stylesheet">
-	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-	<link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
-	<link href="/static/css/bootstrap-rowlink.css" rel="stylesheet">
-	<link rel="stylesheet" href="/static/css/screen.css" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script src="/static/js/bootstrap.min.js"></script>
-	<script src="/static/js/jquery.js"></script>
-	<script src="/static/js/sync.js"></script>
-	<script src="/static/js/bootbox.min.js"></script>
+        <head>
+        <title>View Products</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/static/css/bootstrap.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+        <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="/static/css/bootstrap-rowlink.css" rel="stylesheet">
+        <link rel="stylesheet" href="/static/css/screen.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script src="/static/js/bootstrap.min.js"></script>
+        <script src="/static/js/jquery.js"></script>
+        <script src="/static/js/sync.js"></script>
+        <script src="/static/js/bootbox.min.js"></script>
         <div class="container">
             <div class="row-fluid">
             <div class="span12">
@@ -20,8 +20,8 @@
                     <h5 class="muted">CEG 21 HyperMarket</h5>
                 </div>
             </div>
-			</div>
-			
+                        </div>
+                        
             <div class="navbar navbar-inverse">
                 <div class="navbar-inner">
                     <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
@@ -35,49 +35,61 @@
                         <ul class="nav pull-left">
                             <li id="product-link"><a href="{% url 'product'%}"></i>Products</a></li>
                             <li id="stock-link"><a href="{% url 'inventory'%}"></i>Stock</a></li>
-							<li id="display-link"><a href="{% url 'display'%}"></i>Price Display</a></li>
+                                                        <li id="display-link"><a href="{% url 'display'%}"></i>Price Display</a></li>
                             <li id="sync-link"><a href="{% url 'sync'%}"></i>Sync</a></li>
                             <li id="transaction-link"><a href="{% url 'transaction'%}"></i>Transactions</a></li>     
                         </ul>
+                                                <ul class="nav pull-right">
+                        {% if user.is_authenticated %}
+                            <li id="logout-link"><a href="{% url 'logout'%}"></i>Logout</a></li> 
+                        {% else %}
+                            <li id="login-link"><a href="{% url 'login'%}"></i>Login</a></li> 
+                        {% endif %}
+                        </ul>
                     </div><!--/.nav-collapse -->
                 </div><!-- /.navbar-inner -->
+                                    {% if user.is_authenticated %}
+                                    <p class="navbar-text pull-right"> Signed in as <a href="#" class="navbar-link">{{ user.first_name }}</a></p>
+                    {% else %}
+                                    <p class="navbar-text pull-right"> Welcome. <a href="/accounts/login" class="navbar-link">Please log in.</a></p>
+                    {% endif %}
             </div><!-- /.navbar -->
-		</div> <!-- /.container -->
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+                </div> <!-- /.container -->
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/static/css/bootstrap.css" rel="stylesheet">
         <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
-	</head>
-	<body>
-	<div class="container">
-		<button id ="syncTransaction" type="button" class="btn btn-default btn-lg">
-		  <span class="glyphicon glyphicon-cloud-upload"></span> Sync Transaction
-		</button>
-		<br>
-		<br>
-		<button id ="SyncInventory" type="button" class="btn btn-default btn-lg">
-		  <span class="glyphicon glyphicon-cloud-upload"></span> Sync Inventory
-		</button>
-		<br>
-		<br>
-		<button id ="Restock" type="button" class="btn btn-default btn-lg">
-		  <span class="glyphicon glyphicon-cloud-upload"></span> Send Restock Request
-		</button>
-		<br>
-		<br>
-		<button id ="SyncProduct" type="button" class="btn btn-default btn-lg">
-		  <span class="glyphicon glyphicon-cloud-upload"></span> Sync Product
-		</button>
-		<br>
-		<br>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        </head>
+        <body>
+        <div class="container">
+                <button id ="syncTransaction" type="button" class="btn btn-default btn-lg">
+                  <span class="glyphicon glyphicon-cloud-upload"></span> Sync Transaction
+                </button>
+                <br>
+                <br>
+                <button id ="SyncInventory" type="button" class="btn btn-default btn-lg">
+                  <span class="glyphicon glyphicon-cloud-upload"></span> Sync Inventory
+                </button>
+                <br>
+                <br>
+                <button id ="Restock" type="button" class="btn btn-default btn-lg">
+                  <span class="glyphicon glyphicon-cloud-upload"></span> Send Restock Request
+                </button>
+                <br>
+                <br>
+                <button id ="SyncProduct" type="button" class="btn btn-default btn-lg">
+                  <span class="glyphicon glyphicon-cloud-upload"></span> Sync Product
+                </button>
+                <br>
+                <br>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
         <script src="/static/css/bootstrap.min.js"></script>
-	 <style>
+         <style>
         #btn {
-			position:absolute;
+                        position:absolute;
             left: 500px;
-			bottom: 300px;
+                        bottom: 300px;
         }
     </style>
-	</div>
-	</body>
+        </div>
+        </body>
 </html>

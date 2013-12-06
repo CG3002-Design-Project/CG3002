@@ -1,8 +1,8 @@
 from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+from django.contrib import admin
+admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
@@ -13,15 +13,20 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls)),
 	#(r'^statinfo/$', 'homepage.views.stat_info'),
-    #(r'^accounts/login/$', 'django.contrib.auth.views.login'),
-    #(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page' : '/accounts/login'}),
+    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    (r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page' : '/accounts/login'}),
     #(r'^mainmenu/$', 'homepage.views.mainmenu'),
 	#(r'^search-form/$','products.views.search_form'),
     #(r'^search/$','products.views.search')
 	#url(r'^Store/', include('Store.urls')),
 	#url(r'^Product/', include('Product.urls')),
 	url(r'^Website/', include('Website.urls')),
-        url(r'^Sync/',include('Sync.urls'))
+<<<<<<< HEAD
+    url(r'^Sync/',include('Sync.urls'))
+=======
+    url(r'^Customer/', include('Customer.urls')),
+    url(r'^Sync/',include('Sync.urls')),
+>>>>>>> c3447bc89a07e4a8fcd3f0a9cfc87baf35081f4f
 )

@@ -6,3 +6,4 @@ from pricing_strategy import *
 from product import *
 from inventory import *
 from home import *
+from login import *

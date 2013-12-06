@@ -1,0 +1,31 @@
+
+DOS 5.0 (038-N) 8086 LINKER, V2.7
+
+INPUT FILES: KEYSOUND.OBJ, MISC.OBJ, KEYCOMB.OBJ
+OUTPUT FILE: KEYSOUND.LNK
+CONTROLS SPECIFIED IN INVOCATION COMMAND:
+DATE:  11/27/;3  TIME:  15:35:18
+
+
+LINK MAP OF MODULE KEYSOUND
+
+LOGICAL SEGMENTS INCLUDED:
+LENGTH ADDRESS ALIGN  SEGMENT         CLASS           OVERLAY
+ 00B3H ------    G    ??SEG                                         
+ 0100H ------    G    STACK_SEG                                     
+ 00C2H ------    G    DATA_SEG                                      
+ 0000H ------    G    EXTRA_SEG                                     
+ 0156H ------    G    CODE_SEG                                      
+ 00A0H 00000H    A    INT_VEC_SEG                                   
+ 0084H ------    G    INT_RAM_AREA                                  
+ 016BH ------    G    MISC_ROUTINE                                  
+ 0018H ------    G    KEYPAD_SEG                                    
+ 00B2H ------    G    KEYPAD_ROUTINE                                
+
+INPUT MODULES INCLUDED:
+KEYSOUND.OBJ(KEYSOUND)
+MISC.OBJ(MISC)
+KEYCOMB.OBJ(KEYCOMB)
+
+UNRESOLVED EXTERNAL NAMES
+  ANALYZE_KEY IN KEYCOMB.OBJ(KEYCOMB)

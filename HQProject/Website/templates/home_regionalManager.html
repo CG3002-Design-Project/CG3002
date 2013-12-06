@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% extends "base_regionalManager.html" %}
+<html>
+<head>
+    <title>{% block title %}templates/home.html{% endblock %}</title>
+</head>
+<body>
+
+    {% block content %}
+        {% if user.is_authenticated %}
+        <div class="row">
+    		<div class="span12 pagination-centered">
+				<div id="content">
+					<h2>  Welcome to CEG 21 HyperMarket, {{ user.first_name }} {{ user.last_name }}.</br> <small> Thanks for logging in.</small></h2>
+        		</div>
+			</div>
+		</div>
+    {% else %}
+    <div class="row">
+    		<div class="span12 pagination-centered">
+				<div id="content">
+        			<p>Welcome, new user. Please log in.</p>
+        		</div>
+			</div>
+	</div>
+    {% endif %}
+    {% endblock %}
+</body>
+</html>

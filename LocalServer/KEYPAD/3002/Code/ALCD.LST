@@ -1,0 +1,583 @@
+8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    14:43:04  10/24/;3  PAGE    1
+
+
+DOS 5.0 (038-N) 8086/87/88/186 MACRO ASSEMBLER V3.1 ASSEMBLY OF MODULE TIMER
+OBJECT MODULE PLACED IN ALCD.OBJ
+ASSEMBLER INVOKED BY:  C:\ASM86.EXE ALCD.ASM
+
+
+LOC  OBJ                  LINE     SOURCE
+
+                             1 +1  $MOD186
+                             2 +1  $EP
+                             3     NAME TIMER
+                             4     ; Main program for uPD70208 microcomputer system
+                             5     ;
+                             6     ; Author:       Dr Tay Teng Tiow
+                             7     ; Address:      Department of Electrical Engineering 
+                             8     ;               National University of Singapore
+                             9     ;               10, Kent Ridge Crescent
+                            10     ;               Singapore 0511. 
+                            11     ; Date:         6th September 1991
+                            12     ;
+                            13     ; This file contains proprietory information and cannot be copied 
+                            14     ; or distributed without prior permission from the author.
+                            15     ; =========================================================================
+                            16     
+                            17     public  serial_rec_action, timer2_action
+                            18     extrn   print_char:far, print_2hex:far, iodefine:far
+                            19     extrn   set_timer2:far
+                            20     
+----                        21     STACK_SEG       SEGMENT
+0000 (256                   22                     DB      256 DUP(?)
+     ??
+     )
+0100                        23             TOS     LABEL   WORD
+----                        24     STACK_SEG       ENDS
+                            25     
+                            26     
+----                        27     DATA_SEG        SEGMENT
+0000 0A                     28             TIMER0_MESS     DB      10,13,'TIMER2 INTERRUPT    '
+0001 0D
+0002 54494D45523220
+     494E5445525255
+     505420202020
+0016 2F                     29             T_COUNT         DB      2FH
+0017 2F                     30             T_COUNT_SET     DB      2FH
+0018 0A                     31             REC_MESS        DB      10,13,'Period of timer0 =     '
+0019 0D
+001A 506572696F6420
+     6F662074696D65
+     7230203D202020
+     2020
+0031 0A                     32             top2            DB  10,13,'this is A'
+0032 0D
+0033 74686973206973
+     2041
+003C 0A                     33             bottom2         DB      10,13,'this is B'
+003D 0D
+003E 74686973206973
+     2042
+8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    14:43:04  10/24/;3  PAGE    2
+
+
+LOC  OBJ                  LINE     SOURCE
+
+----                        34     DATA_SEG        ENDS
+                            35     
+                            36 +1  $include(80188.inc)
+                      =1    37     ;IO Setup for 80C188XL 
+                      =1    38     ;By Zhu Shunyu
+                      =1    39     
+  FFA0                =1    40             UMCR    EQU    0FFA0H ; Upper Memory Control Register
+  FFA2                =1    41             LMCR    EQU    0FFA2H ; Lower Memory control Register         
+  FFA4                =1    42             PCSBA   EQU    0FFA4H ; Peripheral Chip Select Base Address
+  FFA8                =1    43             MPCS    EQU    0FFA8H ; MMCS and PCS Alter Control Register
+                      =1    44                     
+                      =1    45             
+                      =1    46             
+                      =1    47                     
+                      =1    48     ; Initial 80C188XL UCS Pin
+                      =1    49     ; |start address|block size| value for No waits, No Ready   
+                      =1    50     ;   FE000H            8K                 3E04H
+                      =1    51     ;   FC000H           16K                 3C04H
+                      =1    52     ;   F8000H           32K                 3804H
+                      =1    53      
+                      =1    54              
+                      =1    55     ; Initialize Upper Chip Select pin with 8K ROM 
+0000 BAA0FF           =1    56             MOV DX, UMCR
+0003 B8043E           =1    57             MOV AX, 03E04H
+0006 EF               =1    58             OUT DX, AX
+                      =1    59     
+                      =1    60     ; Initialize Lower Chip Select pin with 8k RAM
+0007 BAA2FF           =1    61             MOV DX, LMCR
+000A B8C401           =1    62             MOV AX, 01C4H  ; Starting address 1FFFH, 8K, No waits, last shoud be 5H for 1
+                                    waits      
+000D EE               =1    63                     OUT DX, AL
+                      =1    64     
+                      =1    65     ; Initialize MPCS to MAP peripheral to IO address
+000E BAA8FF           =1    66              MOV DX, MPCS
+0011 B88300           =1    67              MOV AX, 0083H
+0014 EE               =1    68              OUT DX, AL
+                      =1    69                      
+                      =1    70     ; PCSBA initial, set the serial port start from 00H
+0015 BAA4FF           =1    71              MOV DX, PCSBA
+0018 B80300           =1    72              MOV AX, 0003H ; Peripheral starting address 00H no READY, No Waits
+001B EE               =1    73              OUT DX, AL
+                      =1    74     
+                      =1    75     
+                      =1    76     
+                      =1    77     ;Serial port definition and initialize 
+  0000                =1    78              SRB     EQU       00H ; Serial Receiver Buffer Register (R)
+  0000                =1    79              STB     EQU       00H ; Serial Transmitter Holding Register(W)  
+  0001                =1    80              SIER    EQU       01H ; Serial Interrupte Enable Register (w)
+  0002                =1    81              IIR     EQU       02H ; Interrupt Identification Register (R)
+  0003                =1    82              SMD     EQU       03H ; Serial Line Control Register
+  0005                =1    83              SST     EQU       05H ; Serial Line Status Register
+  0000                =1    84              DLL     EQU       00H ; Divisor Latch Least Significant BYTE
+  0001                =1    85              DLM     EQU       01H ; Divisor Latch most  Significant BYTE
+                      =1    86     
+                      =1    87     ;Definition of content of SST register
+8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    14:43:04  10/24/;3  PAGE    3
+
+
+LOC  OBJ                  LINE     SOURCE
+
+                      =1    88     ;|Not Use|TE|THRE|BI|FE|PE|OE|DR|
+                      =1    89     ;TE Transmitter empty
+                      =1    90     ;THRE Transmittor Holding Register Empty
+                      =1    91     ;BI Breakr Interrupt
+                      =1    92     ;FE Framing Error
+                      =1    93     ;PE Parity Error
+                      =1    94     ;OE Overrun Error 
+                      =1    95     ;DR Data Ready
+  0001                =1    96               REC_RDY    EQU   00000001B ;DR bit is 1
+  0020                =1    97               TRAN_RDY   EQU   00100000B ;THRE bit is 1
+  000E                =1    98               ERR_DET    EQU   00001110B ;set FE, PE and OE bits
+  0010                =1    99               BREAK_DET  EQU   00010000B ;BI set
+                      =1   100                       
+                      =1   101     ;Line control register
+                      =1   102     
+                      =1   103     ; Serial Line Control Data
+  0007                =1   104             SMD_DATA     EQU    00000111B ;
+  0003                =1   105             S_INT_ENA    EQU    00000011B
+  0000                =1   106             S_INT_DIS    EQU    00000000B
+                      =1   107        
+                      =1   108     ;1st bit set 1 to access the Divisor latch 
+                      =1   109     ;2 stop bits, 8 data bits, no parity check
+  0087                =1   110             SMD_DATA_DIV EQU    10000111B
+                      =1   111     ; Set divisor value        
+001C BA0300           =1   112             MOV DX, SMD ;accessing the line control reg
+001F B087             =1   113             MOV AL, SMD_DATA_DIV ; bit 0 and 1 set to 11, means that each serial characte
+                                   r rec or sent will be 8bits
+                      =1   114                                                             ; bit 2 is set, which means t
+                                   hat because characters are 8 bits, 2 stop bits are generated
+                      =1   115                                                             ; bit 7 is the divisor access
+                                    latch bit (DLAB)
+0021 EE               =1   116             OUT DX, AL ; 
+                      =1   117                     
+                      =1   118                     ; the divisor latch is basically a 16 bit register which holds the 16
+                                    bit number that helps set the baud rate 
+                      =1   119                     ; divisor = input frequency/ ( desired baud rate * 16)
+0022 BA0000           =1   120             MOV DX, DLL ;lower 8 bits of div latch
+0025 B034             =1   121             MOV AL, 52
+0027 EE               =1   122             OUT DX, AL
+0028 BA0100           =1   123             MOV DX, DLM ;higher 8 bits of div latch. 
+                      =1   124                                             ;latch is set to 34h or 52d, which using a 16
+                                   MHz crystal gives a baud rate of 19230
+002B B000             =1   125             MOV AL, 0
+002D EE               =1   126             OUT DX, AL
+                      =1   127                     
+                      =1   128     ;SET SERIAL PORT WORKING MODE
+002E BA0300           =1   129              MOV DX, SMD ; line control register
+0031 B007             =1   130              MOV AL, SMD_DATA ; same as previous, but bit 7 set to 0, ready for read or w
+                                   rite operation
+0033 EE               =1   131              OUT DX, AL
+                      =1   132                      
+                      =1   133     ;DISABLE SERIAL PORT INT
+0034 BA0100           =1   134              MOV DX, SIER ;serial interrupt enable reg
+0037 B000             =1   135              MOV AL, 0 ;all interrupts disables
+0039 EE               =1   136              OUT DX, AL
+8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    14:43:04  10/24/;3  PAGE    4
+
+
+LOC  OBJ                  LINE     SOURCE
+
+                      =1   137     
+                      =1   138     
+                      =1   139     
+                      =1   140     ; Timer control Unit
+                      =1   141       
+  FF66                =1   142              T2_CON    EQU      0FF66H ; Timer 2 Control Register
+  FF62                =1   143              T2_CA     EQU      0FF62H ; Timer 2 compare register
+  FF60                =1   144              T2_CNT    EQU      0FF60H ;
+                      =1   145     
+  FF5E                =1   146              T1_CON    EQU      0FF5EH ;
+  FF5C                =1   147              T1_CB     EQU      0FF5CH ;
+  FF5A                =1   148              T1_CA     EQU      0FF5AH ;
+  FF58                =1   149              T1_CNT    EQU      0FF58H
+                      =1   150              
+  FF56                =1   151              T0_CON    EQU      0FF56H ;
+  FF54                =1   152              T0_CB     EQU      0FF54H ;
+  FF52                =1   153              T0_CA     EQU      0FF52H ;
+  FF50                =1   154              TO_CNT    EQU      0FF50H   
+                      =1   155              
+                      =1   156     ; Timer Control Data
+                      =1   157     
+                      =1   158     
+                      =1   159     ;Interrupt Control Registers
+                      =1   160           
+                      =1   161     
+  FF3E                =1   162             INT3_CTRL       EQU 0FF3EH ;Interrupt 3 Control Register
+  FF3C                =1   163             INT2_CTRL       EQU 0FF3CH
+  FF3A                =1   164             INT1_CTRL       EQU 0FF3AH
+  FF38                =1   165             INT0_CTRL       EQU 0FF38H
+  FF32                =1   166             TIMER_CTRL      EQU 0FF32H ;Timer Interrupt Control Register
+  FF30                =1   167             ISR                     EQU 0FF30H ; Interrupt Status Register
+  FF22                =1   168             EOI         EQU 0FF22H ; END OF INTERRUPT REGISTER
+  FF28                =1   169             IMKW        EQU 0FF28H ; Interrupt Mask 
+  FF2A                =1   170             IPMK        EQU 0FF2Ah ; Interrupt Priority Mask 
+                      =1   171     
+                      =1   172     ;| - | - | - | - |MSK|PM2|PM1|PM0| For TCU INT
+                      =1   173     
+                      =1   174     ;| - |SFNM|CAS|LVL|MSK|PM2|PM1|PM0| For TCU INT0,1
+                      =1   175     
+                      =1   176     ;MSK 1-enable, 0-mask int 
+                      =1   177     ;pm0-pm1 Priority
+                      =1   178     
+                      =1   179         
+                           180     
+----                       181     CODE_SEG        SEGMENT
+                           182     
+                           183             PUBLIC          START
+                           184     
+                           185     ASSUME  CS:CODE_SEG, SS:STACK_SEG
+                           186     
+0000                       187     START:
+                           188     ;initialize stack area
+0000 B8----         R      189                     MOV     AX,STACK_SEG            
+0003 8ED0                  190                     MOV     SS,AX
+0005 368B260001            191                     MOV     SP,TOS
+8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    14:43:04  10/24/;3  PAGE    5
+
+
+LOC  OBJ                  LINE     SOURCE
+
+                           192     
+                           193     ; Initialize the on-chip pheripherals
+000A 9A0000----     E      194                     CALL    FAR PTR IODEFINE
+                           195                     
+                           196     
+                           197     
+                           198     ; ^^^^^^^^^^^^^^^^^  Start of User Main Routine  ^^^^^^^^^^^^^^^^^^
+                           199         ;call set_timer2
+000F FB                    200         STI
+  0080                     201     PORTA   EQU     0080H
+  0081                     202     PORTB   EQU     0081H
+  0082                     203     PORTC   EQU     0082H
+  0083                     204     CWR     EQU     0083H
+                           205     
+                           206     ;set 8255 output
+0010 B089                  207     MOV AL, 89H       
+0012 BA8300                208     MOV DX, CWR
+0015 EE                    209     OUT DX, AL        ;send the control word
+                           210             
+0016                       211     NEXT:
+                           212             
+                           213             ;test code turn on port A
+                           214     ;       MOV DX, PORTA
+                           215     ;       MOV AL, 11110000b
+                           216     ;       OUT DX, AL      
+                           217             
+                           218             ;call far ptr simpletest
+                           219             ;call far ptr keypad
+0016 9AF200----     R      220             call far ptr lcd
+                           221             
+                           222             ;MOV AL, 'A'
+                           223             ;CALL FAR PTR PRINT_CHAR
+001B EBF9                  224             JMP NEXT
+                           225     
+                           226     ; ^^^^^^^^^^^^^^^ End of User main routine ^^^^^^^^^^^^^^^^^^^^^^^^^
+                           227     
+                           228     
+001D                       229     SERIAL_REC_ACTION       PROC    FAR
+001D 51                    230                     PUSH    CX
+001E 53                    231                     PUSH    BX
+001F 1E                    232                     PUSH    DS
+                           233     
+0020 BB----         R      234                     MOV     BX,DATA_SEG             ;initialize data segment register
+0023 8EDB                  235                     MOV     DS,BX
+                           236     
+0025 3C3C                  237                     CMP     AL,'<'
+0027 750B                  238                     JNE     S_FAST
+                           239     
+0029 FE061700              240                     INC     DS:T_COUNT_SET
+002D FE061700              241                     INC     DS:T_COUNT_SET
+                           242     
+0031 EB0D90                243                     JMP     S_NEXT0
+0034                       244     S_FAST:
+0034 3C3E                  245                     CMP     AL,'>'
+0036 7521                  246                     JNE     S_RET
+8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    14:43:04  10/24/;3  PAGE    6
+
+
+LOC  OBJ                  LINE     SOURCE
+
+                           247     
+0038 FE0E1700              248                     DEC     DS:T_COUNT_SET
+003C FE0E1700              249                     DEC     DS:T_COUNT_SET
+                           250     
+0040                       251     S_NEXT0:
+0040 B91600                252                     MOV     CX,22                   ;initialize counter for message
+0043 BB0000                253                     MOV     BX,0
+                           254     
+0046 8A4718                255     S_NEXT1:        MOV     AL,DS:REC_MESS[BX]      ;print message
+0049 9A0000----     E      256                     call    FAR ptr print_char
+004E 43                    257                     INC     BX
+004F E2F5                  258                     LOOP    S_NEXT1
+                           259     
+0051 A01700                260                     MOV     AL,DS:T_COUNT_SET       ;print current period of timer0
+0054 9A0000----     E      261                     CALL    FAR PTR PRINT_2HEX
+0059                       262     S_RET:
+0059 1F                    263                     POP     DS
+005A 5B                    264                     POP     BX
+005B 59                    265                     POP     CX
+005C CB                    266                     RET
+                           267     SERIAL_REC_ACTION       ENDP
+                           268     
+                           269     
+                           270     
+005D                       271     TIMER2_ACTION   PROC    FAR
+005D 50                    272                     PUSH    AX
+005E 1E                    273                     PUSH    DS
+005F 53                    274                     PUSH    BX
+0060 51                    275                     PUSH    CX
+                           276     
+0061 B8----         R      277                     MOV     AX,DATA_SEG
+0064 8ED8                  278                     MOV     DS,AX
+                           279             
+0066 FE0E1600              280                     DEC     DS:T_COUNT
+006A 7516                  281                     JNZ     T_NEXT1
+006C A01700                282                     MOV     AL,DS:T_COUNT_SET
+006F A21600                283                     MOV     DS:T_COUNT,AL
+                           284     
+0072 B91400                285                     MOV     CX,20
+0075 BB0000                286                     MOV     BX,0H
+0078                       287     T_NEXT0:
+0078 8A07                  288                     MOV     AL,DS:TIMER0_MESS[BX]
+007A 43                    289                     INC     BX
+007B 9A0000----     E      290                     CALL    FAR PTR PRINT_CHAR
+0080 E2F6                  291                     LOOP    T_NEXT0
+                           292     
+0082                       293     T_NEXT1:        
+0082 59                    294                     POP     CX
+0083 5B                    295                     POP     BX
+0084 1F                    296                     POP     DS
+0085 58                    297                     POP     AX
+0086 CB                    298                     RET
+                           299     TIMER2_ACTION   ENDP
+                           300     
+0087                       301     keypad proc far
+8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    14:43:04  10/24/;3  PAGE    7
+
+
+LOC  OBJ                  LINE     SOURCE
+
+                           302     
+0087 52                    303             PUSH    DX
+0088 51                    304             PUSH    CX
+0089 53                    305             PUSH    BX
+008A 50                    306             PUSH    AX
+                           307     
+                           308     
+008B                       309     SETUP:          
+                           310     
+008B B17F                  311             MOV CL, 07FH ;01111111 Row output to ground from PB
+008D B500                  312             MOV CH, 0H      ;set row counter
+                           313     
+                           314     
+                           315     
+008F                       316     NEXTROW:                
+008F D0C1                  317                     ROL CL, 01H  ;rotate CL to ground next row/ al HAS 8 BITS. so must JM
+                                   P BACK TO WAIT
+                           318     
+0091 8AC1                  319                     MOV AL,CL
+0093 BA8100                320                     MOV DX, PORTB   ;port B address to DX; 
+0096 EE                    321                     OUT DX, AL      ;ground one of the rows
+                           322                     
+0097 BA8200                323                     MOV DX, PORTC   ;port B address to DX  
+009A EC                    324                     IN  AL,DX               ;read input port for key closure
+                           325     
+                           326     
+009B 34FF                  327                     XOR AL, 11111111b       ;PC0 to PC5 masked. Whichever one is 0 will g
+                                   ive a 1 output
+                           328                     
+009D 3C00                  329                     CMP AL,0H       ;checking for no key is pressed
+009F 7443                  330                     JE RETPOINT
+                           331                     
+                           332                     ;ERROR CHECK
+00A1 3C01                  333                     CMP AL, 00000001B ;PC0 pressed
+00A3 7417                  334                     JE VALIDATED
+00A5 3C02                  335                     CMP AL, 00000010B ;PC1 pressed
+00A7 7413                  336                     JE VALIDATED
+00A9 3C04                  337                     CMP AL, 00000100B ;PC2 pressed
+00AB 740F                  338                     JE VALIDATED
+00AD 3C08                  339                     CMP AL, 00001000B ;PC3 pressed
+00AF 740B                  340                     JE VALIDATED
+00B1 3C10                  341                     CMP AL, 00010000B ;PC4 pressed
+00B3 7407                  342                     JE VALIDATED
+00B5 3C20                  343                     CMP AL, 00100000B ;PC5 pressed
+00B7 7403                  344                     JE VALIDATED
+                           345                     
+00B9 EB2990                346                     JMP RETPOINT ;invalid keypress of some kind
+                           347     
+00BC                       348     VALIDATED:              
+                           349                     
+                           350                     
+                           351                     ;AND AL, 07H; MASK OTHER BLOODY BITS OMGOMGOMG
+                           352                     
+00BC D0E8                  353                     SHR AL,01 ; shifting right gives you the col number, the first col on
+                                    the keypad being col 0
+8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    14:43:04  10/24/;3  PAGE    8
+
+
+LOC  OBJ                  LINE     SOURCE
+
+00BE 8AD0                  354                     MOV DL,AL ; this col number goes into DL
+                           355     
+                           356                     ;Logic: (Row number * 6) + col number 
+                           357                     ;gives us the so called button number being pressed, which can be sto
+                                   red as
+                           358                     ;an array starting at the top left of the keypad and ending at the bo
+                                   ttom right
+                           359                     
+00C0 8AC5                  360                     mov AL,CH ; row number, previously saved
+00C2 B606                  361                     MOV DH,06
+                           362                     ;multiply AL by DH, result stored in AX
+00C4 F6E6                  363                     MUL DH
+                           364     
+                           365                     
+00C6 02C2                  366                     ADD AL, DL ;Add row*6 to col to get button number
+00C8 8AD8                  367                     MOV BL,AL
+00CA 32FF                  368                     XOR BH,BH
+                           369                     ;BL now has the button number
+                           370     
+00CC                       371     topnumbers:
+00CC 83FB0C                372                     cmp BX, 12
+00CF 7D06                  373                     jge bottom_numbers
+00D1 8A4731                374                     MOV AL, DS:top2[BX]; Stores character in AL (?)
+00D4 EB0790                375                     jmp NUMBERS
+                           376     
+00D7                       377     bottom_numbers:
+00D7 80EB0C                378                     sub BL, 12d 
+00DA 8A473C                379                     MOV AL, DS:bottom2[BX]; Stores character in AL (?)
+                           380                     
+00DD                       381     NUMBERS:
+00DD 32E4                  382                     XOR AH,AH
+00DF 9A0000----     E      383                     CALL FAR PTR PRINT_CHAR
+                           384                     ;CALL FAR PTR PRINT_2HEX
+                           385                             
+00E4                       386     RETPOINT:       
+00E4 FEC5                  387             INC CH
+00E6 80FD04                388             CMP CH,04
+00E9 75A4                  389             JNZ NEXTROW
+00EB EB9E                  390             JMP SETUP
+                           391     
+                           392     
+00ED 58                    393             POP AX
+00EE 5B                    394             POP BX
+00EF 59                    395             POP CX
+00F0 5A                    396             POP DX
+00F1 CB                    397             ret
+                           398     
+                           399     keypad endp
+                           400     
+00F2                       401     lcd proc far
+                           402     
+00F2 52                    403             PUSH    DX
+00F3 51                    404             PUSH    CX
+00F4 53                    405             PUSH    BX
+00F5 50                    406             PUSH    AX
+8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    14:43:04  10/24/;3  PAGE    9
+
+
+LOC  OBJ                  LINE     SOURCE
+
+                           407     
+                           408     
+00F6                       409     FRONT:          
+                           410     
+00F6 B8----         R      411             mov ax, DATA_SEG
+00F9 8ED8                  412             mov ds,ax
+00FB 8EC0                  413             mov es,ax
+                           414     
+                           415             
+                           416             ;The following sends all the necessary commands to the LCD
+00FD B038                  417             MOV AL, 38H ;initialize LCD for 2 lines & 5*7 matrix
+00FF E82100                418             CALL COMNDWRT ;write the command to LCD 
+0102 E85800                419             CALL DELAY ;wait before issuing the next command
+0105 E85500                420             CALL DELAY 
+                           421             ;this command needs lots of delay
+0108 E85200                422             CALL DELAY
+010B B00E                  423             MOV AL, 0EH ;send command for LCD on, cursor on 0000 1110b 
+010D E81300                424             CALL COMNDWRT
+0110 E84A00                425             CALL DELAY
+0113 B001                  426             MOV AL, 01       ;clear LCD
+0115 E80B00                427             CALL COMNDWRT
+0118 E84200                428             CALL DELAY
+011B B006                  429             MOV AL, 06       ;command for shifting cursor right
+011D E80300                430             CALL COMNDWRT
+0120 E83A00                431             CALL DELAY
+                           432     
+0123                       433             COMNDWRT PROC ;this procedure writes commands to LCD
+0123 52                    434                     PUSH DX ;save DX
+0124 BA8100                435                     MOV DX, PORTB
+0127 EE                    436                     OUT DX, AL       ;send the code to Port A
+0128 BA8200                437                     MOV DX, PORTC
+012B B004                  438                     MOV AL, 00000100B ;RS=0,R/W=0,E=1 for H-To-L pulse
+012D EE                    439                     OUT DX, AL
+012E 90                    440                     NOP
+012F 90                    441                     NOP
+0130 B000                  442                     MOV AL, 00000000B ;RS=0,R/W=0,E=0 for H-To-L pulse
+0132 EE                    443                     OUT DX, AL
+0133 5A                    444                     POP DX
+0134 C3                    445                     RET
+                           446             COMNDWRT ENDP
+                           447             
+0135 B001                  448             MOV AL, 1 ;display b^^1b^^ letter
+0137 E81300                449             CALL DATWRIT ;issue it to LCD
+013A E82000                450             CALL DELAY ;wait before issuing the next character
+013D B002                  451             MOV AL, 2 ;display b^^2b^^ letter
+013F E80B00                452             CALL DATWRIT ;issue it to LCD
+0142 E81800                453             CALL DELAY ;wait before issuing the next character
+0145 B005                  454             MOV AL, 5 ;display b^^5b^^ letter
+0147 E80300                455             CALL DATWRIT ;issue it to LCD
+014A E81000                456             CALL DELAY ;wait
+                           457             ;data write to LCD without checking the busy flag
+                           458             ;AL = char sent to LCD
+                           459             
+014D                       460             DATWRIT PROC
+014D 52                    461                     PUSH DX  ;save DX
+8086/87/88/186 MACRO ASSEMBLER    TIMER                                                    14:43:04  10/24/;3  PAGE   10
+
+
+LOC  OBJ                  LINE     SOURCE
+
+014E BA8100                462                     MOV DX, PORTB  ;DX=port B address
+0151 EE                    463                     OUT DX, AL ;issue the char to LCD
+0152 B005                  464                     MOV AL, 00000101B ;RS=1,R/W=0, E=1 for H-to-L pulse
+0154 BA8200                465                     MOV DX, PORTC ;port B address
+0157 EE                    466                     OUT DX, AL  ;make enable high
+0158 B001                  467                     MOV AL, 00000001B ;RS=1,R/W=0 and E=0 for H-to-L pulse
+015A EE                    468                     OUT DX, AL
+015B 5A                    469                     POP DX
+015C C3                    470                     RET
+                           471             DATWRIT ENDP
+                           472             
+015D                       473             DELAY PROC
+015D B92D05                474                     MOV CX, 1325  ;1325*15.085 usec = 20 msec
+0160 50                    475                     PUSH AX
+0161 E461                  476                     W1: IN AL, 61H
+0163 2410                  477                     AND AL, 00010000B
+0165 3AC4                  478                     CMP AL, AH
+0167 74F8                  479                     JE W1
+0169 8AE0                  480                     MOV AH, AL
+016B E2F4                  481                     LOOP W1
+016D 58                    482                     POP AX
+016E C3                    483                     RET
+                           484             DELAY ENDP
+                           485     
+016F EB85                  486             JMP FRONT
+0171 58                    487             POP AX
+0172 5B                    488             POP BX
+0173 59                    489             POP CX
+0174 5A                    490             POP DX
+0175 CB                    491             ret     
+                           492             
+                           493     lcd endp
+                           494     
+                           495     
+----                       496     CODE_SEG        ENDS
+                           497     END
+
+ASSEMBLY COMPLETE, NO ERRORS FOUND

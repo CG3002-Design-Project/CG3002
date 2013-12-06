@@ -12,7 +12,8 @@ import json
 import serial
 import os
 import time
-
+from django.contrib.auth import authenticate, login 
+from django.contrib.auth.decorators import login_required 
 
 def price_display(request):
 	print "view all display"

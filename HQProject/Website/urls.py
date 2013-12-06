@@ -3,6 +3,13 @@ from django.conf.urls import patterns, url
 from Website import views
 
 urlpatterns = patterns('',
+	url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page' : '../login'}),
+    url(r'^login_redirect/$', views.login_redirect, name='login_redirect'),
+    #url(r'^home/$', 'Website.views.home'),
+    url(r'^home/$', views.home, name='home'),
+    url(r'^home_regionalManager/$', views.home_regionalManager, name='home_regionalManager'),
+    url(r'^home_storeManager/$', views.home_storeManager, name='home_storeManager'),
     url(r'^filter-products$', views.filter_products, name='filter_products'),
 	url(r'^view-product$', views.view_product, name='view_product'),
 	url(r'^add-product$', views.add_product, name='add_product'),
@@ -31,5 +38,9 @@ urlpatterns = patterns('',
 	url(r'^view/inventory-control/(\d+)/(\d+)/(\d+)/delete-inventory$', views.delete_inventory,name='delete_inventory'),
     url(r'^view/inventory-control/(\d+)/(\d+)/(\d+)/inventory-updated$', views.inventory_updated,name='inventory_updated'),
     url(r'^view/inventory-control/(\d+)/(\d+)/(\d+)/inventory-deleted$', views.inventory_deleted,name='inventory_deleted'),
-	url(r'^transaction_home$', views.transaction_home, name='transaction_home')
+	url(r'^transaction_home$', views.transaction_home, name='transaction_home'),
+	url(r'^revenue_pie$', views.revenue_pie, name='revenue_pie'),
+	url(r'^revenue_chart$', views.revenue_chart, name='revenue_chart'),
+	url(r'^transaction_stats$', views.transaction_stats, name='transaction_stats'),
+    url(r'^(\d+)/profile$', views.profile, name='profile')
 )

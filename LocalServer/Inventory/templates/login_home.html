@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>View Products</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="/static/css/navbar.css" rel="stylesheet">
+	<link href="/static/css/bootstrap.css" rel="stylesheet">
+	<link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="/static/css/bootstrap-rowlink.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="/static/js/bootstrap.min.js"></script>
+	
+			<div class="container">
+            <div class="row-fluid">
+            <div class="span12">
+                <div class="span8">
+                    <h5 class="muted">CEG 21 HyperMarket</h5>
+                </div>
+            </div>
+			</div>			
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner">
+                    <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+                    <div class="nav-collapse ">
+                        <ul class="nav pull-left">
+							<li id="home-link"><a href="{% url 'home'%}"></i>Home</a></li>   
+                        </ul>
+                        <ul class="nav pull-right">
+                        {% if user.is_authenticated %}
+							<li id="logout-link"><a href="{% url 'logout'%}"></i>Logout</a></li> 
+                        {% else %}
+							<li id="login-link"><a href="{% url 'login'%}"></i>Login</a></li> 
+                        {% endif %}
+                    	</ul>
+            		</div><!--/.nav-collapse -->
+                    </div><!--/.nav-collapse -->
+                    {% if user.is_authenticated %}
+                                    <p class="navbar-text pull-right"> Signed in as <a href="#" class="navbar-link">{{ user.first_name }}</a></p>
+                    {% else %}
+                                    <p class="navbar-text pull-right"> Welcome. <a href="/accounts/login" class="navbar-link">Please log in.</a></p>
+                    {% endif %}
+            </div><!-- /.navbar -->
+		</div> <!-- /.container -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/static/css/bootstrap.css" rel="stylesheet">
+        <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+</head>
+
+<body>
+<div id="content">
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>

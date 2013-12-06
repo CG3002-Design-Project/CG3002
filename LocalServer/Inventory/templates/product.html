@@ -1,18 +1,18 @@
 <!doctype html>
 <html>
-	<head>
-	<title>View Products</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="/static/css/bootstrap.css" rel="stylesheet">
-	<link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
-	<link href="/static/css/bootstrap-rowlink.css" rel="stylesheet">
-	<link rel="stylesheet" href="/static/css/screen.css" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script src="/static/js/bootstrap.min.js"></script>
-	<link href="/static/css/demo_table.css">
-	<script src="/static/js/jquery.js"></script>
-	<script src="/static/js/jquery.dataTables.js"></script>
-	<script src="/static/js/DT_bootstrap.js"></script>
+        <head>
+        <title>View Products</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/static/css/bootstrap.css" rel="stylesheet">
+        <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="/static/css/bootstrap-rowlink.css" rel="stylesheet">
+        <link rel="stylesheet" href="/static/css/screen.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script src="/static/js/bootstrap.min.js"></script>
+        <link href="/static/css/demo_table.css">
+        <script src="/static/js/jquery.js"></script>
+        <script src="/static/js/jquery.dataTables.js"></script>
+        <script src="/static/js/DT_bootstrap.js"></script>
 
         <div class="container">
             <div class="row-fluid">
@@ -21,8 +21,8 @@
                     <h5 class="muted">CEG 21 HyperMarket</h5>
                 </div>
             </div>
-			</div>
-			
+                        </div>
+                        
             <div class="navbar navbar-inverse">
                 <div class="navbar-inner">
                     <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
@@ -36,18 +36,30 @@
                         <ul class="nav pull-left">
                             <li id="product-link"><a href="{% url 'product'%}"></i>Products</a></li>
                             <li id="stock-link"><a href="{% url 'inventory'%}"></i>Stock</a></li>
-							<li id="display-link"><a href="{% url 'display'%}"></i>Price Display</a></li>
+                                                        <li id="display-link"><a href="{% url 'display'%}"></i>Price Display</a></li>
                             <li id="sync-link"><a href="{% url 'sync'%}"></i>Sync</a></li>
                             <li id="transaction-link"><a href="{% url 'transaction'%}"></i>Transactions</a></li>     
                         </ul>
+                                                <ul class="nav pull-right">
+                        {% if user.is_authenticated %}
+                            <li id="logout-link"><a href="{% url 'logout'%}"></i>Logout</a></li> 
+                        {% else %}
+                            <li id="login-link"><a href="{% url 'login'%}"></i>Login</a></li> 
+                        {% endif %}
+                        </ul>
                     </div><!--/.nav-collapse -->
                 </div><!-- /.navbar-inner -->
+                                    {% if user.is_authenticated %}
+                                    <p class="navbar-text pull-right"> Signed in as <a href="#" class="navbar-link">{{ user.first_name }}</a></p>
+                    {% else %}
+                                    <p class="navbar-text pull-right"> Welcome. <a href="/accounts/login" class="navbar-link">Please log in.</a></p>
+                    {% endif %}
             </div><!-- /.navbar -->
-		</div> <!-- /.container -->
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+                </div> <!-- /.container -->
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/static/css/bootstrap.css" rel="stylesheet">
         <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
-	</head>
+        </head>
 </br>
 <style type="text/css">
     table { page-break-inside:auto }
@@ -57,30 +69,30 @@
 </style>
 <body>
 <div class="container">
-	<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered dataTable" id="example" aria-describedby="example_info">  
+        <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered dataTable" id="example" aria-describedby="example_info">  
         <thead>  
           <tr>  
             <th>Product ID</th>
-			<th>Name</th>  			
-			<th>Category</th>
-			<th>Manufacturer</th>
-			<th>Min Restock</th>
-			<th>Status</th>		
+                        <th>Name</th>                          
+                        <th>Category</th>
+                        <th>Manufacturer</th>
+                        <th>Min Restock</th>
+                        <th>Status</th>                
           </tr>  
         </thead>  
         <tbody>  
-		{% for p in product %}
+                {% for p in product %}
           <tr>  
             <td><a href= "{% url 'edit_product' p.product_id %}" >{{p.product_id}}</td>  
             <td>{{p.name}}</td>  
             <td>{{p.category}}</td>  
             <td>{{p.manufacturer}}</td> 
-			<td>{{p.min_restock}}</td>
-            <td>{{p.status}}</td>		
+                        <td>{{p.min_restock}}</td>
+            <td>{{p.status}}</td>                
           </tr> 
-         {% endfor %}		  
+         {% endfor %}                  
         </tbody>  
-      </table>	
+      </table>        
  </div>
 </body>
 </html>
