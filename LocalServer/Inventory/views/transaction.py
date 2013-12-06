@@ -13,13 +13,39 @@ import os
 import time
 import serial
 import datetime
+from django.contrib.auth import authenticate, login 
+from django.contrib.auth.decorators import login_required 
 
+list = []
+
+def cachier_transaction(request):
+	print list
+	context = {'table':list};
+	return render(request,'cachier_transaction.html',context );	
+
+@csrf_exempt	
+def add_cachier_transaction(request):
+	data = json.loads(request.body)
+	batchid = data['batchid']
+	productid = data['barcode']
+	qty = data['qty']
+	price = data['price']
+	totol_price = price*qty
+	product = Product.objects.get(product_id = data['barcode']);
+	name = product.name 
+	global list
+	list.append({'count':len(list)+1,'batchid':batchid, 'productid':productid, 'qty':qty, 'price':price,'name':name,'totol_price':totol_price })  
+	print list
+	context = {'table':list};
+	return render(request,'cachier_transaction.html',context);	
+
+@login_required
 def calculate_transaction(request):
 	transaction = Transaction.objects.all();
 	context = {'transaction':transaction};
 	return render(request,'transaction.html',context);
 	
-	
+@login_required	
 def add_transaction(request):
 	return render(request,'add_transaction.html');	
 
@@ -67,7 +93,7 @@ def get_price(request):
 @csrf_exempt
 def deduct_inventory(request):
     data = json.loads(request.body)
-    inventory = data['product']
+    inventory = c
     for i in inventory:
         batchid = int(i['batchid'])
         productid=int(i['barcode'])

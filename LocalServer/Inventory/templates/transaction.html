@@ -41,8 +41,20 @@
                             <li id="sync-link"><a href="{% url 'sync'%}"></i>Sync</a></li>
                             <li id="transaction-link"><a href="{% url 'transaction'%}"></i>Transactions</a></li>     
                         </ul>
+                                                <ul class="nav pull-right">
+                        {% if user.is_authenticated %}
+                            <li id="logout-link"><a href="{% url 'logout'%}"></i>Logout</a></li> 
+                        {% else %}
+                            <li id="login-link"><a href="{% url 'login'%}"></i>Login</a></li> 
+                        {% endif %}
+                        </ul>
                     </div><!--/.nav-collapse -->
                 </div><!-- /.navbar-inner -->
+                                    {% if user.is_authenticated %}
+                                    <p class="navbar-text pull-right"> Signed in as <a href="#" class="navbar-link">{{ user.first_name }}</a></p>
+                    {% else %}
+                                    <p class="navbar-text pull-right"> Welcome. <a href="/accounts/login" class="navbar-link">Please log in.</a></p>
+                    {% endif %}
             </div><!-- /.navbar -->
 			<a href="{% url 'add_transaction'%}"" role="button" class="btn" data-toggle="modal">New Transaction</a>	
     </div> <!-- /.container -->

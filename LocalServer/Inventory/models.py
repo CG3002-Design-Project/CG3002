@@ -3,8 +3,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 #Create your models here.
-
-
 class Cashier(models.Model):
 	cashier_id = models.PositiveIntegerField(validators=[MaxValueValidator(99999999)],primary_key=True )
 

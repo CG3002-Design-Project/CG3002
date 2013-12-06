@@ -13,6 +13,8 @@ import os
 import time
 import serial
 from restock import *
+from django.contrib.auth import authenticate, login 
+from django.contrib.auth.decorators import login_required 
 
 shopid = 00000005
 cashid = 00001
