@@ -379,19 +379,16 @@ function print_city_state(oCountrySel, oCity_StateSel)
                 <div class="span6">
                     <h1 class="muted">CEG 21 HyperMarket</h1>
                 </div>
-
                 <div class="span4 offset2" style="margin-top:15px;">
                     <button class="btn pull-right" type="button">
                         {% if user.is_authenticated %}
-                            <p style="text-align:right"> <a href="/accounts/logout">Logout</a></p>
-                        {% else %}
-                            <p style="text-align:right"> <a href="/accounts/login">Log In</a></p>
+                            <p style="text-align:right"> <a href="/Website/accounts/logout">Logout</a></p>
                         {% endif %}
                     </button>
                 </div>
             </div>
         </div>
-            <div class="navbar navbar-inverse">
+            <div class="navbar navbar-inverse" id="regNav">
                 <div class="navbar-inner">
                     <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
                     <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -402,15 +399,11 @@ function print_city_state(oCountrySel, oCity_StateSel)
                     <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
-                            <li><a href="#"> <i class="icon-home icon-white"></i>Home</a></li>
+                            <li><a href="{% url 'home'%}"> <i class="icon-home icon-white"></i>Home</a></li>
                             <li><a href="{% url 'view_product'%}"><i class="icon-star icon-white"></i>Products</a></li>
                             <li class="active"><a href="{% url 'filter_stores'%}"><i class="icon-book icon-white"></i>Stores</a></li>
                             <li><a href="#"><i class="icon-camera icon-white"></i>Employees</a></li>
-                            <li><a href="{% url 'transaction_home'%}"><i class="icon-comment icon-white"></i>Transactions</a></li>
-                            <form class="navbar-search">
-                            <input type="text" class="search-query" placeholder="Search"> 
-                            </form>
-                                
+                            <li><a href="{% url 'transaction_home'%}"><i class="icon-comment icon-white"></i>Transactions</a></li>                                
                         </ul>
                     </div><!--/.nav-collapse -->
                     {% if user.is_authenticated %}
@@ -440,6 +433,17 @@ function print_city_state(oCountrySel, oCity_StateSel)
 		{% block edit_inventory %}{% endblock %}
 		{% block edit_product %}{% endblock %}
     </div>		
-		
+<!--script>
+$(document).ready(function() {
+    //var myVal = request.user.groups.values_list('name',flat=True)
+    if(request.user.is_staff) {
+        document.getElementById('regNav').style.display = 'none';
+        document.getElementById('storeNav').style.display = 'block';  
+    }else {
+        document.getElementById('regNav').style.display = 'block';
+        document.getElementById('storeNav').style.display = 'none';  
+    }
+});
+</script-->		
 </body>
 </html>

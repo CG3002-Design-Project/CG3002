@@ -350,9 +350,7 @@ function print_city_state(oCountrySel, oCity_StateSel)
                 <div class="span4 offset2" style="margin-top:15px;">
                     <button class="btn pull-right" type="button">
                         {% if user.is_authenticated %}
-                            <p style="text-align:right"> <a href="/accounts/logout">Logout</a></p>
-                        {% else %}
-                            <p style="text-align:right"> <a href="/accounts/login">Log In</a></p>
+                            <p style="text-align:right"> <a href="/Website/accounts/logout">Logout</a></p>
                         {% endif %}
                     </button>
                 </div>
@@ -369,7 +367,7 @@ function print_city_state(oCountrySel, oCity_StateSel)
                     <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
-                            <li><a href="#"> <i class="icon-home icon-white"></i>Home</a></li>
+                            <li><a href="{% url 'home'%}"> <i class="icon-home icon-white"></i>Home</a></li>
                             <li class="active"><a href="{% url 'view_product'%}"><i class="icon-star icon-white"></i>Products</a></li>
                             <li><a href="{% url 'filter_stores'%}"><i class="icon-book icon-white"></i>Stores</a></li>
                             <li><a href="#"><i class="icon-camera icon-white"></i>Employees</a></li>

@@ -1,0 +1,36 @@
+ {% extends "base_store.html" %}
+
+{% block addgeneral%}
+<li><a href="{%url 'filter_stores'%}">View Stores</a></li>
+<li><a href="{%url 'create_store'%}">Add Store</a></li>	
+{%endblock%}
+
+ 
+ {% block edit_store %}
+
+<form action = "{%url 'store_edited' store.store_id%}" method="get">
+<div class="container">
+Address: <input type="text" class="input-xlarge" id="inputName" size="1000" name="address" value="{{store.address}}" required></br>
+City: <input type="text" class="input-xlarge" id="inputName" size="1000" name="city" value="{{store.city}}" required></br>
+State: <input type="text" class="input-xlarge" id="inputName" size="1000" name="state" value="{{store.state}}" readonly></br>
+Country: <input type="text" class="input-xlarge" id="inputName" size="1000" name="country" value="{{store.country}}" readonly></br>
+Region: <input type="text" class="input-xlarge" id="inputName" size="1000" name="region" value="{{store.region}}" readonly></br>
+<a href="#myModal" role="button" class="btn" data-toggle="modal">Submit</a>
+</div>
+
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Submit</h3>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to edit this store address?</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+	<input type="submit" value="Yes" class="btn btn-primary">
+  </div>
+</div>
+</form>
+
+{%endblock%}
