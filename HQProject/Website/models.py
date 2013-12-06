@@ -1,13 +1,19 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.auth.models import User
 
 # Create your models here.
 
 
 class Employee(models.Model):
-        employee_id = models.PositiveIntegerField(validators=[MaxValueValidator(43046721)],primary_key=True)
+        user = models.OneToOneField(User)
+        employee_email = models.CharField(max_length=256)
         store_id = models.ForeignKey('Store')
         designation = models.CharField(max_length=256)
+        salary = models.DecimalField(max_digits=6,decimal_places=2)
+        annual_bonus = models.DecimalField(max_digits=6,decimal_places=2)
+        address = models.CharField(max_length=5000)
+        phone = models.DecimalField(max_digits=15,decimal_places=0)
 
 class Inventory(models.Model):
         #pricing strategy to be added
@@ -56,5 +62,5 @@ class Transaction(models.Model):
         selling_price = models.DecimalField(max_digits=6,decimal_places=2)
         cost_price = models.DecimalField(max_digits=6,decimal_places=2)
         store_id = models.PositiveIntegerField(validators=[MaxValueValidator(99999999)])		
-		
+
 		

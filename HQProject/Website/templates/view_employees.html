@@ -1,0 +1,70 @@
+{% extends "base_store.html" %}
+
+{% block addgeneral%}
+<li><a href="{%url 'filter_stores'%}">View Stores</a></li>
+<li><a href="{%url 'create_store'%}">Add Store</a></li>	
+{%endblock%}
+
+{% block view_stores%}
+			
+<div id="widget" class="container">
+<form action="{% url 'view_stores'%}" method="get">
+Region: <select onchange="set_country(this,country,city_state)" size="1" name="region">
+<option value=""selected="selected">Select Region</option>
+
+<script type="text/javascript">
+setRegions(this);
+</script>
+</select>
+Country: <select name="country" size="1" disabled="disabled" onchange="set_city_state(this,city_state)"></select>
+State: <select name="city_state" size="1" disabled="disabled" onchange="print_city_state(country,this)"></select>
+City: <input type="text" name="city" >
+<input type="submit" value="Submit" class="btn btn-primary" style="float:right">
+</form>
+</div>
+
+<div class = "container">
+<div class="alert">  
+  <a class="close" data-dismiss="alert">×</a>  
+  <strong> {{message}} </strong> 
+</div>  
+</div>
+
+</br>
+<style type="text/css">
+    table { page-break-inside:auto }
+    tr    { page-break-inside:avoid; page-break-after:auto }
+    thead { display:table-header-group }
+    tfoot { display:table-footer-group }
+</style>
+
+
+<div class="container">
+<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered dataTable" id="example" aria-describedby="example_info">  
+        <thead>  
+          <tr>  
+            <th>Address</th>  
+            <th>City</th>  
+            <th>State</th>  
+            <th>Country</th>  
+			<th>Region</th> 
+			<th>Edit</th>
+			<th>Delete</th>
+          </tr>  
+        </thead>  
+        <tbody>  
+		 {% for s in stores %}
+          <tr>  
+            <td><a href="{% url 'view_specific' s.store_id %}">{{s.address}}</a></td>  		
+            <td>{{s.city}}</td>  
+            <td>{{s.state}}</td>  
+            <td>{{s.country}}</td>  
+            <td>{{s.region}}</td> 
+			<td><a href = "{% url 'edit_store' s.store_id %}" input type="submit" class="btn">Edit</a></td>   
+			<td><a href = "{% url 'delete_store' s.store_id %}" input type="submit" class="btn">Delete</a></td>
+			</tr>
+         {% endfor %}		  
+        </tbody>  
+      </table>	
+</div>  
+{%endblock%}

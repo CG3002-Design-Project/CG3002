@@ -23,5 +23,10 @@ urlpatterns = patterns('',
 	#url(r'^Store/', include('Store.urls')),
 	#url(r'^Product/', include('Product.urls')),
 	url(r'^Website/', include('Website.urls')),
+<<<<<<< HEAD
     url(r'^Sync/',include('Sync.urls'))
+=======
+    url(r'^Customer/', include('Customer.urls')),
+    url(r'^Sync/',include('Sync.urls')),
+>>>>>>> c3447bc89a07e4a8fcd3f0a9cfc87baf35081f4f
 )

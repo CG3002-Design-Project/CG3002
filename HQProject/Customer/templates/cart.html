@@ -1,0 +1,17 @@
+{% extends "cart_base.html" %}
+
+{% block cart%}
+<form action="{%url 'order_placed'%}" method="get">
+	Shop ID: <input type="text" name="store_id"><br>
+    Product ID: <input type="text" name="p_id_1"><br>
+	Batch ID: <input type="text" name="b_id_1"><br> <!-- how is batch id handled on customer webpage? -->
+    Qty: <input type="text" name="qty_1"><br>
+    Product ID: <input type="text" name="p_id_2"><br>
+    Batch ID: <input type="text" name="b_id_2"><br>
+    Qty: <input type="text" name="qty_2"><br>
+    Product ID: <input type="text" name="p_id_3"><br>
+    Batch ID: <input type="text" name="b_id_13"><br>
+    Qty: <input type="text" name="qty_3"><br>
+    <input type="submit" value="Submit">
+</form>
+{% endblock%}
