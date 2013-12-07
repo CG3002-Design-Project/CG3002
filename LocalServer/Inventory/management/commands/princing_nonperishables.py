@@ -23,6 +23,7 @@ class Command(BaseCommand):
 			if(i.expiry_date is None):
 				if(i.qty <= i.minimum_qty):
 					i.selling_price = i.selling_price + (i.selling_price * (i.strategy_percentage*Decimal(0.001)))
+					i.display_flag = 'True'
 					i.save()
 		return HttpResponse("pricing non-persishables");
             
