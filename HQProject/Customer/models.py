@@ -2,6 +2,14 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
 from Website.models import Store,Product,Inventory,Transaction
+from django.db import models
+from django.contrib.auth.models import User
+
+class Profile(models.Model):
+    user = models.ForeignKey(User, unique=True)
+    facebook_uid = models.PositiveIntegerField(blank=True, null=True)
+    facebook_access_token = models.CharField(blank=True, max_length=255)
+    facebook_access_token_expires = models.PositiveIntegerField(blank=True, null=True)
 
 class eTransaction(models.Model):
         transaction_id = models.PositiveIntegerField(validators=[MaxValueValidator(99999999)])

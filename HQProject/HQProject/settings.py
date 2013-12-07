@@ -15,13 +15,9 @@ DATABASES = {
         'NAME': 'HQ',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'root',
-<<<<<<< HEAD
-        'PASSWORD': 'poornima92',
-=======
         'PASSWORD': 'blinky23',
->>>>>>> c3447bc89a07e4a8fcd3f0a9cfc87baf35081f4f
         'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '3306',                      # Set to empty string for default.
+        'PORT': '3306 ',                      # Set to empty string for default.
     }
 }
 
@@ -125,12 +121,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Customer',
+    'registration',
+    'social.apps.django_app.default',
 	'Sync',
 	'Website',
-<<<<<<< HEAD
-=======
-    'chartit',
->>>>>>> c3447bc89a07e4a8fcd3f0a9cfc87baf35081f4f
+	'chartit',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -169,4 +164,43 @@ LOGGING = {
 }
 
 LOGIN_REDIRECT_URL='login_redirect'
-LOGIN_URL='/Website/accounts/login'
+#LOGIN_URL='/accounts/login'
+
+#AUTH_PROFILE_MODULE = 'Customer.profile'
+
+#AUTHENTICATION_BACKENDS = (
+#    'social_auth.backends.facebook.FacebookBackend',
+#    'django.contrib.auth.backends.ModelBackend'
+#)
+
+#FB_APP_ID = '187054974817839',
+#FB_API_SECRET = '613ea73f221c61d00d30ec7cc4338fa0'
+
+# FACEBOOK_APP_ID = '187054974817839',
+# FACEBOOK_SECRET_KEY = '613ea73f221c61d00d30ec7cc4338fa0'
+
+#SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'customer_home'
+
+#SOCIAL_AUTH_DEFAULT_USERNAME = 'new_social_auth_user'
+#FACEBOOK_AUTH_EXTRA_ARGUMENTS = {'display': 'touch'}
+#FACEBOOK_EXTENDED_PERMISSIONS = ['email']
+
+FACEBOOK_APP_ID = '187054974817839'
+FACEBOOK_API_KEY = '187054974817839'
+FACEBOOK_API_SECRET = '613ea73f221c61d00d30ec7cc4338fa0'
+FACEBOOK_REDIRECT_URI = 'http://example.com/login/'
+
+#AUTHENTICATION_BACKENDS = (
+#    'Customer.backends.FacebookBackend',
+#)
+
+ACCOUNT_ACTIVATION_DAYS = '30'
+
+# FACEBOOK_APP_ID = '187054974817839'
+# FACEBOOK_API_KEY = '187054974817839'
+# FACEBOOK_API_SECRET = '613ea73f221c61d00d30ec7cc4338fa0'
+# FACEBOOK_REDIRECT_URI = 'http://example.com/login/'
+
+# AUTHENTICATION_BACKENDS = (
+    # 'Customer.backends.FacebookBackend',
+# )

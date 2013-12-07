@@ -24,9 +24,9 @@
                 <div class="span4 offset2" style="margin-top:15px;">
                     <button class="btn pull-right" type="button">
                         {% if user.is_authenticated %}
-                            <p style="text-align:right"> <a href="../accounts/logout">Logout</a></p>
+                            <p style="text-align:right"> <a href="/accounts/logout">Logout</a></p>
                         {% else %}
-                            <p style="text-align:right"> <a href="../accounts/login">Log In</a></p>
+                            <p style="text-align:right"> <a href="/accounts/login">Log In</a></p>
                         {% endif %}
                     </button>
                 </div>
@@ -44,8 +44,7 @@
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
                             <li class="active"><a href="#"> <i class="icon-home icon-white"></i>Home</a></li>
-                            <li><a href="{%url 'inventory_control' curr_employee.store_id_id%}"><i class="icon-book icon-white"></i>Inventory</a></li>
-                            <li><a href="{%url 'profile' curr_employee.user_id%}"><i class="icon-book icon-white"></i>Profile</a></li>                            
+                            <li><a href="{%url 'inventory_control' curr_employee.store_id_id%}"><i class="icon-book icon-white"></i>Inventory</a></li>                          
                         </ul>
                     </div><!--/.nav-collapse -->
                     {% if user.is_authenticated %}

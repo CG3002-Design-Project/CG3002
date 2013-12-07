@@ -11,9 +11,10 @@ from django.shortcuts import render, render_to_response
 from django.template import Context, loader, RequestContext
 from Website.models import Store,Product,Inventory,Transaction
 from decimal import *
-from chartit import DataPool, Chart
 import random
-    
+from django.contrib.admin.views.decorators import staff_member_required
+
+@staff_member_required    
 @login_required
 def filter_products(request):
     products = Product.objects.all()
@@ -24,7 +25,7 @@ def filter_products(request):
     context = {'categories':categories}         
     return render(request,'filter_products.html',context)
    
-   
+@staff_member_required    
 @login_required
 def view_product(request):
     products = Product.objects.all()
@@ -32,7 +33,7 @@ def view_product(request):
     context = {'products':products,'message':message}
     return render(request,'view_product.html',context)
 
-
+@staff_member_required  
 @login_required
 def add_product(request):
     products = Product.objects.all()
@@ -44,7 +45,7 @@ def add_product(request):
     context = {'categories':categories,'stores':stores}     
     return render(request,'add_product.html',context)       
         
-
+@staff_member_required  
 @login_required
 def product_added(request):
     if 'name' in request.GET and request.GET['name'] and 'manufacturer' in request.GET and request.GET['manufacturer'] and 'cate' in request.GET and request.GET['cate'] and 'minrestock' in request.GET and request.GET['minrestock']:
@@ -68,13 +69,15 @@ def product_added(request):
         message = 'The following product has been successfully added. '
         context = {'pr':pr,'message':message,'products':products}
         return render(request,'view_product.html',context)
-        
+
+@staff_member_required         
 @login_required
 def delete_product(request,id):
     product = Product.objects.get(product_id=id)
     context = {'product':product}
     return render(request,'delete_product.html',context)
-        
+
+@staff_member_required          
 @login_required
 def product_deleted(request,id):
     product = Product.objects.get(product_id=id)
@@ -89,7 +92,7 @@ def product_deleted(request,id):
     context = {'product':product,'products':products,'messagedelete':messagedelete}
     return render(request,'view_product.html',context)  
             
-        
+@staff_member_required         
 @login_required
 def view_storewise(request,id):
     product = Product.objects.get(product_id=id)
@@ -102,13 +105,14 @@ def view_storewise(request,id):
     context = {'list':list,'product':product}
     return render(request, 'view_storewise.html',context)
 
+@staff_member_required  
 @login_required
 def create_product(request,s_id):
     store = Store.objects.get(store_id=s_id)
     context = {'store':store}
     return render(request,'create_product.html',context)    
     
-    
+@staff_member_required   
 @login_required
 def product_created(request,s_id):
     store = Store.objects.get(store_id=s_id)

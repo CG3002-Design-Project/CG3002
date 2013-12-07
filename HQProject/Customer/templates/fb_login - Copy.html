@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Welcome!</title>
+    <link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/Customer/bootstrap.css" rel="stylesheet">
+    <link href="/static/Customer/bootstrap-responsive.css" rel="stylesheet">
+    </head>
+    <body>
+
+ <!-- NAVBAR================================================== -->
+        <div class="container">
+                    <div class="row-fluid">
+            <div class="span12">
+                <div class="span6">
+                    <h1 class="muted">Online Shopping Portal</h1>
+                </div>
+                <div class="span4 offset2" style="margin-top:15px;">
+                    <button class="btn pull-right" type="button">
+                        {% if user.is_authenticated %}
+                            <p style="text-align:right"> <a href="/accounts/logout">Logout</a></p>
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
+        </div>
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner">
+                    <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+                    <div class="nav-collapse ">
+                        <ul class="nav pull-left">
+                            <li><a href="#"> <i class="icon-home icon-white"></i>Home</a></li>
+                            <li><a href="#"><i class="icon-star icon-white"></i>Browse</a></li>
+                            <li><a href="#"><i class="icon-book icon-white"></i>About Us</a></li>
+                            <li><a href="#"><i class="icon-camera icon-white"></i>My Cart</a></li>
+                            <li><a href="#"><i class="icon-comment icon-white"></i>My Profile</a></li>          
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div><!-- /.navbar-inner -->
+            </div><!-- /.navbar -->
+        </div> <!-- /.container -->
+        <div class="container">
+    <div class="row">
+        <form class="form-signin mg-btm">
+        <h3 class="heading-desc">
+        <button type="button" class="close pull-right" aria-hidden="true">×</button>
+        Login</h3>
+        <div class="social-box">
+            <div class="row mg-btm">
+             <div class="col-md-12">
+                <a href="#" class="btn btn-primary btn-block">
+                  <i class="icon-facebook"></i>    Login with Facebook
+                </a>
+            </div>
+            </div>
+        </div>
+      </form>
+    </div>
+</div>
+        <!-- JavaScript placed at the end of the document so the pages load faster -->
+        <script src="static/Customer/bootstrap.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  </body>
+</html>

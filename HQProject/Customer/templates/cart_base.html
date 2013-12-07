@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/static/Customer/bootstrap.css" rel="stylesheet">
     <link href="/static/Customer/bootstrap-responsive.css" rel="stylesheet">
+    <script src="/static/Customer/cart.js"></script>
     </head>
     <body>
 
@@ -20,7 +21,7 @@
                 <div class="span4 offset2" style="margin-top:15px;">
                     <button class="btn pull-right" type="button">
                         {% if user.is_authenticated %}
-                            <p style="text-align:right"> <a href="/Website/accounts/logout">Logout</a></p>
+                            <p style="text-align:right"> <a href="/accounts/logout">Logout</a></p>
                         {% endif %}
                     </button>
                 </div>
@@ -40,7 +41,7 @@
                             <li><a href="#"> <i class="icon-home icon-white"></i>Home</a></li>
                             <li><a href="#"><i class="icon-star icon-white"></i>Browse</a></li>
                             <li><a href="#"><i class="icon-book icon-white"></i>About Us</a></li>
-                            <li><a href="#"><i class="icon-camera icon-white"></i>My Cart</a></li>
+                            <li class="active"><a href="#"><i class="icon-camera icon-white"></i>My Cart</a></li>
                             <li><a href="#"><i class="icon-comment icon-white"></i>My Profile</a></li>          
                         </ul>
                     </div><!--/.nav-collapse -->
@@ -63,7 +64,7 @@
 <script src="/static/Customer/DT_bootstrap.js"></script>
 <script src="/static/Customer/bootstrap-alert.js"></script> 
 
-<script type="text/javascript"> 
+<script type="text/javascript"/> 
 
   </body>
 </html>

@@ -22,7 +22,7 @@
                 <div class="span4 offset2" style="margin-top:15px;">
                     <button class="btn pull-right" type="button">
                         {% if user.is_authenticated %}
-                            <p style="text-align:right"> <a href="/Website/accounts/logout">Logout</a></p>
+                            <p style="text-align:right"> <a href="/accounts/logout">Logout</a></p>
                         {% endif %}
                     </button>
                 </div>
@@ -44,7 +44,7 @@
                             <li><a href="{% url 'filter_stores'%}"><i class="icon-book icon-white"></i>Stores</a></li>
                             <li><a href="#"><i class="icon-camera icon-white"></i>Employees</a></li>
                             <li class="active"><a href="{% url 'transaction_home'%}"><i class="icon-comment icon-white"></i>Transactions</a></li>
-						    <li><a href="../Website/transaction_stats"><i class="icon-comment icon-white"></i>Statistics</a></li>
+						    <li><a href="../Website/revenue_chart"><i class="icon-comment icon-white"></i>Statistics</a></li>
                         </ul>
                     </div><!--/.nav-collapse -->
                     {% if user.is_authenticated %}
@@ -55,14 +55,6 @@
                 </div><!-- /.navbar-inner -->
             </div><!-- /.navbar -->
         </div> <!-- /.container -->
-
-<div class="container">
-    <ul class="nav nav-tabs">
-  <li class="active"><a href="#">Transaction Control</a></li>
-  <li><a href="{% url 'transaction_stats'%}">Statistics</a></li>
-</ul>
-</div>
-
 
 <div class="container">
     <h2>Latest Transactions</h2>

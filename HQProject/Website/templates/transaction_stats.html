@@ -27,7 +27,7 @@
                 <div class="span4 offset2" style="margin-top:15px;">
                     <button class="btn pull-right" type="button">
                         {% if user.is_authenticated %}
-                            <p style="text-align:right"> <a href="/Website/accounts/logout">Logout</a></p>
+                            <p style="text-align:right"> <a href="/accounts/logout">Logout</a></p>
                         {% endif %}
                     </button>
                 </div>
@@ -49,7 +49,7 @@
                             <li><a href="../Website/view-stores"><i class="icon-book icon-white"></i>Stores</a></li>
                             <li><a href="#"><i class="icon-camera icon-white"></i>Employees</a></li>
                             <li><a href="../Website/transaction_home"><i class="icon-comment icon-white"></i>Transactions</a></li>
-							<li class="active"><a href="../Website/transaction_stats"><i class="icon-comment icon-white"></i>Statistics</a></li>
+							<li class="active"><a href="../Website/revenue_chart"><i class="icon-comment icon-white"></i>Statistics</a></li>
                         </ul>
                     </div><!--/.nav-collapse -->
                     {% if user.is_authenticated %}
@@ -63,9 +63,9 @@
 
 <div class="container">
 <ul class="nav nav-tabs">
-	<li class="active"><a href="transaction_stats">Revenue Ranking</a></li>
-	<li><a href="transaction_stats">Top 10 Products</a></li>
-	<li><a href="transaction_stats">Monthly Revenue</a></li>
+	<li class="active"><a href="revenue_chart">Revenue Ranking</a></li>
+	<li><a href="top_ten_products">Top 10 Products</a></li>
+	<li><a href="monthly_stats">Monthly Revenue</a></li>
 </ul>
 <h2>Transaction Statistics</h2>
 
@@ -77,7 +77,6 @@
 {% for c in country %}
 <option id="val">{{c}}</option>
 {% endfor %}
-<option>All</option>
 </select>			   
 <Button id="submit" value="Submit">Submit</Button>					
  <body>

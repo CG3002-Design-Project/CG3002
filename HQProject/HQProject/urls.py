@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+#from social_auth.backends import get_backend
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -16,6 +17,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 	#(r'^statinfo/$', 'homepage.views.stat_info'),
     (r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    (r'^accounts/', include('registration.backends.default.urls')),
     (r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page' : '/accounts/login'}),
     #(r'^mainmenu/$', 'homepage.views.mainmenu'),
 	#(r'^search-form/$','products.views.search_form'),
@@ -23,10 +25,8 @@ urlpatterns = patterns('',
 	#url(r'^Store/', include('Store.urls')),
 	#url(r'^Product/', include('Product.urls')),
 	url(r'^Website/', include('Website.urls')),
-<<<<<<< HEAD
-    url(r'^Sync/',include('Sync.urls'))
-=======
+    url(r'^Sync/',include('Sync.urls')),
     url(r'^Customer/', include('Customer.urls')),
     url(r'^Sync/',include('Sync.urls')),
->>>>>>> c3447bc89a07e4a8fcd3f0a9cfc87baf35081f4f
+ #   url(r'', include('social_auth.urls')),
 )
