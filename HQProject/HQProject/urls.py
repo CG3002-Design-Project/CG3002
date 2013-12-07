@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+#from social_auth.backends import get_backend
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -25,4 +26,5 @@ urlpatterns = patterns('',
 	url(r'^Website/', include('Website.urls')),
     url(r'^Customer/', include('Customer.urls')),
     url(r'^Sync/',include('Sync.urls')),
+ #   url(r'', include('social_auth.urls')),
 )

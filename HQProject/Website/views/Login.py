@@ -11,21 +11,9 @@ from django.shortcuts import render, render_to_response, redirect
 from django.template import Context, loader, RequestContext
 from Website.models import Store,Product,Inventory,Transaction, Employee
 from django.contrib.auth.models import User
-#https://docs.djangoproject.com/en/1.2/topics/auth/#other-authentication-sources
-#http://stackoverflow.com/questions/9825630/login-required-decorator-in-django-1-1-and-template-name
-
-#@login_required(redirect_field_name='my_redirect_field')
-#@login_required
-#def garbage_stat_info(request):
-#    template = loader.get_template('stat_info.html')
-#    context = Context({'is_auth': str(request.user.is_authenticated())})
-#   return HttpResponse(template.render(context))
-
-#@login_required
-#ef stat_info(request):
-#    return render_to_response('stat_info.html',
-#        {'is_auth':request.user.is_authenticated()},
-#        context_instance=RequestContext(request))
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+#from fbproject.settings import FB_APP_ID, FB_APP_SECRET
 
 @login_required
 def home(request):
