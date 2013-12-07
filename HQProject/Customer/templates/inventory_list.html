@@ -4,14 +4,19 @@
 <head>
 	<title>Buy Products</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" href="style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/static/Customer/bootstrap.css" rel="stylesheet">
-    <link href="/static/Customer/bootstrap-responsive.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="/static/js/bootstrap-switch.min.js"></script>
+	<link rel="stylesheet" href="/static/css/bootstrap-switch.css">
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="/static/css/bootstrap-rowlink.css" rel="stylesheet">
+	<script src="/static/js/bootstrap.min.js"></script>
+	<link href="/static/css/demo_table.css">
+	<script src="/static/js/jquery.js"></script>
+	<script src="/static/js/jquery.dataTables.js"></script>
+	<script src="/static/js/DT_bootstrap.js"></script>
 </head>
-
-
-
  <div class="container">
         <div class="row-fluid">
             <div class="span12">
@@ -38,8 +43,8 @@
                     <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
-                            <li><a href="#"> <i class="icon-home icon-white"></i>Home</a></li>
-                            <li><a href="#"><i class="icon-star icon-white"></i>Browse</a></li>
+                            <li><a href="{% url 'customer_home'%}"><i class="icon-home icon-white"></i>Home</a></li>
+                            <li><a href="{% url 'inventory_list'%}"><i class="icon-star icon-white"></i>Browse</a></li>
                             <li><a href="#"><i class="icon-camera icon-white"></i>My Cart</a></li>
                             <li><a href="#"><i class="icon-comment icon-white"></i>My Profile</a></li>    
 							<li><a href="#"><i class="icon-book icon-white"></i>About Us</a></li>	
@@ -53,4 +58,58 @@
                 </div><!-- /.navbar-inner -->
             </div><!-- /.navbar -->
     </div> <!-- /.container -->
+	<style>
+	.on { 
+	border:1px outset;
+	color:#369;
+	background:#00CC00; 
+	}
+
+	.off {
+	border:1px outset;
+	color:#369;
+	background:#A8A8A8 ; 
+	}
+	</style>
+	<script>
+	function togglestyle(el){
+    if(el.className == "on") {
+    	el.className="off";
+    } else {
+    	el.className="on";
+    }
+	}
+	</script>
+	<body>
+	<div class="container">
+	<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered dataTable" id="example" aria-describedby="example_info">  
+        <thead>  
+          <tr>  
+			<th>Product</th>
+            <th>Product Name</th>
+			<th>Category</th>
+			<th>Description</th>  			
+			<th>Price</th>
+			<th>Rating</th>
+			<th>Add to cart</th>
+          </tr>  
+        </thead>  
+        <tbody>  
+		{% for s in inventory %}
+          <tr>  
+            <td><img src="/static/{{s.productid}}.jpg" alt="Smiley face" height="100" width="100"></td>  
+            <td>{{s.name}}</td>  
+            <td>{{s.category}}</td>  
+            <td>{{s.description}}</td> 
+			<td>{{s.price}}</td>
+			<td>{{s.rating}}</td>
+			<td>
+				<input type="button" id="btn" value="Add to cart" class="off" onclick="togglestyle(this)" />
+			</td>
+          </tr> 
+         {% endfor %}		  
+        </tbody>  
+      </table>	
+ </div>
+	</body>
 	</html>
