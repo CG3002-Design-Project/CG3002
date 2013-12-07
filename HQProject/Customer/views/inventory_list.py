@@ -10,7 +10,8 @@ import random
 def inventory_list(request):
 	class inven_prod:
 		def __init__(self):
-			self.name = None	
+			self.name = None
+			self.productid = None			
 			self.category = None
 			self.description = None
 			self.price = 0
@@ -23,6 +24,7 @@ def inventory_list(request):
 		product_obj = Product.objects.get(product_id=product)
 		if i.batch_id == 2:
 			obj = inven_prod();
+			obj.productid = product
 			obj.name = product_obj.name
 			obj.category = product_obj.category
 			obj.description = "test"
