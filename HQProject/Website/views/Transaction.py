@@ -148,6 +148,8 @@ def monthly_stats(request):
 
                     }
                 )	
+def store_name(store_id):
+    return str(store_id)
 
 @staff_member_required
 @csrf_exempt		
@@ -159,7 +161,60 @@ def revenue_chart(request):
 			output.append(s.region)
 	print output			
 	context = {'country':output}  
-	return render (request,'transaction_stats.html',context)	
+	return render (request,'transaction_stats.html',context)
+
+def revenue_chart_2(request):
+    storeRevenue = \
+        DataPool(
+           series=
+            [{'options': {
+               'source': Transaction.objects.all()},
+              'terms': [
+                'store_id',
+                'selling_price']}
+             ])	
+
+    transaction_stats = Chart(
+            datasource = storeRevenue,
+            series_options =
+              [{'options':{
+                  'type': 'pie',
+                  'stacking': False},
+                'terms':{
+                  'store_id': [
+                    'selling_price']
+                  }}],
+            chart_options =
+              {'title': {
+                   'text': 'Revenue by Stores'}},
+            x_sortf_mapf_mts = (None,store_name,False))
+
+    return render(request,'transaction_stats.html',
+                    {
+                        'transaction_stats': transaction_stats
+                    }
+                )
+    # storeRevenue = \
+    #     PivotDataPool(
+    #       series=
+    #         [{'options': {
+    #            'source': Transaction.objects.filter(store_id='123456'),
+    #            'categories' : ['store_id']},
+    #           'terms': {
+    #             'total_revenue': Avg('selling_price')}}],
+    #       sortf_mapf_mts = (None,store_name,False))
+
+    # transaction_stats1 = PivotChart(
+    #         datasource = storeRevenue,
+    #         series_options =
+    #           [{'options':{
+    #               'type': 'pie'},
+    #             'terms':[
+    #               'total_revenue']
+    #               }],
+    #         chart_options =
+    #           {'title': {
+    #                'text': 'Spend per Store'}})            	
 
 @staff_member_required
 @csrf_exempt	
