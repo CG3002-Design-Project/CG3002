@@ -3,13 +3,15 @@ from django.conf.urls import patterns, url
 from Website import views
 
 urlpatterns = patterns('',
-	url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
-    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page' : '../login'}),
+#	url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+#    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page' : '../login'}),
     url(r'^login_redirect/$', views.login_redirect, name='login_redirect'),
+    url(r'^login_url/$', views.login_url, name='login_url'),
     #url(r'^home/$', 'Website.views.home'),
     url(r'^home/$', views.home, name='home'),
     url(r'^home_regionalManager/$', views.home_regionalManager, name='home_regionalManager'),
     url(r'^home_storeManager/$', views.home_storeManager, name='home_storeManager'),
+    url(r'^home_accessDenied/$', views.home_accessDenied, name='home_accessDenied'),
     url(r'^filter-products$', views.filter_products, name='filter_products'),
 	url(r'^view-product$', views.view_product, name='view_product'),
 	url(r'^add-product$', views.add_product, name='add_product'),

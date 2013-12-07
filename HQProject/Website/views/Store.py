@@ -12,12 +12,14 @@ from django.template import Context, loader, RequestContext
 from Website.models import Store,Product,Inventory,Transaction
 from decimal import *
 import random
-    
+from django.contrib.admin.views.decorators import staff_member_required
+
+@staff_member_required     
 @login_required
 def filter_stores(request):
     return render(request,'filter_stores.html')
-   
-   
+
+@staff_member_required    
 @login_required
 def view_stores(request):
     if 'region' in request.GET and request.GET['region']:
@@ -53,16 +55,19 @@ def view_stores(request):
     context = {'stores':stores,'message':message}   
     return render(request, 'view_stores.html',context)
 
+@staff_member_required
 @login_required
 def view_specific(request,id):
     store = Store.objects.get(store_id=id)
     context = {'store':store}
     return render(request, 'view_specific.html',context)
 
+@staff_member_required
 @login_required
 def create_store(request):
     return render(request,'create_store.html')
 
+@staff_member_required
 @login_required
 def store_created(request):
     if 'address' in request.GET and request.GET['address'] and 'city' in request.GET and request.GET['city'] and 'country' in request.GET and request.GET['country'] and 'region' in request.GET and request.GET['region']:
@@ -86,13 +91,14 @@ def store_created(request):
     context = {'stores':stores,'message':message}
     return render(request,'view_stores.html',context)
 
-
+@staff_member_required
 @login_required
 def edit_store(request,id):
     store = Store.objects.get(store_id=id)
     context = {'store':store}
     return render(request,'edit_store.html',context)   
 
+@staff_member_required
 @login_required
 def store_edited(request,id):
     print id
@@ -111,14 +117,16 @@ def store_edited(request,id):
     stores = Store.objects.all()
     message = 'Store has been successfully edited'
     context = {'stores':stores,'message':message}
-    return render(request,'view_stores.html',context)       
-    
+    return render(request,'view_stores.html',context)
+
+@staff_member_required    
 @login_required
 def delete_store(request,id):
     store = Store.objects.get(store_id = id)
     context = {'store':store}
     return render(request,'delete_store.html',context)
-         
+    
+@staff_member_required     
 @login_required
 def store_deleted(request,id):
     store = Store.objects.get(store_id=id)

@@ -121,7 +121,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Customer',
-#    'social.apps.django_app.default',
+    'registration',
+    'social.apps.django_app.default',
 	'Sync',
 	'Website',
 	'chartit',
@@ -163,7 +164,7 @@ LOGGING = {
 }
 
 LOGIN_REDIRECT_URL='login_redirect'
-LOGIN_URL='/Website/accounts/login'
+#LOGIN_URL='/accounts/login'
 
 #AUTH_PROFILE_MODULE = 'Customer.profile'
 
@@ -188,6 +189,8 @@ FACEBOOK_API_KEY = '187054974817839'
 FACEBOOK_API_SECRET = '613ea73f221c61d00d30ec7cc4338fa0'
 FACEBOOK_REDIRECT_URI = 'http://example.com/login/'
 
-AUTHENTICATION_BACKENDS = (
-    'Customer.backends.FacebookBackend',
-)
+#AUTHENTICATION_BACKENDS = (
+#    'Customer.backends.FacebookBackend',
+#)
+
+ACCOUNT_ACTIVATION_DAYS = '30'

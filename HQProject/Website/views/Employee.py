@@ -13,6 +13,7 @@ from Website.models import Store,Product,Inventory,Transaction
 from decimal import *
 from chartit import DataPool, Chart
 import random
+
     
      
 @login_required

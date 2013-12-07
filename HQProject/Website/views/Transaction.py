@@ -20,12 +20,14 @@ import json
 from datetime import date
 import operator
 
+@staff_member_required
 @login_required
 def transaction_home(request):
 	transaction_list = Transaction.objects.all()
 	context = {'transaction_list':transaction_list}
 	return render(request, 'transaction_home.html',context)
 
+@staff_member_required
 @csrf_exempt	
 def top_ten_products_old(request):
 	store =  Store.objects.all()
@@ -37,6 +39,7 @@ def top_ten_products_old(request):
 	context = {'storeid':output}  
 	return render (request,'top_tenProducts.html',context)
 
+@staff_member_required
 @csrf_exempt
 def top_ten_products(request):
 	#d =  json.loads(request.body)
@@ -94,6 +97,8 @@ def top_ten_products(request):
 
                     }
                 )	
+
+@staff_member_required
 @csrf_exempt	
 def monthly_stats(request):
 	#d =  json.loads(request.body)
@@ -144,6 +149,7 @@ def monthly_stats(request):
                     }
                 )	
 
+@staff_member_required
 @csrf_exempt		
 def revenue_chart(request):
 	store =  Store.objects.all()
@@ -154,7 +160,8 @@ def revenue_chart(request):
 	print output			
 	context = {'country':output}  
 	return render (request,'transaction_stats.html',context)	
-	
+
+@staff_member_required
 @csrf_exempt	
 def revenue_pie(request):
 	d =  json.loads(request.body)
