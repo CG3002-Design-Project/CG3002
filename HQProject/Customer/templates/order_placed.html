@@ -1,5 +1,11 @@
 {% extends "cart_base.html" %}
 
 {%block order_placed%}
-<h2>eTransaction {{et_1.transaction_id}} added!</h2>
+            <div class="span12 pagination-centered">
+                <div id="content">
+                    <h2>Your order {{et_1.transaction_id}} has been placed.</h2>
+                    <h4>Please use ID to pay at your store. </h4>
+                    <h5>Store details: </h5>
+                </div>
+            </div>
 {% endblock%}

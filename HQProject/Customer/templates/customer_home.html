@@ -41,10 +41,9 @@
                     <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
-                            <li><a href="#"> <i class="icon-home icon-white"></i>Home</a></li>
+                            <li><a href="{% url 'inventory_list'%}"> <i class="icon-home icon-white"></i>Home</a></li>
                             <li><a href="{% url 'inventory_list'%}"><i class="icon-star icon-white"></i>Browse</a></li>
-                            <li><a href="#"><i class="icon-camera icon-white"></i>My Cart</a></li>
-                            <li><a href="#"><i class="icon-comment icon-white"></i>My Profile</a></li>    
+                            <li><a href="{% url 'cart'%}"><i class="icon-camera icon-white"></i>My Cart</a></li>  
 							<li><a href="#"><i class="icon-book icon-white"></i>About Us</a></li>	
                         </ul>
                     </div><!--/.nav-collapse -->
@@ -56,7 +55,7 @@
                 </div><!-- /.navbar-inner -->
             </div><!-- /.navbar -->
         </div> <!-- /.container -->
-		
+
 <body>
 	<!-- Start WOWSlider.com BODY section -->
 <div id="wowslider-container1">
@@ -71,11 +70,15 @@
 <a href="#" title="CEG 21"><img src="/static/Customer/data1/tooltips/logo.png" alt="logo"/>2</a>
 <a href="#" title="Fresh Fruits"><img src="/static/Customer/data1/tooltips/market.jpg" alt="market"/>3</a>
 </div></div>
-<span class="wsl"><a href="http://wowslider.com">Joomla Carousel</a> by WOWSlider.com v4.8</span>
 	<div class="ws_shadow"></div>
 	</div>
 	<script type="text/javascript" src="/static/Customer/engine1/wowslider.js"></script>
 	<script type="text/javascript" src="/static/Customer/engine1/script.js"></script>
 	<!-- End WOWSlider.com BODY section -->
 </body>
+            <div class="span12 pagination-centered">
+                <div id="content">
+                    <h2>Welcome to our Online Shopping Portal!</h2>
+                </div>
+            </div>
 </html>

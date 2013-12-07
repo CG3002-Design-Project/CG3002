@@ -2,16 +2,35 @@
 
 {% block cart%}
 <form action="{%url 'order_placed'%}" method="get">
-	Shop ID: <input type="text" name="store_id"><br>
-    Product ID: <input type="text" name="p_id_1"><br>
-	Batch ID: <input type="text" name="b_id_1"><br> <!-- how is batch id handled on customer webpage? -->
-    Qty: <input type="text" name="qty_1"><br>
-    Product ID: <input type="text" name="p_id_2"><br>
-    Batch ID: <input type="text" name="b_id_2"><br>
-    Qty: <input type="text" name="qty_2"><br>
-    Product ID: <input type="text" name="p_id_3"><br>
-    Batch ID: <input type="text" name="b_id_13"><br>
-    Qty: <input type="text" name="qty_3"><br>
-    <input type="submit" value="Submit">
+<div class="container">
+<table class="table table-striped" data-provides="rowlink">  
+        <thead>  
+          <tr>
+            <th>Product ID</th>
+            <th>Product Name</th>  
+            <th>Quantity</th>  
+            <th>Price</th>            
+          </tr>  
+        </thead>  
+        <tbody>  
+        {% for c in cart_list %}
+          <tr>  
+            <td>{{c.product_id}}</td>  
+            <td>{{c.name}}</td>  
+            <td>{{c.qty}}</td>  
+            <td>{{c.selling_price}}</td>        
+            <td><a href = "{% url 'edit_cart' c.product_id%}" class="btn">Edit</a></td>        
+            <td><a href = "{% url 'delete_cart' c.product_id%}" class="btn">Delete</a></td>        
+            </tr>
+            {% endfor %}
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Total: </td>    
+          </tbody>
+          </table>
+          <input type="submit" value="Check Out">
+</div>
+
 </form>
 {% endblock%}
