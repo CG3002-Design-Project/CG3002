@@ -44,26 +44,29 @@
                             <li><a href="#"><i class="icon-comment icon-white"></i>My Profile</a></li>          
                         </ul>
                     </div><!--/.nav-collapse -->
-                    {% if user.is_authenticated %}
-                                    <p class="navbar-text pull-right"> Signed in as <a href="#" class="navbar-link">{{ user.first_name }}</a></p>
-                    {% else %}
-                                    <p class="navbar-text pull-right"> Welcome. <a href="/accounts/login" class="navbar-link">Please log in.</a></p>
-                    {% endif %}
                 </div><!-- /.navbar-inner -->
             </div><!-- /.navbar -->
         </div> <!-- /.container -->
+        <div class="container">
+    <div class="row">
+        <form class="form-signin mg-btm">
+        <h3 class="heading-desc">
+        <button type="button" class="close pull-right" aria-hidden="true">×</button>
+        Login</h3>
+        <div class="social-box">
+            <div class="row mg-btm">
+             <div class="col-md-12">
+                <a href="#" class="btn btn-primary btn-block">
+                  <i class="icon-facebook"></i>    Login with Facebook
+                </a>
+            </div>
+            </div>
+        </div>
+      </form>
+    </div>
+</div>
         <!-- JavaScript placed at the end of the document so the pages load faster -->
-        {% block cart%}{%endblock%}
-        {% block order_placed%}{%endblock%}        
         <script src="static/Customer/bootstrap.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="/static/Customer/bootstrap.min.js"></script>
-<script src="/static/Customer/jquery.js"></script>
-<script src="/static/Customer/jquery.dataTables.js"></script>
-<script src="/static/Customer/DT_bootstrap.js"></script>
-<script src="/static/Customer/bootstrap-alert.js"></script> 
-
-<script type="text/javascript"/> 
-
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   </body>
 </html>

@@ -18,6 +18,7 @@ from operator import itemgetter
 import random
 import json
 from datetime import date
+import operator
 
 @login_required
 def transaction_home(request):
@@ -26,7 +27,7 @@ def transaction_home(request):
 	return render(request, 'transaction_home.html',context)
 
 @csrf_exempt	
-def top_ten_products(request):
+def top_ten_products_old(request):
 	store =  Store.objects.all()
 	output = []
 	for s in store:
@@ -36,15 +37,25 @@ def top_ten_products(request):
 	context = {'storeid':output}  
 	return render (request,'top_tenProducts.html',context)
 
-@csrf_exempt	
-def price_topTen(request):
+@csrf_exempt
+def top_ten_products(request):
 	#d =  json.loads(request.body)
 	#if d['storeid'] is None:
 	#	storeid = 1;
 	#else:
-		
-	transaction_list = Transaction.objects.filter(store_id=1)
-	
+	print "here"
+	if 'store_selected' in request.GET and request.GET['store_selected']:
+		store_selected = request.GET['store_selected']
+		print store_selected;
+	else:
+		store_selected = "All"
+
+	if (store_selected=="All"):
+		transaction_list= Transaction.objects.all()
+	else:
+		transaction_list= Transaction.objects.filter(store_id=store_selected)
+
+	store_list =  Store.objects.all()
 	productrevenue = \
         PivotDataPool(
           series=
@@ -72,14 +83,66 @@ def price_topTen(request):
                    'text': 'Revenue by Product'},
                'xAxis': {
                     'title': {
-                       'text': 'Product ID'}}})	
+                       'text': 'Product ID'}}})
+
+
 					   
 	return render(request,'top_tenProducts.html',
                     {
-                        'transaction_stats': transaction_stats
+                        'transaction_stats': transaction_stats,
+                        'store_list' : store_list
+
                     }
-                )
-		
+                )	
+@csrf_exempt	
+def monthly_stats(request):
+	#d =  json.loads(request.body)
+	#if d['storeid'] is None:
+	#	storeid = 1;
+	#else:
+	print "here"
+	if 'store_selected' in request.GET and request.GET['store_selected']:
+		store_selected = request.GET['store_selected']
+		print store_selected;
+	else:
+		store_selected = "All"
+
+	if (store_selected=="All"):
+		transaction_list= Transaction.objects.all()
+	else:
+		transaction_list= Transaction.objects.filter(store_id=store_selected)
+
+	store_list =  Store.objects.all()
+#	transaction_list = Transaction.objects.filter(store_id=1)
+#	transaction_list = Transaction.objects.all()
+	dateRevenue = \
+		PivotDataPool(
+          series=
+            [{'options': {
+               'source': transaction_list,
+               'categories' : ['transaction_date']},
+              'terms': {
+                'avg_revenue': Avg('selling_price')}}])
+	
+	transaction_stats = PivotChart(
+        datasource = dateRevenue,
+        series_options =
+          [{'options':{
+              'type': 'line'},
+            'terms':[
+              'avg_revenue']
+              }],
+        chart_options =
+          {'title': {
+               'text': 'Spend over Last 30 days'}})
+					   
+	return render(request,'monthly_stats.html',
+                    {
+                        'transaction_stats': transaction_stats,
+                        'store_list' : store_list
+
+                    }
+                )	
 
 @csrf_exempt		
 def revenue_chart(request):

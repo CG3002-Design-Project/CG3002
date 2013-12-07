@@ -69,24 +69,29 @@
 <ul class="nav nav-tabs">
 	<li><a href="revenue_chart">Revenue Ranking</a></li>
 	<li class="active"><a href="top_ten_products">Top 10 Products</a></li>
-	<li><a href="revenue_chart">Monthly Revenue</a></li>
+	<li><a href="monthly_stats">Monthly Revenue</a></li>
 </ul>
 <h2>Transaction Statistics</h2>
 
+            <div class="container">
+                
+                </br>
+                <form action="{% url 'top_ten_products'%}" method="get" id="store_selected" name="store_selected" >
+                <h4>Filter by region</h4>
+                <select id="store_selected" class="selectpicker" name="store_selected">
+                {% for c in store_list %}
+                <option>{{c.store_id}}</option>
+                {% endfor %}
+                <option>All</option>
+                </select>              
+                </br><input type="submit" value="Submit" class="btn">
+                        
+                </form> 
+            </div>  
 
-<div> 	
-<h4>Filter by region</h4>
-
-<select id="cate" class="selectpicker" name="cate">
-{% for c in storeid %}
-<option id="val">{{c}}</option>
-{% endfor %}
-</select>			   
-<Button id="submit" value="Submit">Submit</Button>					
- <body>
+             <body>
     <div id='transaction_stats'> Chart will be rendered here </div>
   </body>
-</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="/static/Website/bootstrap.min.js"></script>
 </body>
