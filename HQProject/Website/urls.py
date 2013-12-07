@@ -41,6 +41,7 @@ urlpatterns = patterns('',
 	url(r'^transaction_home$', views.transaction_home, name='transaction_home'),
 	url(r'^revenue_pie$', views.revenue_pie, name='revenue_pie'),
 	url(r'^revenue_chart$', views.revenue_chart, name='revenue_chart'),
-	url(r'^transaction_stats$', views.transaction_stats, name='transaction_stats'),
+	url(r'^top_ten_products$', views.top_ten_products, name='top_ten_products'),
+	url(r'^price_topTen$', views.price_topTen, name='price_topTen'),
     url(r'^(\d+)/profile$', views.profile, name='profile')
 )

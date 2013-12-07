@@ -63,14 +63,10 @@ def invenf():
             a = a + 1
         counter = counter + 1
 		
-		
-		#peri = Perishables(product_batch_id = inObj.id, expiry_date = datetime.date.today())
-		#peri.save()
-	
 
 def main():
-    invenf() 
-    #addToTables()
+    #invenf() 
+    addToTables()
 	
 
 

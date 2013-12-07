@@ -123,6 +123,7 @@ INSTALLED_APPS = (
     'Customer',
 	'Sync',
 	'Website',
+	'chartit',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
