@@ -17,8 +17,7 @@
                     <h5 class="muted">CEG 21 HyperMarket</h5>
                 </div>
             </div>
-			</div>
-			
+			</div>			
             <div class="navbar navbar-inverse">
                 <div class="navbar-inner">
                     <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
@@ -37,7 +36,23 @@
                             <li id="sync-link"><a href="{% url 'sync'%}"></i>Sync</a></li>
                             <li id="transaction-link"><a href="{% url 'transaction'%}"></i>Transactions</a></li>     
                         </ul>
+
+                    <div>
+                    <button class="btn pull-right" type="button">
+                        {% if user.is_authenticated %}
+                            <p style="text-align:right"> <a href="{% url 'logout'%}">Logout</a></p>
+                        {% else %}
+                            <p style="text-align:right"> <a href="{% url 'login'%}">Log In</a></p>
+                        {% endif %}
+                    </button>
+            		</div>
+            		</div><!--/.nav-collapse -->
                     </div><!--/.nav-collapse -->
+                    {% if user.is_authenticated %}
+                                    <p class="navbar-text pull-right"> Signed in as <a href="#" class="navbar-link">{{ user.first_name }}</a></p>
+                    {% else %}
+                                    <p class="navbar-text pull-right"> Welcome. <a href="/accounts/login" class="navbar-link">Please log in.</a></p>
+                    {% endif %}
                 </div><!-- /.navbar-inner -->
             </div><!-- /.navbar -->
 		</div> <!-- /.container -->
@@ -191,6 +206,5 @@ body{
 </div>
 <div class="clear" class="container"></div>
 <br/><br/>
-
 </body>
 </html>

@@ -5,6 +5,10 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 #Create your models here.
 
 
+class Employee(models.Model):
+    employee_id = models.PositiveIntegerField(validators=[MaxValueValidator(999999)],primary_key=True)
+    employee_name = models.CharField(max_length=256)
+
 class Cashier(models.Model):
 	cashier_id = models.PositiveIntegerField(validators=[MaxValueValidator(99999999)],primary_key=True )
 
@@ -19,7 +23,7 @@ class Inventory(models.Model):
 	cost_price = models.DecimalField(max_digits=6,decimal_places=2)
 	expiry_date = models.DateField(auto_now=False,auto_now_add=False, null=True, blank = True)
 	strategy_percentage = models.DecimalField(max_digits=6,decimal_places=2,blank=True,null=True)
-	display_id = models.DecimalField(max_digits=4,decimal_places=0, null = True, blank = True)
+	display_id = models.PositiveIntegerField(validators=[MaxValueValidator(999999)],blank=True,null=True )
 	
 class Product(models.Model):
 	product_id = models.PositiveIntegerField(validators=[MaxValueValidator(99999999)],primary_key=True )

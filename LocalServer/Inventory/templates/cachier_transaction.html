@@ -1,10 +1,9 @@
 <!doctype html>
 <html>
 	<head>
-	<title>View Display</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>View Products</title>
+	<meta http-equiv="refresh" content="5"/>
 	<link href="/static/css/navbar.css" rel="stylesheet">
-	<link href="/static/css/bootstrap.min.css" rel="stylesheet">
 	<link href="/static/css/bootstrap.css" rel="stylesheet">
 	<link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
 	<link href="/static/css/bootstrap-rowlink.css" rel="stylesheet">
@@ -12,12 +11,10 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script src="/static/js/bootstrap.min.js"></script>
 	<link href="/static/css/demo_table.css">
+	<script src="/static/js/jquery.js"></script>
 	<script src="/static/js/jquery.dataTables.js"></script>
 	<script src="/static/js/DT_bootstrap.js"></script>
-	<script src="/static/js/bootbox.min.js"></script>
-	<script src="/static/js/display.js"></script>
-<html>
-	<head>
+
         <div class="container">
             <div class="row-fluid">
             <div class="span12">
@@ -27,7 +24,7 @@
             </div>
 			</div>
 			
-            <div class="navbar navbar-inverse" >
+            <div class="navbar navbar-inverse">
                 <div class="navbar-inner">
                     <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
                     <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -46,11 +43,11 @@
                         </ul>
                         <ul class="nav pull-right">
                         {% if user.is_authenticated %}
-							<li id="logout-link"><a href="{% url 'logout'%}"></i>Logout</a></li> 
+                            <li id="logout-link"><a href="{% url 'logout'%}"></i>Logout</a></li> 
                         {% else %}
-							<li id="login-link"><a href="{% url 'login'%}"></i>Login</a></li> 
+                            <li id="login-link"><a href="{% url 'login'%}"></i>Login</a></li> 
                         {% endif %}
-                    	</ul>
+                        </ul>
                     </div><!--/.nav-collapse -->
                 </div><!-- /.navbar-inner -->
                                     {% if user.is_authenticated %}
@@ -60,52 +57,39 @@
                     {% endif %}
             </div><!-- /.navbar -->
 		</div> <!-- /.container -->
-	<body>
-		<div class="container">	
-			<a href="#addNewDisplay" role="button" class="btn" data-toggle="modal">New Price Display</a> &emsp;
-			<button id="refreshDisplay" class="btn" width="60">Refresh Display</button>
-			<div id="addNewDisplay" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="addNewDisplayLabel" aria-hidden="true">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h3 id="addNewDisplayLabel">Add New Price Display</h3>
-				</div>
-				<div class="modal-body">
-					<form id ="new-display-form" class="form-horizontal" onsubmit="return false;">
-						<input type="text" class="span2" id="inputId" placeholder="Display ID" /><br/><br/>
-						<input type="text" class="span3" id="inputBarcode" placeholder="Attach to product barcode" /><br/><br/>
-						<input type="text" class="span3" id="inputBatchid" placeholder="Attach to product batch ID" /><br/><br/>
-						<textarea class="span3" id="inputDescription" placeholder="Description" /></textarea><br/><br/>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button id ="close" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-					<button id ="confirm-add-display" class="btn btn-primary">Add</button>
-				</div>
-			</div>
-		</div>
-		</head>
-		<br>
-	</body>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/static/css/bootstrap.css" rel="stylesheet">
+        <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+	</head>
+</br>
+<body>
 <div class="container">
 	<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered dataTable" id="example" aria-describedby="example_info">  
         <thead>  
-          <tr>  			
-			<th>Display ID</th>
-			<th>Product ID</th>
+          <tr>  
+			<th>S.No</th>
+            <th>Product ID</th>
 			<th>Batch ID</th>
-			<th>Edit</th>	
+			<th>Product Name</th>  			
+			<th>Quantity</th>
+			<th>Price</th>
+			<th>Sub Total</th>
           </tr>  
         </thead>  
         <tbody>  
-		{% for p in inventory %}
-          <tr>  
-            <td id = "display_id">{{p.display_id}}</td>  
-            <td id = "product_id">{{p.product_id_id}}</td>  
-            <td id = "batch_id" >{{p.batch_id}}</td>
-			<td><a href = "{% url 'edit_display' p.display_id  p.product_id_id p.batch_id %}" input type="submit" class="btn">EDIT</a></td>	
+		{% for s in table %}
+          <tr class= "tablerow">
+			<td>{{s.count}}</td>
+            <td>{{s.productid}}</td>  
+            <td>{{s.batchid}}</td>  
+            <td>{{s.name}}</td>  
+            <td>{{s.qty}}</td> 
+			<td>{{s.price}}</td>
+            <td>{{s.totol_price}}</td>
           </tr> 
          {% endfor %}		  
         </tbody>  
       </table>	
-	</div>
-	</html>
+ </div>
+</body>
+</html>

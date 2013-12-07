@@ -12,6 +12,9 @@ import json
 import os
 import time
 import serial
+from django.contrib.auth import authenticate, login 
+from django.contrib.auth.decorators import login_required 
 
+@login_required
 def stock_list(request):
 	return render(request,'stock.html');

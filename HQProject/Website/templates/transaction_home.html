@@ -44,7 +44,7 @@
                             <li><a href="{% url 'filter_stores'%}"><i class="icon-book icon-white"></i>Stores</a></li>
                             <li><a href="#"><i class="icon-camera icon-white"></i>Employees</a></li>
                             <li class="active"><a href="{% url 'transaction_home'%}"><i class="icon-comment icon-white"></i>Transactions</a></li>
-						    <li><a href="../Website/transaction_stats"><i class="icon-comment icon-white"></i>Statistics</a></li>
+						    <li><a href="../Website/revenue_chart"><i class="icon-comment icon-white"></i>Statistics</a></li>
                         </ul>
                     </div><!--/.nav-collapse -->
                     {% if user.is_authenticated %}
@@ -59,7 +59,7 @@
 <div class="container">
     <ul class="nav nav-tabs">
   <li class="active"><a href="#">Transaction Control</a></li>
-  <li><a href="{% url 'transaction_stats'%}">Statistics</a></li>
+  <li><a href="{% url 'revenue_chart'%}">Statistics</a></li>
 </ul>
 </div>
 

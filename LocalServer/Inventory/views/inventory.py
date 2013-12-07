@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render
 #from django_tables2   import RequestConfig
 from django.template import Context, loader, RequestContext
-from Inventory.models import Inventory, RequestDetails, Cashier
+from Inventory.models import Inventory, RequestDetails, Cashier, Employee
 from Inventory.models import Product
 from Inventory.models import Transaction
 from datetime import date
@@ -13,14 +13,18 @@ import json
 import os
 import time
 import serial
+from django.contrib.auth import authenticate, login 
+from django.contrib.auth.decorators import login_required 
 
+
+
+@login_required
 def inventory_list(request):
-	cid3 = Cashier(cashier_id = 1234)
-	cid3.save()
 	inventory = Inventory.objects.all();
 	context = {'inventory':inventory}
 	return render(request,'inventory.html',context);
-	
+
+@login_required
 def edit_inventory(request, pid, bid):
 	print "entered this function"
 	inventory = Inventory.objects.get(product_id=pid,batch_id=bid)

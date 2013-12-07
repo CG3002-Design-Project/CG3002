@@ -12,8 +12,10 @@ import json
 import os
 import time
 import serial
+from django.contrib.auth import authenticate, login 
+from django.contrib.auth.decorators import login_required 
 
-
+@login_required
 def update_perishable_price(request):
 	print "entered this method";
 	inventory = Inventory.objects.all();

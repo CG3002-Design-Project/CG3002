@@ -37,7 +37,7 @@ def top_ten_products_old(request):
 	context = {'storeid':output}  
 	return render (request,'top_tenProducts.html',context)
 
-@csrf_exempt	
+@csrf_exempt
 def top_ten_products(request):
 	#d =  json.loads(request.body)
 	#if d['storeid'] is None:
@@ -56,7 +56,6 @@ def top_ten_products(request):
 		transaction_list= Transaction.objects.filter(store_id=store_selected)
 
 	store_list =  Store.objects.all()
-
 	productrevenue = \
         PivotDataPool(
           series=

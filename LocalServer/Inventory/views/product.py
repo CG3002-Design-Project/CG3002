@@ -13,13 +13,16 @@ import json
 import os
 import time
 import serial
+from django.contrib.auth import authenticate, login 
+from django.contrib.auth.decorators import login_required 
 
-
+@login_required
 def product_list(request):
 	product = Product.objects.all();
 	context = {'product':product}
 	return render(request,'product.html',context);
-	
+
+@login_required	
 def edit_product(request, pid):
 	print "entered this function"
 	product = Product.objects.get(product_id=pid)

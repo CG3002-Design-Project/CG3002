@@ -3,8 +3,13 @@ from django.conf.urls import patterns, url
 from Inventory import views
 
 urlpatterns = patterns('',
+	url(r'^accounts/login/$', 'django.contrib.auth.views.login', name='login'),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page' : '../login'}, name='logout'),
+    url(r'^login_home/$', views.login_home, name='login_home'),
     url(r'^transaction$', views.calculate_transaction, name='transaction'),
 	url(r'^transaction/add_transaction$', views.add_transaction, name='add_transaction'),
+	url(r'^transaction/add_cachier_transaction$', views.add_cachier_transaction, name='add_cachier_transaction'),
+	url(r'^transaction/cachier_transaction$', views.cachier_transaction, name='cachier_transaction'),
 	url(r'^display$', views.price_display, name='display'),
 	url(r'^home$', views.home_page, name='home'),
 	url(r'^sync$', views.sync_function, name='sync'),
@@ -18,7 +23,7 @@ urlpatterns = patterns('',
 	url(r'^returnPrice$', views.return_price, name='return_price'),
 	url(r'^getPrice$', views.get_price, name='get_price'),
 	url(r'^checkId$', views.checkId, name='checkId'),
-	url(r'^deductInventory$', views.deduct_inventory, name='deduct_inventory'),
+	url(r'^deduct_inventory$', views.deduct_inventory, name='deduct_inventory'),
 	url(r'^saveTransaction$', views.save_transaction, name='save_transaction'),
 	url(r'^restock$',views.restock_qty,name='restock_qty'),	
 	url(r'^addQuantity$', views.add_qty_back, name='add_qty_back'),	
@@ -33,4 +38,5 @@ urlpatterns = patterns('',
 	url(r'^sync/pull_inventory_from_hq$', views.pull_inventory_from_hq, name='pull_inventory_from_hq'),
 	url(r'^sync/update_perishable_price$', views.update_perishable_price, name='update_perishable_price'),
 	url(r'^sync/update_nonperishable_price$', views.update_nonperishable_price, name='update_nonperishable_price'),
+	url(r'^check_employee', views.check_employee, name='check_employee')
 )
