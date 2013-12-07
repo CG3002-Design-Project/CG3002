@@ -4,6 +4,16 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 #Create your models here.
 
+class eTransaction(models.Model):
+    transaction_id = models.PositiveIntegerField(validators=[MaxValueValidator(99999999)])
+    transaction_date = models.DateField(auto_now=False,auto_now_add=False)
+    product_id = models.PositiveIntegerField(validators=[MaxValueValidator(99999999)])
+    quantity_sold = models.PositiveIntegerField(validators=[MaxValueValidator(99999)])
+    batch_id = models.PositiveIntegerField(validators=[MaxValueValidator(99999)])
+    selling_price = models.DecimalField(max_digits=6,decimal_places=2)
+    cost_price = models.DecimalField(max_digits=6,decimal_places=2)
+    status = models.CharField(max_length=256)
+
 
 class Employee(models.Model):
     employee_id = models.PositiveIntegerField(validators=[MaxValueValidator(999999)],primary_key=True)
@@ -23,7 +33,8 @@ class Inventory(models.Model):
 	cost_price = models.DecimalField(max_digits=6,decimal_places=2)
 	expiry_date = models.DateField(auto_now=False,auto_now_add=False, null=True, blank = True)
 	strategy_percentage = models.DecimalField(max_digits=6,decimal_places=2,blank=True,null=True)
-	display_id = models.PositiveIntegerField(validators=[MaxValueValidator(999999)],blank=True,null=True )
+	display_id = models.PositiveIntegerField(validators=[MaxValueValidator(999999)],blank=True,null=True)
+	display_flag = models.CharField(max_length=256,default='True') 
 	
 class Product(models.Model):
 	product_id = models.PositiveIntegerField(validators=[MaxValueValidator(99999999)],primary_key=True )

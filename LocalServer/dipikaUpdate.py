@@ -64,7 +64,8 @@ def invenf():
         counter = counter + 1
 		
 def main(): 
-   addToTables()	
+    #invenf()
+    addToTables()	
 	
 
 

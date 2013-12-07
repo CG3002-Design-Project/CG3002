@@ -16,5 +16,8 @@ def cart(request):
 # If qty does not exist, create entry in request table (also - should the request update inventory with special status - reserve?)
 
 def order_placed(request):
-	context = { 'cart_list': cart_list}
-	return render(request, 'order_placed.html', context)
+	if request.user.is_authenticated():
+		context = { 'cart_list': cart_list}
+		return render(request, 'order_placed.html', context)
+	else:
+		return render(request, 'login.html')

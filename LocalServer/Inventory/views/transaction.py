@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import Context, loader, RequestContext
 from Inventory.models import Inventory, RequestDetails
-from Inventory.models import Product, Cashier, Employee
+from Inventory.models import Product, Cashier, Employee, eTransaction
 from Inventory.models import Transaction
 from datetime import date
 from decimal import *
@@ -16,29 +16,94 @@ import datetime
 from django.contrib.auth import authenticate, login 
 from django.contrib.auth.decorators import login_required 
 
-list = []
+uilist = []
 
-def cachier_transaction(request):
-	print list
-	context = {'table':list};
-	return render(request,'cachier_transaction.html',context );	
+
+@csrf_exempt
+def online_transaction(request):
+    data = request.GET['id']  
+    tot = 0    
+    e_trans = eTransaction.objects.filter(transaction_id = int(data))
+    payload = {}
+    list = []
+    if not e_trans:
+        payload = {'error' : -1 }
+    elif e_trans:
+        for i in e_trans:
+            i.status = 'Paid'
+            i.save()
+            tot += float(str(i.selling_price)) * i.quantity_sold
+            fl = float(str(i.selling_price)) * i.quantity_sold
+            list.append({'qty' : str(i.quantity_sold), 
+                         'batchid' : str(i.batch_id),
+                         'productid': str(i.product_id),
+                         'selling_price' : str(i.selling_price),
+                         'fl' : str(fl),
+                        }) 
+        payload = {'error' : 1, 'total':str(tot),'e_trans':list}			
+    data = json.dumps(payload)
+    print data
+    return HttpResponse(data,mimetype='application/json')	
+	
+@csrf_exempt
+def cashier_transaction(request):
+	context = {'table':uilist};
+	return render(request,'cashier_transaction.html',context );	
 
 @csrf_exempt	
-def add_cachier_transaction(request):
+def add_cashier_transaction(request):
 	data = json.loads(request.body)
-	batchid = data['batchid']
-	productid = data['barcode']
-	qty = data['qty']
-	price = data['price']
+	batchid = int(data['batchid'])
+	productid = int(data['barcode'])
+	qty = int(data['qty'])
+	price = float(data['price'])
 	totol_price = price*qty
 	product = Product.objects.get(product_id = data['barcode']);
 	name = product.name 
-	global list
-	list.append({'count':len(list)+1,'batchid':batchid, 'productid':productid, 'qty':qty, 'price':price,'name':name,'totol_price':totol_price })  
-	print list
-	context = {'table':list};
-	return render(request,'cachier_transaction.html',context);	
+	global uilist
+	uilist.append({'count':len(uilist)+1,'batchid':batchid, 'productid':productid, 'qty':qty, 'price':price,'name':name,'totol_price':totol_price })  
+	print uilist
+	context = {'table':uilist};
+	return render(request,'cashier_transaction.html',context);	
 
+@csrf_exempt
+def del_cashier_transaction(request):
+	data = json.loads(request.body)	
+	index = int(data['index'])
+	index = index - 1
+	uilist.pop(index)
+	count = 1
+	for l in uilist:
+		l['count'] = count
+		count += 1
+	context = {'table':uilist};
+	return render(request,'cashier_transaction.html',context);	
+	
+@csrf_exempt
+def	abort_cashier_transaction(request):
+	global uilist
+	uilist[:] = []
+	print uilist
+	context = {'table':uilist}
+	return render(request,'cashier_transaction.html',context)
+	
+	
+	
+@csrf_exempt
+def	special_cashier_transaction(request):
+	data = json.loads(request.body)	
+	id = int(data['id'])
+	et = eTransaction.objects.filter(transaction_id=int(id))
+	global uilist
+	count = 1
+	for e in et:
+		pr = Product.objects.get(product_id=e.product_id)
+		name = pr.name
+		uilist.append({'count':count,'batchid':e.batch_id, 'productid':e.product_id, 'qty':e.quantity_sold, 'price':e.selling_price,'name':name,'totol_price':str(e.selling_price*e.quantity_sold)})
+		count += 1
+	context = {'table':uilist}
+	return render(request,'cashier_transaction.html',context)	
+	
 @login_required
 def calculate_transaction(request):
 	transaction = Transaction.objects.all();
