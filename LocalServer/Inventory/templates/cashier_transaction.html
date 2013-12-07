@@ -2,7 +2,7 @@
 <html>
 	<head>
 	<title>View Products</title>
-	<meta http-equiv="refresh" content="5"/>
+	<meta http-equiv="refresh" content="2"/>
 	<link href="/static/css/navbar.css" rel="stylesheet">
 	<link href="/static/css/bootstrap.css" rel="stylesheet">
 	<link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
@@ -67,7 +67,7 @@
 	<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered dataTable" id="example" aria-describedby="example_info">  
         <thead>  
           <tr>  
-			<th>S.No</th>
+		    <th>Ser. No</th>
             <th>Product ID</th>
 			<th>Batch ID</th>
 			<th>Product Name</th>  			
@@ -78,8 +78,8 @@
         </thead>  
         <tbody>  
 		{% for s in table %}
-          <tr class= "tablerow">
-			<td>{{s.count}}</td>
+          <tr class= "tablerow">`
+		    <td>{{s.count}}</td>
             <td>{{s.productid}}</td>  
             <td>{{s.batchid}}</td>  
             <td>{{s.name}}</td>  
@@ -87,7 +87,7 @@
 			<td>{{s.price}}</td>
             <td>{{s.totol_price}}</td>
           </tr> 
-         {% endfor %}		  
+         {% endfor %}
         </tbody>  
       </table>	
  </div>

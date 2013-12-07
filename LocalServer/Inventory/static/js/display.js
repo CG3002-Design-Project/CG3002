@@ -11,8 +11,8 @@ function validPriceDisplay(display_id, barcode,batchid, description){
 		bootbox.alert("barcode has to be 8 digits long");
 		return false;
 	}
-	if(display_id.trim().length != 4) {
-		bootbox.alert("display has to be 4	 digits long");
+	if(display_id.trim().length != 6) {
+		bootbox.alert("display has to be 6	 digits long");
 		return false;
 	}
 	if (description.trim().length > 40)

@@ -38,10 +38,27 @@ def createConnection():
         PORT = "COM20"
     return serial.Serial(PORT, 9600, timeout = 0.0)
 
+
+
+@csrf_exempt
+def create_lcd_list(request):   
+    inventory = Inventory.objects.all()
+    list = []
+    for i in inventory:
+        if i.display_flag == 'True':
+            if i.display_id is not None:
+                list.append(str(i.display_id))
+    payload = {'lcdlist':list}			
+    data = json.dumps(payload)
+    return HttpResponse(data,mimetype='application/json')	
+	
+	
 @csrf_exempt
 def write_to_display(request):
 	d =  request.GET['id']
-	inventory = Inventory.objects.get(display_id = int(d));			
+	inventory = Inventory.objects.get(display_id = int(d))
+	inventory.display_flag = 'False'
+	inventory.save()
 	product = Product.objects.get(product_id=inventory.product_id_id)
 	s = str(product.name)
 	sp = str(inventory.selling_price)
@@ -74,6 +91,7 @@ def setDisplayID(request):
 	}
 
 	inventory.display_id = Decimal(d['display_id']);
+	inventory.display_flag = 'True' 
 	inventory.save();
 	payload = {
 			'error' : 1

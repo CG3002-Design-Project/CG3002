@@ -1,35 +1,27 @@
 {% extends "cart_base.html" %}
 
 {% block cart%}
+
+<script src="/static/js/cart.js"></script>
+<script src="/static/js/bootbox.min.js"></script>
 <form action="{%url 'order_placed'%}" method="get">
 <div class="container">
-<table class="table table-striped" data-provides="rowlink">  
+<table class="table" id="item-table">  
         <thead>  
           <tr>
-            <th>Product ID</th>
-            <th>Product Name</th>  
-            <th>Quantity</th>  
-            <th>Price</th>            
+            <th class="span6">Product Name</th>  
+            <th class="span6">Quantity</th>  
+            <th class="span6">Price</th>    
+			<th class="span6">Subtotal</th>	
           </tr>  
         </thead>  
-        <tbody>  
-        {% for c in cart_list %}
-          <tr>  
-            <td>{{c.product_id}}</td>  
-            <td>{{c.name}}</td>  
-            <td>{{c.qty}}</td>  
-            <td>{{c.selling_price}}</td>        
-            <td><a href = "{% url 'edit_cart' c.product_id%}" class="btn">Edit</a></td>        
-            <td><a href = "{% url 'delete_cart' c.product_id%}" class="btn">Delete</a></td>        
-            </tr>
-            {% endfor %}
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>Total: </td>    
-          </tbody>
-          </table>
-          <input type="submit" value="Check Out">
+</table>
+<hr/>
+<div>Total: $<span id = "total-price">0</span></div><hr/>
+<div class="modal-footer">
+	<button class="btn" id ="cancel" >Close</button>
+	<button id ="confirm-checkout" class="btn btn-primary">Checkout</button>
+</div>
 </div>
 
 </form>

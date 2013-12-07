@@ -16,19 +16,13 @@
 	<script src="/static/js/jquery.js"></script>
 	<script src="/static/js/jquery.dataTables.js"></script>
 	<script src="/static/js/DT_bootstrap.js"></script>
+	<script src="/static/js/cart.js"></script>
 </head>
  <div class="container">
         <div class="row-fluid">
             <div class="span12">
-                <div class="span6">
-                    <h1 class="muted">Online Shopping Portal</h1>
-                </div>
-                <div class="span4 offset2" style="margin-top:15px;">
-                    <button class="btn pull-right" type="button">
-                        {% if user.is_authenticated %}
-                            <p style="text-align:right"> <a href="/accounts/logout">Logout</a></p>
-                        {% endif %}
-                    </button>
+                <div>
+                    <h1 align="center" class="muted">CEG 21 Online Shopping Portal</h1>
                 </div>
             </div>
         </div>
@@ -70,15 +64,7 @@
 	background:#A8A8A8 ; 
 	}
 	</style>
-	<script>
-	function togglestyle(el){
-    if(el.className == "on") {
-    	el.className="off";
-    } else {
-    	el.className="on";
-    }
-	}
-	</script>
+	
 	<body>
 	<div class="container">
 	<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered dataTable" id="example" aria-describedby="example_info">  
@@ -86,24 +72,27 @@
           <tr>  
 			<th>Product</th>
             <th>Product Name</th>
-			<th>Category</th>
-			<th>Description</th>  			
+			<th>Category</th>			
 			<th>Price</th>
+			<th>Quantity</th>
 			<th>Rating</th>
 			<th>Add to cart</th>
           </tr>  
         </thead>  
-        <tbody>  
+        <tbody id="tableClick">  
 		{% for s in inventory %}
-          <tr>  
-            <td><img src="/static/{{s.productid}}.jpg" alt="Smiley face" height="100" width="100"></td>  
-            <td>{{s.name}}</td>  
-            <td>{{s.category}}</td>  
-            <td>{{s.description}}</td> 
-			<td>{{s.price}}</td>
-			<td>{{s.rating}}</td>
+          <tr id="row-of-data">  
+            <td><img src="/static/prodImage/{{s.productid}}.jpg" alt="Smiley face" height="100" width="100"></td>  
+            <td><span id="name">{{s.name}}</span></td>  
+            <td><span id="category">{{s.category}}</span></td>  
+			<td><span id="selling_price">{{s.selling_price}}</span></td>
+			<td style = "display:none"><span id="batchid">{{s.batchid}}</span></td>
+			<td style = "display:none"><span id="productid">{{s.productid}}</span></td>
+			<td style = "display:none"><span id="cost_price">{{s.cost_price}}</span></td>
+			<td><img src="/static/rating/{{s.rating}}.png" alt="Smiley face" height="100" width="100"></td>  
+			<td style><input type="text" width="10" id="quantity" class="quantity" placeholder="Quantity"/></td>
 			<td>
-				<input type="button" id="btn" value="Add to cart" class="off" onclick="togglestyle(this)" />
+			<input type="button" id="add_to_cart" value="Add to cart" class="off" onclick="togglestyle(this)"/>
 			</td>
           </tr> 
          {% endfor %}		  

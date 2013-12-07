@@ -23,6 +23,7 @@ def update_perishable_price(request):
 		if(i.expiry_date is not None):
 			if(i.qty <= i.minimum_qty):
 				i.selling_price = i.selling_price - (i.selling_price * (i.strategy_percentage*Decimal(0.01)))
+				i.display_flag = 'True'
 				i.save()
 	return HttpResponse("pricing persishables");	
 
@@ -33,6 +34,7 @@ def update_nonperishable_price(request):
 		if(i.expiry_date is None):
 			if(i.qty <= i.minimum_qty):
 				i.selling_price = i.selling_price + (i.selling_price * (i.strategy_percentage*Decimal(0.001)))
+				i.display_flag = 'True'
 				i.save()
 	return HttpResponse("pricing non-persishables");			
 				

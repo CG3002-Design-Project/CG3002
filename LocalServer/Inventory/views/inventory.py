@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render
 #from django_tables2   import RequestConfig
 from django.template import Context, loader, RequestContext
-from Inventory.models import Inventory, RequestDetails, Cashier, Employee
+from Inventory.models import Inventory, RequestDetails, Cashier, Employee, eTransaction
 from Inventory.models import Product
 from Inventory.models import Transaction
 from datetime import date
@@ -54,6 +54,7 @@ def update_inventory(request):
 	inventory.minimum_qty = minimum_qty
 	inventory.cost_price = cost_price
 	inventory.strategy_percentage = strategy_percentage
+	inventory.display_flag = 'True'
 	inventory.save()
 		
 	payload = {	
