@@ -37,11 +37,10 @@
                     <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
-                            <li><a href="#"> <i class="icon-home icon-white"></i>Home</a></li>
-                            <li><a href="#"><i class="icon-star icon-white"></i>Browse</a></li>
-                            <li><a href="#"><i class="icon-book icon-white"></i>About Us</a></li>
+                            <li><a href="{% url 'customer_home' %}"> <i class="icon-home icon-white"></i>Home</a></li>
+                            <li><a href="{% url 'inventory_list' %}"><i class="icon-star icon-white"></i>Browse</a></li>
                             <li class="active"><a href="#"><i class="icon-camera icon-white"></i>My Cart</a></li>
-                            <li><a href="#"><i class="icon-comment icon-white"></i>My Profile</a></li>          
+                            <li><a href="{% url 'about_us' %}"><i class="icon-book icon-white"></i>About Us</a></li>       
                         </ul>
                     </div><!--/.nav-collapse -->
                     {% if user.is_authenticated %}

@@ -13,7 +13,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="/static/Website/bootstrap.min.js"></script>
 </head>
-
+ 
 <body>
 
         <!-- NAVBAR================================================== -->
@@ -71,17 +71,21 @@
 
 
 <div> 	
-<h4>Filter by region</h4>
-
+<h4>Filter by region</h4>		   				
+<!--div id='transaction_stats'> Chart will be rendered here </div-->
 <select id="cate" class="selectpicker" name="cate">
 {% for c in country %}
 <option id="val">{{c}}</option>
 {% endfor %}
-</select>			   
-<Button id="submit" value="Submit">Submit</Button>					
+<option selected>All</option>
+</select>
+</br>
+<Button id="submit" value="Submit">Submit</Button>
  <body>
     <div id="piechart" style="width: 900px; height: 500px;"></div>
   </body>
+</div>
+
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="/static/Website/bootstrap.min.js"></script>

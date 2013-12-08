@@ -6,8 +6,6 @@ from django.template import Context, loader, RequestContext
 from Website.models import Store,Product,Inventory,Transaction
 from decimal import *
 import random
-import httplib2
-import urllib
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.contrib.auth.models import User

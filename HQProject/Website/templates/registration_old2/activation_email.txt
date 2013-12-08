@@ -1,5 +1,5 @@
 {% load i18n %}
-{% trans "Activate account at" %} {{ site.name }}:
+{% trans "Activate account at" %} http://ec2-54-254-157-48.ap-southeast-1.compute.amazonaws.com:8000:
 
 http://ec2-54-254-157-48.ap-southeast-1.compute.amazonaws.com:8000{% url 'registration_activate' activation_key %}
 

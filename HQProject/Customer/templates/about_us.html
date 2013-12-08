@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>About Us</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/Customer/bootstrap.css" rel="stylesheet">
+    <link href="/static/Customer/bootstrap-responsive.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/static/Customer/engine1/style.css" />
+	<script type="text/javascript" src="/static/Customer/engine1/jquery.js"></script>
+	<!-- End WOWSlider.com HEAD section -->
+</head>
+
+
+
+ <div class="container">
+                    <div class="row-fluid">
+            <div class="span12">
+                <div class="span6">
+                    <h1 class="muted">Online Shopping Portal</h1>
+                </div>
+                <div class="span4 offset2" style="margin-top:15px;">
+                    <button class="btn pull-right" type="button">
+                        {% if user.is_authenticated %}
+                            <p style="text-align:right"> <a href="/accounts/logout">Logout</a></p>
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
+        </div>
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner">
+                    <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+                    <div class="nav-collapse ">
+                        <ul class="nav pull-left">
+                            <li><a href="{% url 'customer_home'%}"> <i class="icon-home icon-white"></i>Home</a></li>
+                            <li><a href="{% url 'inventory_list'%}"><i class="icon-star icon-white"></i>Browse</a></li>
+                            <li><a href="{% url 'cart'%}"><i class="icon-camera icon-white"></i>My Cart</a></li>  
+							<li class="active"><a href="#"><i class="icon-book icon-white"></i>About Us</a></li>	
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                    {% if user.is_authenticated %}
+                                    <p class="navbar-text pull-right"> Signed in as <a href="#" class="navbar-link">{{ user.first_name }}</a></p>
+                    {% else %}
+                                    <p class="navbar-text pull-right"> Welcome. <a href="/accounts/login" class="navbar-link">Please log in.</a></p>
+                    {% endif %}
+                </div><!-- /.navbar-inner -->
+            </div><!-- /.navbar -->
+        </div> <!-- /.container -->
+
+<body>
+	<!-- Start WOWSlider.com BODY section -->
+    <div class="container">
+        <h4> Our SuperMarket was founded out of a passion for bringing the best products to the community in an efficient manner.</h4>
+    </div>
+</br>
+</br>
+<div class="container">
+    <div class="row">
+        <div class="span2">
+<img src="http://i39.tinypic.com/2lt2e7a.jpg" border="0" alt="Image and video hosting by TinyPic">
+        </div>
+                <div class="span2">
+            <img src="http://i41.tinypic.com/2up92mq.jpg" border="0" alt="Image and video hosting by TinyPic">
+        </div> 
+                <div class="span2">
+            <img src="http://www.w3.org/html/logo/downloads/HTML5_Logo_256.png">
+        </div> 
+                <div class="span2">
+<img src="http://i42.tinypic.com/11vtlbk.jpg" border="0" alt="Image and video hosting by TinyPic">
+        </div> 
+                <div class="span2">
+<img src="http://i40.tinypic.com/5v2k52.jpg" border="0" alt="Image and video hosting by TinyPic">
+        </div> 
+                <div class="span2">
+<img src="http://i44.tinypic.com/316aira.jpg" border="0" alt="Image and video hosting by TinyPic">
+        </div>
+    </div>
+</br>
+        <div class="row">
+            <div class="span2">
+            <p> Ambalica Angra is one of the co-founders of CEG 21 Hypermarket. Ambalica has trained in prestigious law firms and extensively manages the company’s legal issues.</p>
+        </div>
+                <div class="span2">
+            <p>Ankit Ganla is a co-founder of CEG21 Hypermarket.  With several years of financial experience under his belt, Ankit is a key player in moulding the future of the company.</p>
+        </div> 
+                <div class="span2">
+            <p> Dipika Suresh is a co-founder of CEG21 Hypermarket. Dipika has extensive experience in managing a company on a large-scale and has manages its people. </p>
+        </div> 
+                <div class="span2">
+            <p> Anusaya Kukade is a co-founder of CEG21 Hypermarket. With her strong personality and comfort level with the media, she is the face of the company.</p>
+        </div> 
+                <div class="span2">
+            <p> Poornima Muthukumar is a co-founder of CEG21 Hypermarket. Poornima manages the technical aspect of the company. She ensures that the systems we use are safe and robust</p>
+        </div> 
+                <div class="span2">
+            <p> Harsha Narayan is a co-founder of CEG21 Hypermarket. Her responsibilities include ensuring that the company is well marketed to the world and the hypermarket is one that is loved.</p>
+        </div>
+    </div>    
+    <!--
+<p> Ambalica Angra is one of the co-founders of CEG 21 Hypermarket. She manages the Europe business of CEG 21 Hypermarket.
+Ambalica is responsible for the expansion of CEG21 into the European markets. Having studied in Germany for a short while, she has a keen understanding of the European markets. She helped double the size in the European continent. She has led the transformation in the face of global hypermarket chains in Europe by moulding the company model to suit the European market. 
+She graduated from National University of Singapore, where she studied Law. 
+Ambalica has trained in prestigious law firms and extensively manages the company’s legal issues.
+</br> </br>
+Ankit Ganla is a co-founder of CEG21 Hypermarket. He oversees the United States and Canada business of CEG 21 Hypermarket.
+Prior to this, Ankit was an investment banker with a huge firm. As such, he brings his financial expertise to the company. He has helped quadruple our revenue with his wise financial strategizing.
+He graduated from National University of Singapore, where he studied Finance. 
+With several years of financial experience under his belt, Ankit is a key player in moulding the future of the company.
+</br> </br>
+Dipika Suresh is a co-founder of CEG21 Hypermarket.  She oversees the Asia business of CEG21 Hypermarket. 
+Dipika has extensive experience in managing a company on a large-scale. Having previously worked in a multi-national firm, she is adept at managing people. She is able to communicate effectively with employees, customers, investors, stakeholders and suppliers in order to run the business smoothly.
+ She graduated from National University of Singapore, where she studied Human Resources.
+</br> </br>
+Anusaya Kukade is a co-founder of CEG21 Hypermarket.  She manages the Africa business of CEG21 Hypermarket. 
+Anusaya is the main spokesperson of the company. With her strong personality and comfort level with the media, she is the face of the company. She manages the public expectations of the company and manages the company brand.
+She graduated from National University of Singapore, where she studied Public Relations.
+</br> </br>
+Poornima Muthukumar is a co-founder of CEG21 Hypermarket.  She manages the Latin America business of CEG21 Hypermarket. 
+Poornima manages the technical aspect of the company. She ensures that the systems we use are safe and robust. She ensures the integrity of the online transactions the customers make and ensure that the systems are working round the clock. 
+She graduated from National University of Singapore, where she studied Computer Engineering. She worked in Microsoft before she quit to join CEG21 Hypermarket. -->
+</div>
+</body>
+</html>

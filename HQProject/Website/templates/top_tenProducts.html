@@ -76,13 +76,13 @@
             <div class="container">
                 
                 </br>
-                <form action="{% url 'top_ten_products'%}" method="get" id="store_selected" name="store_selected" >
+                <form action="{% url 'top_ten_products'%}" method="get" id="store_selected" name="store_selected">
                 <h4>Filter by region</h4>
-                <select id="store_selected" class="selectpicker" name="store_selected">
+                <select id="store_selected" class="selectpicker" name="store_selected" selected="store_selected">
+                <option>All</option>
                 {% for c in store_list %}
                 <option>{{c.store_id}}</option>
                 {% endfor %}
-                <option>All</option>
                 </select>              
                 </br><input type="submit" value="Submit" class="btn">
                         
