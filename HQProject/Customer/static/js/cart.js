@@ -53,7 +53,7 @@ function addToCart() {
 
  
  function checkout() {
-		$('#confirm-checkout').click(function(){
+		$('#confirm-checkout').click(function(){			
 			var retrievedObject = localStorage.getItem('cartObj');
 			cart_list = JSON.parse(retrievedObject)
 			var a = "poo"
