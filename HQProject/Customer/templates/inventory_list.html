@@ -44,7 +44,7 @@
                         </ul>
                     </div><!--/.nav-collapse -->
                     {% if user.is_authenticated %}
-                                    <p class="navbar-text pull-right"> Signed in as <a href="#" class="navbar-link">{{ user.first_name }}</a><a href="/accounts/logout" class="navbar-link">| Logout</a></p>
+                                    <p class="navbar-text pull-right"> Signed in <a href="#" class="navbar-link">{{ user.first_name }}</a><a href="/accounts/logout" class="navbar-link">| Logout</a></p>
                     {% else %}
                                     <p class="navbar-text pull-right"> Welcome. <a href="/accounts/login" class="navbar-link">Please log in.</a></p>
                     {% endif %}

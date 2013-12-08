@@ -1,1 +1,0 @@
-{% load i18n %}{% trans "Account activation on" %} CEG21 Customer Shop

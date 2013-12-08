@@ -153,100 +153,6 @@ def store_name(store_id):
     return str(store_id)
 
 @staff_member_required
-@csrf_exempt		
-def revenue_chart(request):
-	store =  Store.objects.all()
-	output = []
-	for s in store:
-		if s.region not in output:
-			output.append(s.region)
-	print output			
-	context = {'country':output}  
-	return render (request,'transaction_stats.html',context)
-
-def revenue_chart_2(request):
-    storeRevenue = \
-        DataPool(
-           series=
-            [{'options': {
-               'source': Transaction.objects.all()},
-              'terms': [
-                'store_id',
-                'selling_price']}
-             ])	
-
-    transaction_stats = Chart(
-            datasource = storeRevenue,
-            series_options =
-              [{'options':{
-                  'type': 'pie',
-                  'stacking': False},
-                'terms':{
-                  'store_id': [
-                    'selling_price']
-                  }}],
-            chart_options =
-              {'title': {
-                   'text': 'Revenue by Stores'}},
-            x_sortf_mapf_mts = (None,store_name,False))
-
-    return render(request,'transaction_stats.html',
-                    {
-                        'transaction_stats': transaction_stats
-                    }
-                )
-    # storeRevenue = \
-    #     PivotDataPool(
-    #       series=
-    #         [{'options': {
-    #            'source': Transaction.objects.filter(store_id='123456'),
-    #            'categories' : ['store_id']},
-    #           'terms': {
-    #             'total_revenue': Avg('selling_price')}}],
-    #       sortf_mapf_mts = (None,store_name,False))
-
-    # transaction_stats1 = PivotChart(
-    #         datasource = storeRevenue,
-    #         series_options =
-    #           [{'options':{
-    #               'type': 'pie'},
-    #             'terms':[
-    #               'total_revenue']
-    #               }],
-    #         chart_options =
-    #           {'title': {
-    #                'text': 'Spend per Store'}})            	
-
-@staff_member_required
-@csrf_exempt	
-def revenue_pie(request):
-	d =  json.loads(request.body)
-	print d['region']
-	transaction_list = Transaction.objects.all()
-	dict = {}
-	for t in transaction_list:
-		storeid = t.store_id
-		store = Store.objects.get(store_id=storeid)
-		if (store.region == d['region']):
-			if dict.has_key(storeid):
-				value = dict.get(storeid)
-				value = value+t.selling_price*t.quantity_sold
-				dict[storeid]=value
-			else:
-				value = t.selling_price*t.quantity_sold
-				dict[storeid] = value
-	
-	for key in dict:
-		dict[key] = str(dict.get(key))
-	
-	payload = {
-       'result':dict
-	}
-	data = json.dumps(payload)
-	print data
-	return HttpResponse(data,mimetype='application/json')
-	 
-@staff_member_required
 @csrf_exempt  
 def store_revenue(request):
   #d =  json.loads(request.body)
@@ -313,5 +219,310 @@ def store_revenue(request):
                           'region_list' : region_list
                       }
                   ) 
+# @staff_member_required
+# @csrf_exempt		
+# def revenue_chart(request):
+# 	store =  Store.objects.all()
+# 	output = []
+# 	for s in store:
+# 		if s.region not in output:
+# 			output.append(s.region)
+# 	print output			
+# 	context = {'country':output}  
+# 	return render (request,'transaction_stats.html',context)
+
+# def revenue_chart_2(request):
+#     storeRevenue = \
+#         DataPool(
+#            series=
+#             [{'options': {
+#                'source': Transaction.objects.all()},
+#               'terms': [
+#                 'store_id',
+#                 'selling_price']}
+#              ])	
+
+#     transaction_stats = Chart(
+#             datasource = storeRevenue,
+#             series_options =
+#               [{'options':{
+#                   'type': 'pie',
+#                   'stacking': False},
+#                 'terms':{
+#                   'store_id': [
+#                     'selling_price']
+#                   }}],
+#             chart_options =
+#               {'title': {
+#                    'text': 'Revenue by Stores'}},
+#             x_sortf_mapf_mts = (None,store_name,False))
+
+#     return render(request,'transaction_stats.html',
+#                     {
+#                         'transaction_stats': transaction_stats
+#                     }
+#                 )
+    # storeRevenue = \
+    #     PivotDataPool(
+    #       series=
+    #         [{'options': {
+    #            'source': Transaction.objects.filter(store_id='123456'),
+    #            'categories' : ['store_id']},
+    #           'terms': {
+    #             'total_revenue': Avg('selling_price')}}],
+    #       sortf_mapf_mts = (None,store_name,False))
+
+    # transaction_stats1 = PivotChart(
+    #         datasource = storeRevenue,
+    #         series_options =
+    #           [{'options':{
+    #               'type': 'pie'},
+    #             'terms':[
+    #               'total_revenue']
+    #               }],
+    #         chart_options =
+    #           {'title': {
+    #                'text': 'Spend per Store'}})            	
+
+# @staff_member_required
+# @csrf_exempt	
+# def revenue_pie(request):
+# 	d =  json.loads(request.body)
+# 	print d['region']
+# 	transaction_list = Transaction.objects.all()
+# 	dict = {}
+# 	for t in transaction_list:
+# 		storeid = t.store_id
+# 		store = Store.objects.get(store_id=storeid)
+# 		if (store.region == d['region']):
+# 			if dict.has_key(storeid):
+# 				value = dict.get(storeid)
+# 				value = value+t.selling_price*t.quantity_sold
+# 				dict[storeid]=value
+# 			else:
+# 				value = t.selling_price*t.quantity_sold
+# 				dict[storeid] = value
+	
+# 	for key in dict:
+# 		dict[key] = str(dict.get(key))
+	
+# 	payload = {
+#        'result':dict
+# 	}
+# 	data = json.dumps(payload)
+# 	print data
+# 	return HttpResponse(data,mimetype='application/json')
+	 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
