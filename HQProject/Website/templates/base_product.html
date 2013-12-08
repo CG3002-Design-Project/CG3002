@@ -373,10 +373,6 @@ function print_city_state(oCountrySel, oCity_StateSel)
                             <li><a href="#"><i class="icon-camera icon-white"></i>Employees</a></li>
                             <li><a href="{% url 'transaction_home'%}"><i class="icon-comment icon-white"></i>Transactions</a></li>
                             <li><a href="../Website/revenue_chart"><i class="icon-comment icon-white"></i>Statistics</a></li>
-                            <form class="navbar-search">
-                            <input type="text" class="search-query" placeholder="Search"> 
-                            </form>
-                                
                         </ul>
                     </div><!--/.nav-collapse -->
                     {% if user.is_authenticated %}

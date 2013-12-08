@@ -18,15 +18,8 @@
  <div class="container">
                     <div class="row-fluid">
             <div class="span12">
-                <div class="span6">
-                    <h1 class="muted">Online Shopping Portal</h1>
-                </div>
-                <div class="span4 offset2" style="margin-top:15px;">
-                    <button class="btn pull-right" type="button">
-                        {% if user.is_authenticated %}
-                            <p style="text-align:right"> <a href="/accounts/logout">Logout</a></p>
-                        {% endif %}
-                    </button>
+                <div>
+                    <h1 align="center" class="muted">CEG 21 Online Shopping Portal</h1>
                 </div>
             </div>
         </div>
@@ -41,10 +34,10 @@
                     <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
-                            <li><a href="{% url 'inventory_list'%}"> <i class="icon-home icon-white"></i>Home</a></li>
+                            <li class="active"><a href="{% url 'customer_home'%}"> <i class="icon-home icon-white"></i>Home</a></li>
                             <li><a href="{% url 'inventory_list'%}"><i class="icon-star icon-white"></i>Browse</a></li>
                             <li><a href="{% url 'cart'%}"><i class="icon-camera icon-white"></i>My Cart</a></li>  
-							<li><a href="#"><i class="icon-book icon-white"></i>About Us</a></li>	
+							<li><a href="{% url 'about_us' %}"><i class="icon-book icon-white"></i>About Us</a></li>	
                         </ul>
                     </div><!--/.nav-collapse -->
                     {% if user.is_authenticated %}
@@ -67,7 +60,7 @@
 </div>
 <div class="ws_bullets"><div>
 <a href="#" title="Diwali Sale"><img src="/static/Customer/data1/tooltips/diwaliblog.png" alt="diwaliblog"/>1</a>
-<a href="#" title="CEG 21"><img src="/static/Customer/data1/tooltips/logo.png" alt="logo"/>2</a>
+<a href="{%url 'about_us' %}" title="CEG 21"><img src="/static/Customer/data1/tooltips/logo.png" alt="logo"/>2</a>
 <a href="#" title="Fresh Fruits"><img src="/static/Customer/data1/tooltips/market.jpg" alt="market"/>3</a>
 </div></div>
 	<div class="ws_shadow"></div>
@@ -76,9 +69,22 @@
 	<script type="text/javascript" src="/static/Customer/engine1/script.js"></script>
 	<!-- End WOWSlider.com BODY section -->
 </body>
-            <div class="span12 pagination-centered">
-                <div id="content">
-                    <h2>Welcome to our Online Shopping Portal!</h2>
+            <div class="row-fluid">
+            <div class="span12">
+                <div>
+                    <h1 align="center">Welcome to our shopping portal!!!!!</h1>
                 </div>
             </div>
+        </div>
+		<script>
+		$( document ).ready(function() {
+		var searchString = 'WOWSlider.com';
+		var elements = document.getElementsByTagName('a')
+		for (var i = 0; i < elements.length; i++) {
+			if (elements[i].innerHTML.indexOf(searchString) !== -1) {
+				elements[i].remove();
+			}
+		}
+		});
+		</script>
 </html>
