@@ -4,6 +4,7 @@
 from django.shortcuts import render
 from django.template import Context, loader, RequestContext
 from Website.models import Store,Product,Inventory,Transaction,RequestDetails
+from Customer.models import eTransaction
 import json
 import random
 import datetime
@@ -29,8 +30,19 @@ def localPushInventory(request):
         inv.selling_price = selling_price
         inv.minimum_qty = minimum_qty
         inv.save()
-    return HttpResponse('yo')
-
+	
+	eTran  = eTransaction.objects.all();
+	for e in eTran:
+		inv = Inventory.objects.get(store_id_id=e.store_id,product_id_id=e.product_id,batch_id=e.batch_id);
+		if(inv.qty < e.quantity_sold):
+			r = RequestDetails.objects.all().order_by('-request_id');
+			if not r:
+				request_id = 1;
+			else:
+				request_id = r[0].request_id+1;
+			r = RequestDetails(request_id=request_id,request_date = e.transaction_date, qty = e.quantity_sold, store_id=e.store_id,product_id=e.product_id,status='reserved')
+			r.save();
+	return HttpResponse('yo')
 
 
 @csrf_exempt
@@ -88,6 +100,7 @@ def localPushRequests(request):
 @csrf_exempt
 def localPullInventory(request):
     store = request.GET['shopid']
+	etran = eTransaction.objects.filter(store_id=store);
     requests_sent = RequestDetails.objects.filter(store_id=store)
     for r in requests_sent:
         inv = Inventory.objects.filter(product_id_id=r.product_id,store_id_id=store)        
@@ -113,7 +126,20 @@ def localPullInventory(request):
                          'cost_price' : str(i.cost_price),
                          'minimum_qty': str(i.minimum_qty),
                          'expiry_date': str(i.expiry_date)}) 
-        payload = {'inventory': list}
+        
+		list2 =[]
+		for e in eTran:
+			list2.append({'transaction_id' : str(e.transaction_id), 
+                         'transaction_date' : str(e.transaction_date),
+                         'product_id': str(e.product_id),
+                         'quantity_sold': str(e.quantity_sold),
+                         'batch_id' : str(e.batch_id),
+                         'selling_price' : str(e.selling_price),
+                         'cost_price': str(e.cost_price),
+                         'status': str(e.status)}) 
+        	
+		payload = {'inventory': list,
+					'etran': list2 }
         data = json.dumps(payload)
         return HttpResponse(data, content_type="application/json")
     
@@ -139,12 +165,6 @@ def localPullProduct(request):
     return HttpResponse(data, content_type="application/json")
     
 
-    
-    
-     
-
-
-	
 #ders = {'content-type': 'application/json'}
 #def sync_function(request):
  #   store_list = Store.objects.all();
