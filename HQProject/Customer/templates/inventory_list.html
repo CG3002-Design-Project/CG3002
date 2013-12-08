@@ -5,15 +5,15 @@
 	<title>Buy Products</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script src="/static/js/bootstrap-switch.min.js"></script>
-	<link rel="stylesheet" href="/static/css/bootstrap-switch.css">
-    <link href="/static/css/bootstrap.css" rel="stylesheet">
-    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="/static/css/navbar.css" rel="stylesheet">
+	<link href="/static/css/bootstrap.css" rel="stylesheet">
+	<link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
 	<link href="/static/css/bootstrap-rowlink.css" rel="stylesheet">
+	<link rel="stylesheet" href="/static/css/screen.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script src="/static/js/bootstrap.min.js"></script>
+	<script src="/static/js/bootbox.min.js"></script>
 	<link href="/static/css/demo_table.css">
-	<script src="/static/js/jquery.js"></script>
 	<script src="/static/js/jquery.dataTables.js"></script>
 	<script src="/static/js/DT_bootstrap.js"></script>
 	<script src="/static/js/cart.js"></script>
@@ -44,7 +44,7 @@
                         </ul>
                     </div><!--/.nav-collapse -->
                     {% if user.is_authenticated %}
-                                    <p class="navbar-text pull-right"> Signed in as <a href="#" class="navbar-link">{{ user.first_name }}</a></p>
+                                    <p class="navbar-text pull-right"> Signed in as <a href="#" class="navbar-link">{{ user.first_name }}</a><a href="/accounts/logout" class="navbar-link">| Logout</a></p>
                     {% else %}
                                     <p class="navbar-text pull-right"> Welcome. <a href="/accounts/login" class="navbar-link">Please log in.</a></p>
                     {% endif %}
@@ -54,13 +54,13 @@
 	<style>
 	.on { 
 	border:1px outset;
-	color:#369;
-	background:#00CC00; 
+	color:#fff;
+	background:#0064cd; 
 	}
 
 	.off {
 	border:1px outset;
-	color:#369;
+	color:#000;
 	background:#A8A8A8 ; 
 	}
 	</style>
@@ -74,25 +74,22 @@
             <th>Product Name</th>
 			<th>Category</th>			
 			<th>Price</th>
-			<th>Quantity</th>
 			<th>Rating</th>
+			<th>Quantity</th>
 			<th>Add to cart</th>
           </tr>  
         </thead>  
         <tbody id="tableClick">  
 		{% for s in inventory %}
           <tr id="row-of-data">  
-            <td><img src="/static/prodImage/{{s.productid}}.jpg" alt="Smiley face" height="100" width="100"></td>  
-            <td><span id="name">{{s.name}}</span></td>  
-            <td><span id="category">{{s.category}}</span></td>  
-			<td><span id="selling_price">{{s.selling_price}}</span></td>
-			<td style = "display:none"><span id="batchid">{{s.batchid}}</span></td>
-			<td style = "display:none"><span id="productid">{{s.productid}}</span></td>
-			<td style = "display:none"><span id="cost_price">{{s.cost_price}}</span></td>
-			<td><img src="/static/rating/{{s.rating}}.png" alt="Smiley face" height="100" width="100"></td>  
-			<td style><input type="text" width="10" id="quantity" class="quantity" placeholder="Quantity"/></td>
-			<td>
-			<input type="button" id="add_to_cart" value="Add to cart" class="off" onclick="togglestyle(this)"/>
+            <td class="span2"><img src="/static/prodImage/{{s.productid}}.jpg" alt="Smiley face" height="100" width="100"></td>  
+            <td class="span3">{{s.name}}</td>  
+            <td class="span2">{{s.category}}</td>  
+			<td class="span2">{{s.selling_price}}</td>
+			<td class="span2"><img src="/static/rating/{{s.rating}}.png" alt="Smiley face" height="100" width="100"></td>  
+			<td class="span1"><input type="text" id="quantity" class="quantity" placeholder="Quantity"/></td>
+			<td class="span2">
+			<input type="button" id="add_to_cart" batchid="{{s.batchid}}" productid="{{s.productid}}" cost_price="{{s.cost_price}}" value="Add to cart" class="btn btn-primary btn-block off" onclick="togglestyle(this)"/>
 			</td>
           </tr> 
          {% endfor %}		  

@@ -16,17 +16,10 @@
 
 
  <div class="container">
-                    <div class="row-fluid">
+        <div class="row-fluid">
             <div class="span12">
-                <div class="span6">
-                    <h1 class="muted">Online Shopping Portal</h1>
-                </div>
-                <div class="span4 offset2" style="margin-top:15px;">
-                    <button class="btn pull-right" type="button">
-                        {% if user.is_authenticated %}
-                            <p style="text-align:right"> <a href="/accounts/logout">Logout</a></p>
-                        {% endif %}
-                    </button>
+                <div>
+                    <h1 align="center" class="muted">CEG 21 Online Shopping Portal</h1>
                 </div>
             </div>
         </div>
@@ -48,7 +41,7 @@
                         </ul>
                     </div><!--/.nav-collapse -->
                     {% if user.is_authenticated %}
-                                    <p class="navbar-text pull-right"> Signed in as <a href="#" class="navbar-link">{{ user.first_name }}</a></p>
+                                    <p class="navbar-text pull-right"> Signed in as <a href="#" class="navbar-link">{{ user.first_name }}</a><a href="/accounts/logout" class="navbar-link">| Logout</a></p>
                     {% else %}
                                     <p class="navbar-text pull-right"> Welcome. <a href="/accounts/login" class="navbar-link">Please log in.</a></p>
                     {% endif %}
@@ -77,10 +70,21 @@
 	<!-- End WOWSlider.com BODY section -->
 </body>
             <div class="row-fluid">
-            <div class="span12">
+            <div align="center" class="span12">
                 <div>
-                    <h1 align="center">Welcome to our shopping portal!!!!!</h1>
+                    <h1 align="center">Welcome!!</h1>
                 </div>
             </div>
         </div>
+		<script>
+		$( document ).ready(function() {
+		var searchString = 'WOWSlider.com';
+		var elements = document.getElementsByTagName('a')
+		for (var i = 0; i < elements.length; i++) {
+			if (elements[i].innerHTML.indexOf(searchString) !== -1) {
+				elements[i].remove();
+			}
+		}
+		});
+		</script>
 </html>

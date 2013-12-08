@@ -1,16 +1,11 @@
 {% extends "cart_base.html" %}
 
 {% block cart%}
-
-<script src="/static/js/cart.js"></script>
+<link href="/static/css/bootstrap-rowlink.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/bootbox.min.js"></script>
-  <script src="/static/js/cart.js"></script>
-
- {% if user.is_authenticated %}
-<form action="{%url 'order_placed'%}" method="get">
-{% else %}
-<form action="http://127.0.0.1:8000/accounts/login?next=/Customer/cart.html">
-  {% endif %}
+<script src="/static/js/cart.js"></script>
 <div class="container">
 
 <table class="table" id="item-table">  
@@ -27,10 +22,11 @@
 <div>Total: $<span id = "total-price">0</span></div><hr/>
 <div class="modal-footer">
 	<button class="btn" id ="cancel" >Close</button>
-
+	{% if user.is_authenticated %}
 	<button id ="confirm-checkout" class="btn btn-primary">Checkout</button>
+	{% else %}
+	<button onClick="location.href='/accounts/login?next=/Customer/cart';" class="btn btn-primary">Checkout</button>	
+	{% endif %}
+	</div>
 </div>
-</div>
-
-</form>
 {% endblock%}
