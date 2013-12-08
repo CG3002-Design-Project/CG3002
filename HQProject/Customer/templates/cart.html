@@ -4,8 +4,15 @@
 
 <script src="/static/js/cart.js"></script>
 <script src="/static/js/bootbox.min.js"></script>
+  <script src="/static/js/cart.js"></script>
+
+ {% if user.is_authenticated %}
 <form action="{%url 'order_placed'%}" method="get">
+{% else %}
+<form action="http://127.0.0.1:8000/accounts/login?next=/Customer/cart.html">
+  {% endif %}
 <div class="container">
+
 <table class="table" id="item-table">  
         <thead>  
           <tr>
@@ -20,6 +27,7 @@
 <div>Total: $<span id = "total-price">0</span></div><hr/>
 <div class="modal-footer">
 	<button class="btn" id ="cancel" >Close</button>
+
 	<button id ="confirm-checkout" class="btn btn-primary">Checkout</button>
 </div>
 </div>

@@ -7,7 +7,7 @@ from Website.models import Store,Product,Inventory,Transaction
 from decimal import *
 import random
     
-cart_list = []
+
 
 def cart(request): 
     return render(request, 'cart.html')

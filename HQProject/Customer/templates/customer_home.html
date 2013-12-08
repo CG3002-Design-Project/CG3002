@@ -18,8 +18,15 @@
  <div class="container">
                     <div class="row-fluid">
             <div class="span12">
-                <div>
-                    <h1 align="center" class="muted">CEG 21 Online Shopping Portal</h1>
+                <div class="span6">
+                    <h1 class="muted">Online Shopping Portal</h1>
+                </div>
+                <div class="span4 offset2" style="margin-top:15px;">
+                    <button class="btn pull-right" type="button">
+                        {% if user.is_authenticated %}
+                            <p style="text-align:right"> <a href="/accounts/logout">Logout</a></p>
+                        {% endif %}
+                    </button>
                 </div>
             </div>
         </div>

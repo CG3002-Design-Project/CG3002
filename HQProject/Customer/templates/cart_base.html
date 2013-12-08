@@ -18,11 +18,11 @@
                     <h1 class="muted">Online Shopping Portal</h1>
                 </div>
                 <div class="span4 offset2" style="margin-top:15px;">
+                                            {% if user.is_authenticated %}
                     <button class="btn pull-right" type="button">
-                        {% if user.is_authenticated %}
-                            <p style="text-align:right"> <a href="/accounts/logout">Logout</a></p>
-                        {% endif %}
+                          <p style="text-align:right"> <a href="/accounts/logout">Logout</a></p>
                     </button>
+                                            {% endif %}
                 </div>
             </div>
         </div>
@@ -61,8 +61,10 @@
 <script src="/static/Customer/jquery.dataTables.js"></script>
 <script src="/static/Customer/DT_bootstrap.js"></script>
 <script src="/static/Customer/bootstrap-alert.js"></script> 
-
+    <script src="/static/js/cart.js"></script>
 <script type="text/javascript"/> 
-
+<script src="/static/js/cart.js"></script>
+<script src="/static/js/bootbox.min.js"></script>
+  <script src="/static/js/cart.js"></script>
   </body>
 </html>

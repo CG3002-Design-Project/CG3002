@@ -22,7 +22,7 @@ def inventory_list(request):
 			self.rating = 0
 			self.selling_price = 0
 		   
-	inventory = Inventory.objects.filter(store_id=1);
+	inventory = Inventory.objects.filter(store_id=5);
 	object_list = []   
 	for i in inventory:
 		product = i.product_id_id
