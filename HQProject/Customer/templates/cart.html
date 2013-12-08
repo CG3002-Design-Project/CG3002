@@ -23,7 +23,11 @@
 <div class="modal-footer">
 	<button class="btn" id ="back" >Back</button>
 	<button class="btn btn-primary" id ="abort" >Abort</button>
+	{% if user.is_authenticated %}
 	<button id ="confirm-checkout" class="btn btn-primary">Checkout</button>
-</div>
+	{% else %}
+	<button onClick="location.href='/accounts/login?next=/Customer/cart';" class="btn btn-primary">Checkout</button>	
+	{% endif %}
+	</div>
 </div>
 {% endblock%}
