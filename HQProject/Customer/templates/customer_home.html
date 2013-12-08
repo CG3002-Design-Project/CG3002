@@ -10,6 +10,7 @@
     <link href="/static/Customer/bootstrap-responsive.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/static/Customer/engine1/style.css" />
 	<script type="text/javascript" src="/static/Customer/engine1/jquery.js"></script>
+	<script src="/static/js/map.js"></script>
 	<!-- End WOWSlider.com HEAD section -->
 </head>
 
@@ -34,8 +35,9 @@
                     <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
+							<li><a href="{% url 'render_map'%}"> <i class="icon-home icon-white"></i>Store Picker</a></li>
                             <li class="active"><a href="{% url 'customer_home'%}"> <i class="icon-home icon-white"></i>Home</a></li>
-                            <li><a href="{% url 'inventory_list'%}"><i class="icon-star icon-white"></i>Browse</a></li>
+                            <li id="inven"><a><i class="icon-star icon-white"></i>Browse</a></li>
                             <li><a href="{% url 'cart'%}"><i class="icon-camera icon-white"></i>My Cart</a></li>  
 							<li><a href="{% url 'about_us' %}"><i class="icon-book icon-white"></i>About Us</a></li>	
                         </ul>

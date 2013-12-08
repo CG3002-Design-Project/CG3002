@@ -25,7 +25,7 @@ def localPushInventory(request):
         minimum_qty = int(i['minimum_qty'])
         selling_price = Decimal(i['selling_price'])
         shopid = int(i['shopid'])
-        inv = Inventory.objects.get(product_id_id=productid,batch_id=batchid,store_id_id=5)
+        inv = Inventory.objects.get(product_id_id=productid,batch_id=batchid,store_id_id=1)
         inv.qty = qty
         inv.selling_price = selling_price
         inv.minimum_qty = minimum_qty
@@ -100,7 +100,6 @@ def localPushRequests(request):
 @csrf_exempt
 def localPullInventory(request):
     store = request.GET['shopid']
-	etran = eTransaction.objects.filter(store_id=store);
     requests_sent = RequestDetails.objects.filter(store_id=store)
     for r in requests_sent:
         inv = Inventory.objects.filter(product_id_id=r.product_id,store_id_id=store)        
@@ -114,7 +113,7 @@ def localPullInventory(request):
         newbatch = Inventory(product_id_id=r.product_id,store_id_id=store,batch_id=batchid,qty = r.qty,selling_price = batches[0].selling_price, cost_price=batches[0].cost_price, minimum_qty = batches[0].minimum_qty, expiry_date=batches[0].expiry_date)
         newbatch.save()
         r.delete()
-    inventory = Inventory.objects.all()     
+    inventory = Inventory.objects.filter(store_id_id=store)     
     if(inventory is not None):
         list = []
         for i in inventory:
@@ -126,22 +125,29 @@ def localPullInventory(request):
                          'cost_price' : str(i.cost_price),
                          'minimum_qty': str(i.minimum_qty),
                          'expiry_date': str(i.expiry_date)}) 
-        
-		list2 =[]
-		for e in eTran:
-			list2.append({'transaction_id' : str(e.transaction_id), 
-                         'transaction_date' : str(e.transaction_date),
-                         'product_id': str(e.product_id),
-                         'quantity_sold': str(e.quantity_sold),
-                         'batch_id' : str(e.batch_id),
-                         'selling_price' : str(e.selling_price),
-                         'cost_price': str(e.cost_price),
-                         'status': str(e.status)}) 
-        	
-		payload = {'inventory': list,
-					'etran': list2 }
-        data = json.dumps(payload)
-        return HttpResponse(data, content_type="application/json")
+	
+	payload = { 'inventory': list }
+    data = json.dumps(payload)
+    return HttpResponse(data, content_type="application/json")					 
+
+@csrf_exempt	
+def localPullETransaction(request):
+	store = request.GET['shopid']
+	etran = eTransaction.objects.filter(store_id=store); 
+	list2 =[]
+	for e in etran:
+		list2.append({'transaction_id' : str(e.transaction_id), 
+					 'transaction_date' : str(e.transaction_date),
+					 'product_id': str(e.product_id),
+					 'quantity_sold': str(e.quantity_sold),
+					 'batch_id' : str(e.batch_id),
+					 'selling_price' : str(e.selling_price),
+					 'cost_price': str(e.cost_price),
+					 'status': str(e.status)}) 
+		
+	payload = { 'etran': list2 }
+	data = json.dumps(payload)
+	return HttpResponse(data, content_type="application/json")
     
 @csrf_exempt
 def localPullProduct(request):

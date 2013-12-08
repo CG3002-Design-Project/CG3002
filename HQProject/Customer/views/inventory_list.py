@@ -31,7 +31,7 @@ def add_eTransaction(request):
 	print dict
 	
 	for key in dict:
-		t = eTransaction(transaction_id= transaction_id, transaction_date = time.strftime("%Y-%m-%d"), product_id = int(key), quantity_sold = int(dict[key]['quantity']), batch_id = int(dict[key]['batchid']),cost_price = float(dict[key]['cost_price']), store_id = "01",status="order placed", selling_price=dict[key]['selling_price']);
+		t = eTransaction(transaction_id= transaction_id, transaction_date = time.strftime("%Y-%m-%d"), product_id = int(key), quantity_sold = int(dict[key]['quantity']), batch_id = int(dict[key]['batchid']),cost_price = Decimal(dict[key]['cost_price']), store_id = "01",status="order placed", selling_price=Decimal(dict[key]['selling_price']));
 		t.save();
 	
 	payload = {	
@@ -43,7 +43,7 @@ def add_eTransaction(request):
 	return HttpResponse(data,mimetype='application/json')	
 	
 @csrf_exempt	
-def inventory_list(request):
+def inventory_list(request,storeid):
 	class inven_prod:
 		def __init__(self):
 			self.name = None
@@ -55,7 +55,7 @@ def inventory_list(request):
 			self.rating = 0
 			self.selling_price = 0
 		   
-	inventory = Inventory.objects.filter(store_id=5);
+	inventory = Inventory.objects.filter(store_id=storeid);
 	object_list = []   
 	for i in inventory:
 		product = i.product_id_id

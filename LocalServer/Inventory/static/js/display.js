@@ -59,7 +59,8 @@ function edit_display(display_id,barcode,batchid,description) {
 											console.log(description);
 											if(description == 'edit') {
 												console.log("ajax");
-												document.location.href="http://127.0.0.1:8000/Inventory/display";
+												document.
+												.href="http://127.0.0.1:8000/Inventory/display";
 											}		
 											else {		
 												$('#addNewDisplay').modal('hide');

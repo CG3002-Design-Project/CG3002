@@ -9,7 +9,8 @@ urlpatterns = patterns('',
     url(r'^processRequest$',views.localPushRequests, name = 'localPushRequests'),
     url(r'^processProduct$', views.localPushProduct, name='localPushProduct'),
     url(r'^receiveProduct$', views.localPullProduct, name='localPullProduct'),
-    url(r'^receiveInventory$',views.localPullInventory,name='localPullInventory')
+    url(r'^receiveInventory$',views.localPullInventory,name='localPullInventory'),
+	url(r'^localPullETransaction$',views.localPullETransaction,name='localPullETransaction')
    # url(r'^sync_function$', views.sync_function, name='sync_function'),
 )
 

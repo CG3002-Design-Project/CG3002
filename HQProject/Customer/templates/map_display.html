@@ -1,21 +1,21 @@
-<html>
-    <head>
-        <title>Welcome!</title>
-    <link rel="stylesheet" href="style.css" />
+<!DOCTYPE html>
+<html> 
+<head> 
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+  	<title>Home Page</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/static/Customer/bootstrap.css" rel="stylesheet">
     <link href="/static/Customer/bootstrap-responsive.css" rel="stylesheet">
-	<link href="/static/css/bootstrap-rowlink.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/static/Customer/engine1/style.css" />
+	<script type="text/javascript" src="/static/Customer/engine1/jquery.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script src="/static/js/bootstrap.min.js"></script>
-	<script src="/static/js/bootbox.min.js"></script>
-	<script src="/static/js/cart.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAe7AU0uJTU1sdfRQOiS7wwf1vkVNJxJwQ&sensor=false" 
+          type="text/javascript"></script>
 	<script src="/static/js/map.js"></script>
-    </head>
-    <body>
-	
-	<!-- NAVBAR================================================== -->
-        <div class="container">
+</head> 
+ <div class="container">
         <div class="row-fluid">
             <div class="span12">
                 <div>
@@ -34,11 +34,11 @@
                     <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
-							<li><a href="{% url 'render_map'%}"> <i class="icon-home icon-white"></i>Store Picker</a></li>
-                            <li><a href="{% url 'customer_home' %}"> <i class="icon-home icon-white"></i>Home</a></li>
+							 <li class="active"><a href="{% url 'render_map'%}"> <i class="icon-home icon-white"></i>Store Picker</a></li>
+                            <li><a href="{% url 'customer_home'%}"> <i class="icon-home icon-white"></i>Home</a></li>
                             <li id="inven"><a><i class="icon-star icon-white"></i>Browse</a></li>
-                            <li class="active"><a href="#"><i class="icon-camera icon-white"></i>My Cart</a></li>
-                            <li><a href="{% url 'about_us' %}"><i class="icon-book icon-white"></i>About Us</a></li>       
+                            <li><a href="{% url 'cart'%}"><i class="icon-camera icon-white"></i>My Cart</a></li>  
+							<li><a href="{% url 'about_us' %}"><i class="icon-book icon-white"></i>About Us</a></li>	
                         </ul>
                     </div><!--/.nav-collapse -->
                     {% if user.is_authenticated %}
@@ -48,30 +48,10 @@
                     {% endif %}
                 </div><!-- /.navbar-inner -->
             </div><!-- /.navbar -->
-        </div> <!-- /.container -->
-	
-	<div class="container">
-	<table class="table" id="item-table">  
-        <thead>  
-          <tr>
-            <th class="span6">Product Name</th>  
-            <th class="span6">Quantity</th>  
-            <th class="span6">Price</th>    
-			<th class="span6">Subtotal</th>	
-          </tr>  
-        </thead>  
-	</table>
-	<hr/>
-	<div>Total: $<span id = "total-price">0</span></div><hr/>
-	<div class="modal-footer">
-	<button class="btn" id ="back" >Back</button>
-	<button class="btn btn-primary" id ="abort" >Abort</button>
-	{% if user.is_authenticated %}
-	<button id ="confirm-checkout" class="btn btn-primary">Checkout</button>
-	{% else %}
-	<button onClick="location.href='/accounts/login?next=/Customer/cart';" class="btn btn-primary">Checkout</button>	
-	{% endif %}
-	</div>
-	</div>
+</div> <!-- /.container -->
+<body onload="maps()">
+<div id="map" style="width: 800px; height: 600px; margin-left:auto; margin-right:auto;"></div>  
 </body>
 </html>
+	
+	

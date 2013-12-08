@@ -41,7 +41,10 @@ class Store(models.Model):
         city = models.CharField(max_length=256)
         state = models.CharField(max_length=256)
         country = models.CharField(max_length=256)
-        region = models.CharField(max_length=256)		
+        region = models.CharField(max_length=256)	
+        lat = models.FloatField("Latitude", blank=True, null=True,help_text="degrees, floating point, South is negative")
+        long = models.FloatField("Longtitude", blank=True, null=True,help_text="degrees, floating point, West is negative")
+		
 		
         
 class RequestDetails(models.Model):

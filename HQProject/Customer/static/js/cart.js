@@ -3,7 +3,7 @@ var store_selected = 0;
 var totalPrice = 0;
 var itemIdx = 0;
 
-window.onload = function() {
+window.onload = function() {	
 	 addToCart();
 	 checkout();
 }
@@ -33,10 +33,7 @@ function addToCart() {
  function removeItem(index){
 
 	var contents = $('td#collective-'+index).text();
-    var productid = $('td#collective-'+index).attr("productid");
-	
-	alert(productid);
-	
+    var productid = $('td#collective-'+index).attr("productid");	
 	var retrievedObject = localStorage.getItem('cartObj');
 	cart_list = JSON.parse(retrievedObject)
 	delete cart_list[productid]
@@ -58,7 +55,7 @@ function addToCart() {
 			cart_list = JSON.parse(retrievedObject)
 			var a = "poo"
 			$.ajax({
-			url: 'http://127.0.0.1:8000/Customer/add_eTransaction', 
+			url: 'http://ec2-user@ec2-54-254-157-48.ap-southeast-1.compute.amazonaws.com:8000/Customer/add_eTransaction', 
 			type: 'POST',
 			contentType: "application/json; charset=utf-8",
 			dataType: "json",
@@ -79,7 +76,7 @@ function addToCart() {
 		});
 		$('#back').click(function(){
 					console.log("back");
-					document.location.href="http://127.0.0.1:8000/Customer/inventory_list";	
+					document.location.href="http://ec2-user@ec2-54-254-157-48.ap-southeast-1.compute.amazonaws.com:8000/Customer/inventory_list";	
 		});
 		
 		$('#abort').click(function(){
@@ -89,13 +86,13 @@ function addToCart() {
 						localStorage.setItem('cartObj', JSON.stringify(cart_list));
 						var retrievedObject = localStorage.getItem('cartObj');
 						console.log('retrievedObject after set: ', JSON.parse(retrievedObject))
-						document.location.href="http://127.0.0.1:8000/Customer/inventory_list";
+						document.location.href="http://ec2-user@ec2-54-254-157-48.ap-southeast-1.compute.amazonaws.com:8000/Customer/inventory_list";
 				});
 		});
  }
 
 function togglestyle(element){
-	
+	localStorage.setItem('cartObj', JSON.stringify(cart_list));	
 	console.log("here");
 	var batchid = element.getAttribute("batchid")
 	var productid = element.getAttribute("productid")
@@ -105,7 +102,6 @@ function togglestyle(element){
 			console.log("remove from cart")
 			var currentRow = $(element).closest("tr");
 			//do something with values in td's
-			alert(productid);
 			
 			var quantity = currentRow.find('.quantity');
 			quantity.value = 0;
