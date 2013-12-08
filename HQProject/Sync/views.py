@@ -148,6 +148,7 @@ def localPullETransaction(request):
 	payload = { 'etran': list2 }
 	data = json.dumps(payload)
 	return HttpResponse(data, content_type="application/json")
+
     
 @csrf_exempt
 def localPullProduct(request):

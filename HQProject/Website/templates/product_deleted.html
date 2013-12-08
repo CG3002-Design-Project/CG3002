@@ -11,18 +11,10 @@
 
         <!-- NAVBAR================================================== -->
         <div class="container">
-                    <div class="row-fluid">
+        <div class="row-fluid">
             <div class="span12">
-                <div class="span6">
-                    <h1 class="muted">CEG 21 HyperMarket</h1>
-                </div>
-
-                <div class="span4 offset2" style="margin-top:15px;">
-                    <button class="btn pull-right" type="button">
-                        {% if user.is_authenticated %}
-                            <p style="text-align:right"> <a href="/accounts/logout">Logout</a></p>
-                        {% endif %}
-                    </button>
+                <div>
+                    <h1 align="center" class="muted">CEG 21 Market Admin Portal</h1>
                 </div>
             </div>
         </div>
@@ -40,13 +32,13 @@
                             <li><a href="{% url 'home'%}"> <i class="icon-home icon-white"></i>Home</a></li>
                             <li class="active"><a href="{% url 'view_product'%}"><i class="icon-star icon-white"></i>Products</a></li>
                             <li><a href="{% url 'filter_stores'%}"><i class="icon-book icon-white"></i>Stores</a></li>
-                            <li><a href="#"><i class="icon-camera icon-white"></i>Employees</a></li>
+                            <li><a href="{% url 'view_employee' %}"><i class="icon-camera icon-white"></i>Employees</a></li>
                             <li><a href="{% url 'transaction_home'%}"><i class="icon-comment icon-white"></i>Transactions</a></li>
-                            <li><a href="../Website/revenue_chart"><i class="icon-comment icon-white"></i>Statistics</a></li>
+                            <li><a href="{% url 'store_revenue'%}"><i class="icon-comment icon-white"></i>Statistics</a></li>
                         </ul>
                     </div><!--/.nav-collapse -->
                     {% if user.is_authenticated %}
-                                    <p class="navbar-text pull-right"> Signed in as <a href="#" class="navbar-link">{{ user.first_name }}</a></p>
+                                    <p class="navbar-text pull-right"> Signed in as <a href="#" class="navbar-link">{{ user.first_name }}</a><a href="/accounts/logout" class="navbar-link"> | Logout</a></p>
                     {% else %}
                                     <p class="navbar-text pull-right"> Welcome. <a href="/accounts/login" class="navbar-link">Please log in.</a></p>
                     {% endif %}

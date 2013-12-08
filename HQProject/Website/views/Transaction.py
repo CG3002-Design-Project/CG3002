@@ -11,7 +11,7 @@ from django.shortcuts import render, render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from django.template import Context, loader, RequestContext
 from django.db.models import Avg, Sum
-from Website.models import Store,Product,Inventory,Transaction
+from Website.models import Store,Product,Inventory,Transaction, StorePivot
 from chartit import DataPool, PivotDataPool, Chart, PivotChart
 from decimal import *
 from operator import itemgetter
@@ -147,53 +147,121 @@ def monthly_stats(request):
                         'store_list' : store_list
 
                     }
-                )	
+                )
+
 def store_name(store_id):
     return str(store_id)
 
 @staff_member_required
-@csrf_exempt		
-def revenue_chart(request):
-	store =  Store.objects.all()
-	output = []
-	for s in store:
-		if s.region not in output:
-			output.append(s.region)
-	print output			
-	context = {'country':output}  
-	return render (request,'transaction_stats.html',context)
+@csrf_exempt  
+def store_revenue(request):
+  #d =  json.loads(request.body)
+  #if d['storeid'] is None:
+  # storeid = 1;
+  #else:
+  print "here"
+  if 'region_selected' in request.GET and request.GET['region_selected']:
+    region_selected = request.GET['region_selected']
+    print region_selected;
+  else:
+    region_selected = "All"
 
-def revenue_chart_2(request):
-    storeRevenue = \
-        DataPool(
-           series=
-            [{'options': {
-               'source': Transaction.objects.all()},
-              'terms': [
-                'store_id',
-                'selling_price']}
-             ])	
+  if (region_selected=="All"):
+    transaction_list= Transaction.objects.all()
+  else:
+    # region selected
+    # transaction_list= Transaction.objects.filter(=store_selected)
+    transaction_list= Transaction.objects.all()
 
-    transaction_stats = Chart(
-            datasource = storeRevenue,
-            series_options =
-              [{'options':{
-                  'type': 'pie',
-                  'stacking': False},
-                'terms':{
-                  'store_id': [
-                    'selling_price']
-                  }}],
-            chart_options =
-              {'title': {
-                   'text': 'Revenue by Stores'}},
-            x_sortf_mapf_mts = (None,store_name,False))
+  for t in transaction_list:
+    #pv = StorePivot.objects.get(store_id=t.store_id)
+    pv = StorePivot.objects.filter(store_id=t.store_id)
+    if pv.exists():
+      pv = StorePivot.objects.get(store_id=t.store_id)
+      pv.avg_revenue = (pv.avg_revenue + t.selling_price*t.quantity_sold)/2
+      pv.save()
+    else:
+      newpiv = StorePivot(store_id=t.store_id,region="Asia",avg_revenue=t.selling_price*t.quantity_sold)
+      newpiv.save()
 
-    return render(request,'transaction_stats.html',
-                    {
-                        'transaction_stats': transaction_stats
-                    }
-                )
+  region_list =  Store.objects.all()
+  # clean this
+# transaction_list = Transaction.objects.filter(store_id=1)
+# transaction_list = Transaction.objects.all()
+  storeRevenue = \
+      DataPool(
+         series=
+          [{'options': {
+             'source': StorePivot.objects.all()},
+            'terms': [
+              'store_id',
+              'avg_revenue']}
+           ]) 
+
+  transaction_stats = Chart(
+        datasource = storeRevenue,
+        series_options =
+            [{'options':{
+                'type': 'pie',
+                'stacking': False},
+              'terms':{
+                'store_id': [
+                  'avg_revenue']
+                }}],
+          chart_options =
+            {'title': {
+                 'text': 'Revenue by Stores'}},
+          x_sortf_mapf_mts = (None,store_name,False))
+
+  return render(request,'store_revenue.html',
+                      {
+                          'transaction_stats': transaction_stats,
+                          'region_list' : region_list
+                      }
+                  ) 
+# @staff_member_required
+# @csrf_exempt		
+# def revenue_chart(request):
+# 	store =  Store.objects.all()
+# 	output = []
+# 	for s in store:
+# 		if s.region not in output:
+# 			output.append(s.region)
+# 	print output			
+# 	context = {'country':output}  
+# 	return render (request,'transaction_stats.html',context)
+
+# def revenue_chart_2(request):
+#     storeRevenue = \
+#         DataPool(
+#            series=
+#             [{'options': {
+#                'source': Transaction.objects.all()},
+#               'terms': [
+#                 'store_id',
+#                 'selling_price']}
+#              ])	
+
+#     transaction_stats = Chart(
+#             datasource = storeRevenue,
+#             series_options =
+#               [{'options':{
+#                   'type': 'pie',
+#                   'stacking': False},
+#                 'terms':{
+#                   'store_id': [
+#                     'selling_price']
+#                   }}],
+#             chart_options =
+#               {'title': {
+#                    'text': 'Revenue by Stores'}},
+#             x_sortf_mapf_mts = (None,store_name,False))
+
+#     return render(request,'transaction_stats.html',
+#                     {
+#                         'transaction_stats': transaction_stats
+#                     }
+#                 )
     # storeRevenue = \
     #     PivotDataPool(
     #       series=
@@ -216,35 +284,245 @@ def revenue_chart_2(request):
     #           {'title': {
     #                'text': 'Spend per Store'}})            	
 
-@staff_member_required
-@csrf_exempt	
-def revenue_pie(request):
-	d =  json.loads(request.body)
-	print d['region']
-	transaction_list = Transaction.objects.all()
-	dict = {}
-	for t in transaction_list:
-		storeid = t.store_id
-		store = Store.objects.get(store_id=storeid)
-		if (store.region == d['region']):
-			if dict.has_key(storeid):
-				value = dict.get(storeid)
-				value = value+t.selling_price*t.quantity_sold
-				dict[storeid]=value
-			else:
-				value = t.selling_price*t.quantity_sold
-				dict[storeid] = value
+# @staff_member_required
+# @csrf_exempt	
+# def revenue_pie(request):
+# 	d =  json.loads(request.body)
+# 	print d['region']
+# 	transaction_list = Transaction.objects.all()
+# 	dict = {}
+# 	for t in transaction_list:
+# 		storeid = t.store_id
+# 		store = Store.objects.get(store_id=storeid)
+# 		if (store.region == d['region']):
+# 			if dict.has_key(storeid):
+# 				value = dict.get(storeid)
+# 				value = value+t.selling_price*t.quantity_sold
+# 				dict[storeid]=value
+# 			else:
+# 				value = t.selling_price*t.quantity_sold
+# 				dict[storeid] = value
 	
-	for key in dict:
-		dict[key] = str(dict.get(key))
+# 	for key in dict:
+# 		dict[key] = str(dict.get(key))
 	
-	payload = {
-       'result':dict
-	}
-	data = json.dumps(payload)
-	print data
-	return HttpResponse(data,mimetype='application/json')
+# 	payload = {
+#        'result':dict
+# 	}
+# 	data = json.dumps(payload)
+# 	print data
+# 	return HttpResponse(data,mimetype='application/json')
 	 
-	 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

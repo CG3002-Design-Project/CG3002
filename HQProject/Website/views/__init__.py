@@ -6,6 +6,7 @@ from Store import *
 from Sync import *
 from Product import *
 from Login import *
+from Employee import *
 from decimal import *
 import random
 

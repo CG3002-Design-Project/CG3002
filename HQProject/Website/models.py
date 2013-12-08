@@ -3,7 +3,10 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
 
 # Create your models here.
-
+class StorePivot(models.Model):
+        store_id = models.PositiveIntegerField(validators=[MaxValueValidator(99999999)],primary_key=True)
+        region = models.CharField(max_length=256)
+        avg_revenue = models.DecimalField(max_digits=6,decimal_places=2)
 
 class Employee(models.Model):
         user = models.OneToOneField(User)
@@ -65,5 +68,3 @@ class Transaction(models.Model):
         selling_price = models.DecimalField(max_digits=6,decimal_places=2)
         cost_price = models.DecimalField(max_digits=6,decimal_places=2)
         store_id = models.PositiveIntegerField(validators=[MaxValueValidator(99999999)])		
-
-		
