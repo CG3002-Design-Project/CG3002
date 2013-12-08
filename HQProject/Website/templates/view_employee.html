@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Store</title>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css" />
+    <title>{% block title %}templates/base.html{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/Website/bootstrap.css" rel="stylesheet">
+    <link href="/static/Website/bootstrap-responsive.css" rel="stylesheet">
+</head>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="/static/Website/bootstrap.css" rel="stylesheet">
-        <link href="/static/Website/bootstrap-responsive.css" rel="stylesheet">
-    </head>
-    <body>
+<body>
 
         <!-- NAVBAR================================================== -->
         <div class="container">
@@ -21,6 +22,8 @@
                     <button class="btn pull-right" type="button">
                         {% if user.is_authenticated %}
                             <p style="text-align:right"> <a href="/accounts/logout">Logout</a></p>
+                        {% else %}
+                            <p style="text-align:right"> <a href="/accounts/login">Log In</a></p>
                         {% endif %}
                     </button>
                 </div>
@@ -37,12 +40,12 @@
                     <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
                     <div class="nav-collapse ">
                         <ul class="nav pull-left">
-                            <li><a href="{% url 'home'%}"> <i class="icon-home icon-white"></i>Home</a></li>
-                            <li class="active"><a href="{% url 'view_product'%}"><i class="icon-star icon-white"></i>Products</a></li>
-                            <li><a href="{% url 'filter_stores'%}"><i class="icon-book icon-white"></i>Stores</a></li>
-                            <li><a href="{% url 'view_employee' %}"><i class="icon-camera icon-white"></i>Employees</a></li>
-                            <li><a href="{% url 'transaction_home'%}"><i class="icon-comment icon-white"></i>Transactions</a></li>
-                            <li><a href="../Website/revenue_chart"><i class="icon-comment icon-white"></i>Statistics</a></li>
+                            <li><a href="{% url 'home_regionalManager' %}"> <i class="icon-home icon-white"></i>Home</a></li>
+                            <li><a href="/Website/view-product"><i class="icon-star icon-white"></i>Products</a></li>
+                            <li><a href="/Website/view-stores"><i class="icon-book icon-white"></i>Stores</a></li>
+                            <li class="active"><a href="#"><i class="icon-camera icon-white"></i>Employees</a></li>
+                            <li><a href="/Website/transaction_home"><i class="icon-comment icon-white"></i>Transactions</a></li>
+                            <li><a href="/Website/revenue_chart"><i class="icon-comment icon-white"></i>Statistics</a></li>               
                         </ul>
                     </div><!--/.nav-collapse -->
                     {% if user.is_authenticated %}
@@ -54,17 +57,30 @@
             </div><!-- /.navbar -->
         </div> <!-- /.container -->
 
-		<div class ="container">
-		<h4>Welcome to CEG21 HyperMarket at {{store.address}}, {{store.city}}, {{store.state}}, {{store.country}}</h4>
-		</br>
-		<h4>You have successfully updated the product {{p.name}}</h4>	
-		<form action = "{% url 'inventory_control' store.id%}" method="get">
-		<input type="submit" value="Inventory Control">
-		</form>	
-		</div>
-		
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-        <script src="/static/Website/bootstrap.min.js"></script>
-		
-		</body>
-		</html>
+<div class="container">
+    <h2>Employee List</h2>
+    <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered dataTable" id="example" aria-describedby="example_info">  
+        <thead>  
+          <tr>  
+            <th>Email</th>  
+            <th>Manages</th>  
+            <th>Designation</th> 
+            <th>Address</th> 
+            <th>Phone</th>  
+          </tr>  
+        </thead>  
+        <tbody>  
+         {% for e in employee_list %}
+          <tr>  
+            <td>{{e.employee_email}}</td>     
+            <td>{{e.store_id_id}}</td>  
+            <td>{{e.designation}}</td>
+            <td>{{e.address}}</td>
+            <td>{{e.phone}}</td>
+           </tr> 
+         {% endfor %}    
+        </tbody>  
+    </table> 
+</div>
+</body>
+</html>

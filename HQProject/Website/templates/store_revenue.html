@@ -67,25 +67,22 @@
 
 <div class="container">
 <ul class="nav nav-tabs">
-	<li><a href="revenue_chart">Revenue Ranking</a></li>
+	<li class="active"><a href="store_revenue">Storewise Revenue</a></li>
 	<li><a href="top_ten_products">Top 10 Products</a></li>
-	<li class="active"><a href="monthly_stats">Monthly Revenue</a></li>
+	<li><a href="monthly_stats">Monthly Revenue</a></li>
 </ul>
 <h2>Transaction Statistics</h2>
-
-
-
 
             <div class="container">
                 
                 </br>
-                <form action="{% url 'monthly_stats'%}" method="get" id="store_selected" name="store_selected" >
+                <form action="{% url 'store_revenue'%}" method="get" id="store_selected" name="store_selected">
                 <h4>Filter by region</h4>
-                <select id="store_selected" class="selectpicker" name="store_selected">
-                {% for c in store_list %}
-                <option>{{c.store_id}}</option>
+                <select id="store_selected" class="selectpicker" name="store_selected" selected="store_selected">
+                <option>All</option>
+                {% for r in region_list %}
+                <option>{{c.revenue}}</option>
                 {% endfor %}
-                <option selected>All</option>
                 </select>              
                 </br><input type="submit" value="Submit" class="btn">
                         

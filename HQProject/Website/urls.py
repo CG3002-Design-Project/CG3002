@@ -49,4 +49,6 @@ urlpatterns = patterns('',
     #surl(r'^revenue_chart$', views.revenue_chart, name='revenue_chart'),
     url(r'^monthly_stats$', views.monthly_stats, name='monthly_stats'),
     url(r'^top_ten_products$', views.top_ten_products, name='top_ten_products'),
+    url(r'^store_revenue$', views.store_revenue, name='store_revenue'),
+    url(r'^view_employee$', views.view_employee, name='view_employee'),
 )
