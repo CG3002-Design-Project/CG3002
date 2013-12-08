@@ -54,12 +54,26 @@ function addToCart() {
  
  function checkout() {
 		$('#confirm-checkout').click(function(){
+			var retrievedObject = localStorage.getItem('cartObj');
+			cart_list = JSON.parse(retrievedObject)
+			var a = "poo"
 			$.ajax({
-			url: 'http://127.0.0.1:8000/Inventory/add_eTransaction', 
+			url: 'http://127.0.0.1:8000/Customer/add_eTransaction', 
 			type: 'POST',
-			data: cart_list,
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			data: JSON.stringify({'cart':cart_list}),
 			success: function (response) {
-				bootbox.alert("order placed");	
+				id = response.transaction_id
+				bootbox.confirm("Order placed. Your transaction id is " + id , function(result) {	
+						localStorage.setItem('cartObj', JSON.stringify(cart_list));
+						var retrievedObject = localStorage.getItem('cartObj');
+						cart_list = JSON.parse(retrievedObject);
+						cart_list = {}
+						localStorage.setItem('cartObj', JSON.stringify(cart_list));
+						document.location.href="http://127.0.0.1:8000/Customer/inventory_list";
+				});
+				
 			}
 			});
 		});
