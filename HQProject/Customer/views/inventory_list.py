@@ -41,7 +41,7 @@ def add_eTransaction(request):
 	data = json.dumps(payload)
 	print data;
 	return HttpResponse(data,mimetype='application/json')	
-
+	
 @csrf_exempt	
 def inventory_list(request):
 	class inven_prod:
