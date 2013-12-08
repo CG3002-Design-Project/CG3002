@@ -16,17 +16,10 @@
 
 
  <div class="container">
-                    <div class="row-fluid">
+        <div class="row-fluid">
             <div class="span12">
-                <div class="span6">
-                    <h1 class="muted">Online Shopping Portal</h1>
-                </div>
-                <div class="span4 offset2" style="margin-top:15px;">
-                    <button class="btn pull-right" type="button">
-                        {% if user.is_authenticated %}
-                            <p style="text-align:right"> <a href="/accounts/logout">Logout</a></p>
-                        {% endif %}
-                    </button>
+                <div>
+                    <h1 align="center" class="muted">CEG 21 Online Shopping Portal</h1>
                 </div>
             </div>
         </div>
@@ -48,7 +41,7 @@
                         </ul>
                     </div><!--/.nav-collapse -->
                     {% if user.is_authenticated %}
-                                    <p class="navbar-text pull-right"> Signed in as <a href="#" class="navbar-link">{{ user.first_name }}</a></p>
+                                    <p class="navbar-text pull-right"> Signed in as <a href="#" class="navbar-link">{{ user.first_name }}</a><a href="/accounts/logout" class="navbar-link">| Logout</a></p>>
                     {% else %}
                                     <p class="navbar-text pull-right"> Welcome. <a href="/accounts/login" class="navbar-link">Please log in.</a></p>
                     {% endif %}
@@ -59,7 +52,8 @@
 <body>
 	<!-- Start WOWSlider.com BODY section -->
     <div class="container">
-        <h4> Our SuperMarket was founded out of a passion for bringing the best products to the community in an efficient manner.</h4>
+        <h4 align="center"> Our SuperMarket was founded out of a passion for bringing the best products to the community in an efficient manner.</h4>
+        <h5 align="center"> Our Founders: </h5>
     </div>
 </br>
 </br>
@@ -72,7 +66,7 @@
             <img src="http://i41.tinypic.com/2up92mq.jpg" border="0" alt="Image and video hosting by TinyPic">
         </div> 
                 <div class="span2">
-            <img src="http://www.w3.org/html/logo/downloads/HTML5_Logo_256.png">
+<img src="http://i44.tinypic.com/2w24kk5.gif" border="0" alt="Image and video hosting by TinyPic">
         </div> 
                 <div class="span2">
 <img src="http://i42.tinypic.com/11vtlbk.jpg" border="0" alt="Image and video hosting by TinyPic">
@@ -87,22 +81,22 @@
 </br>
         <div class="row">
             <div class="span2">
-            <p> Ambalica Angra is one of the co-founders of CEG 21 Hypermarket. Ambalica has trained in prestigious law firms and extensively manages the company’s legal issues.</p>
+            <p> Ambalica Angra has trained in prestigious law firms and extensively manages the company’s legal issues.</p>
         </div>
                 <div class="span2">
-            <p>Ankit Ganla is a co-founder of CEG21 Hypermarket.  With several years of financial experience under his belt, Ankit is a key player in moulding the future of the company.</p>
+            <p>Ankit Ganla has several years of financial experience under his belt and is a key player in moulding the future of the company.</p>
         </div> 
                 <div class="span2">
-            <p> Dipika Suresh is a co-founder of CEG21 Hypermarket. Dipika has extensive experience in managing a company on a large-scale and has manages its people. </p>
+            <p> Dipika Suresh has extensive experience in managing a company on a large-scale and has manages its people. </p>
         </div> 
                 <div class="span2">
-            <p> Anusaya Kukade is a co-founder of CEG21 Hypermarket. With her strong personality and comfort level with the media, she is the face of the company.</p>
+            <p> Anusaya Kukade has a strong personality and comfort level with the media which makes her the face of the company.</p>
         </div> 
                 <div class="span2">
-            <p> Poornima Muthukumar is a co-founder of CEG21 Hypermarket. Poornima manages the technical aspect of the company. She ensures that the systems we use are safe and robust</p>
+            <p> Poornima Muthukumar manages the technical aspect of the company. She ensures that the systems we use are safe and robust</p>
         </div> 
                 <div class="span2">
-            <p> Harsha Narayan is a co-founder of CEG21 Hypermarket. Her responsibilities include ensuring that the company is well marketed to the world and the hypermarket is one that is loved.</p>
+            <p> Harsha Narayan  ensures that the company is well marketed to the world and the hypermarket is one that is loved.</p>
         </div>
     </div>    
     <!--

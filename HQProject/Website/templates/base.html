@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="style.css" />
-    <title>{% block title %}templates/base.html{% endblock %}</title>
+    <title>{% block title %}Login{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/static/Website/bootstrap.css" rel="stylesheet">
     <link href="/static/Website/bootstrap-responsive.css" rel="stylesheet">
@@ -19,13 +19,11 @@
                 </div>
 
                 <div class="span4 offset2" style="margin-top:15px;">
+                                            {% if user.is_authenticated %}
                     <button class="btn pull-right" type="button">
-                        {% if user.is_authenticated %}
                             <p style="text-align:right"> <a href="../accounts/logout">Logout</a></p>
-                        {% else %}
-                            <p style="text-align:right"> <a href="../accounts/login">Log In</a></p>
-                        {% endif %}
                     </button>
+                                            {% endif %}
                 </div>
             </div>
         </div>
